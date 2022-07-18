@@ -7,12 +7,14 @@ import { CustomerTrackingPageComponent } from './customer-tracking-page/customer
 import { GooglemapComponent } from './googlemap/googlemap.component';
 import {GoogleMapsModule} from "@angular/google-maps";
 import { HttpClientModule} from "@angular/common/http";
+import { ErrorpageComponent } from './errorpage/errorpage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerTrackingPageComponent,
-    GooglemapComponent
+    GooglemapComponent,
+    ErrorpageComponent
   ],
   imports: [
     BrowserModule,

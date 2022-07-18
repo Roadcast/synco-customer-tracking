@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {OrderService} from "../order.service";
+import {Order} from "../order";
 
 @Component({
   selector: 'app-customer-tracking-page',
@@ -7,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerTrackingPageComponent implements OnInit {
 
-  constructor() { }
+  order: Order = {} as Order;
+  constructor(public  orderService: OrderService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.orderService.init().then();
+    this.order = this.orderService.order;
   }
-
 }

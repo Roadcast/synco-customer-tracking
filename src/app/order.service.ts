@@ -23,7 +23,7 @@ export class OrderService {
     if(!myParam) {
       await this.router.navigateByUrl('error');
     }
-    const api_url = 'https://synco-api.roadcast.co.in/api/v1/';
+    const api_url = 'https://jfl-api-dev.roadcast.co.in/api/v1/';
     const response = await fetch(api_url + 'order/order_tracking/' + myParam, {
       method: "GET",
     });

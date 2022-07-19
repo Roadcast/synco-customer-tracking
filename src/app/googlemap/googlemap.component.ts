@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Order} from "../order";
 import {OrderService} from "../order.service";
 import {HttpClient} from "@angular/common/http";
-import {GeoJSON} from 'leaflet';
 
 @Component({
     selector: 'app-googlemap',
@@ -14,6 +13,7 @@ export class GooglemapComponent implements OnInit {
 
     options: google.maps.MapOptions = {
         zoomControl: true,
+        gestureHandling: 'greedy',
     }
     riderLatLng: any;
     pickupLatLng: any;
@@ -33,7 +33,6 @@ export class GooglemapComponent implements OnInit {
     }
 
     mapReady(){
-        this.order.rider_position.latitude
         this.riderLatLng = {
             lat:  this.order.rider_position.latitude,
             lng:  this.order.rider_position.longitude,
@@ -90,8 +89,8 @@ export class GooglemapComponent implements OnInit {
             infowindow.open(this.map, pickupMarker);
         });
         this.dropLatLng = {
-            lat: this.order.merchant_order.delivery_location.latitude,
-            lng: this.order.merchant_order.delivery_location.longitude,
+            lat: this.order.delivery_location.latitude,
+            lng: this.order.delivery_location.longitude,
         }
         this.markers.push(this.dropLatLng)
         const dropMarker = new google.maps.Marker({
@@ -109,9 +108,8 @@ export class GooglemapComponent implements OnInit {
             });
             infowindow.open(this.map, dropMarker);
         });
-
-         const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.pickupLatLng);
-         this.map.fitBounds(bounds);
+         // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
+         // this.map.fitBounds(bounds);
          this.getRiderPathFromHerePathThenCacheLocally(this.order).then()
     }
 
@@ -119,16 +117,17 @@ export class GooglemapComponent implements OnInit {
 
     async getRiderPathFromHerePathThenCacheLocally(order: any) {
         let origin, destination;
-        if (order.pick_up_address &&
-            order.pick_up_location.latitude && order.pick_up_location.longitude) {
-            origin = [ order.pick_up_location.longitude, order.pick_up_location.latitude ];
+        if (order.rider_position &&
+            order.rider_position.latitude && order.rider_position.longitude) {
+
+            origin = [ order.rider_position.longitude, order.rider_position.latitude ];
         }
-        if (order.merchant_order.delivery_location &&
-            order.merchant_order.delivery_location.latitude &&
-            order.merchant_order.delivery_location.longitude) {
+        if (order.delivery_location &&
+            order.delivery_location.latitude &&
+            order.delivery_location.longitude) {
             destination = [
-                order.merchant_order.delivery_location.longitude,
-                order.merchant_order.delivery_location.latitude,
+                order.delivery_location.longitude,
+                order.delivery_location.latitude,
             ];
         }
         if (origin && destination) {

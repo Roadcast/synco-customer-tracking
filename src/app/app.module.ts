@@ -8,6 +8,8 @@ import { GooglemapComponent } from './googlemap/googlemap.component';
 import {GoogleMapsModule} from "@angular/google-maps";
 import { HttpClientModule} from "@angular/common/http";
 import { ErrorpageComponent } from './errorpage/errorpage.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NgxStarRatingModule} from "ngx-star-rating";
 
 @NgModule({
   declarations: [
@@ -16,12 +18,15 @@ import { ErrorpageComponent } from './errorpage/errorpage.component';
     GooglemapComponent,
     ErrorpageComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    GoogleMapsModule,
-      HttpClientModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        GoogleMapsModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxStarRatingModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

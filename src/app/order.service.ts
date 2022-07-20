@@ -8,14 +8,12 @@ import {HttpBackend, HttpClient} from "@angular/common/http";
 })
 export class OrderService {
   order: any;
-  sub: Subscription;
+  // sub: Subscription;
+  rating: any;
 
   constructor(private router: Router, private httpDirect: HttpClient, handler: HttpBackend) {
     this.httpDirect = new HttpClient(handler);
-    this.sub = interval(5000)
-        .subscribe(async () => {
-          await this.init();
-        });
+
   }
   async init() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -29,5 +27,6 @@ export class OrderService {
     });
     const data = await response.json()
     this.order = data.data
+    this.rating = data.rating
   }
 }

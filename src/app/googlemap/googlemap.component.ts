@@ -1,7 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Order} from "../order";
 import {OrderService} from "../order.service";
 import {HttpClient} from "@angular/common/http";
+import {GeoJSON} from 'leaflet';
+import {interval, Subscription} from "rxjs";
 
 @Component({
     selector: 'app-googlemap',
@@ -23,33 +25,41 @@ export class GooglemapComponent implements OnInit {
     markers: any = [];
     order: Order = {} as Order;
     orderHereMapRoutePath = {};
+    pollOrderSubscription: any;
+    marker:any = [];
+    sub: Subscription = new Subscription();
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
 
     async ngOnInit() {
-        await  this.orderService.init().then();
+        await this.orderService.init().then();
         this.order = this.orderService.order;
-        this.mapReady()
+        this.mapReady();
     }
 
     mapReady(){
-        this.riderLatLng = {
-            lat:  this.order.rider_position.latitude,
-            lng:  this.order.rider_position.longitude,
-        }
-        this.markers.push(this.riderLatLng);
-        const latLng1 = new google.maps.LatLng(this.riderLatLng);
         const mapOptions = {
             center: {
-                lat: latLng1.lat(),
-                lng: latLng1.lng()
+                lat: this.order.delivery_location.latitude,
+                lng:  this.order.delivery_location.longitude,
             },
             zoom: 12,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: true,
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-        const marker = new google.maps.Marker({
+        this.sub = interval(2000)
+            .subscribe(() => {
+
+                this.orderService.init().then();
+                this.order = this.orderService.order;
+        this.riderLatLng = {
+            lat:  this.order.rider_position.latitude,
+            lng:  this.order.rider_position.longitude,
+        }
+        this.markers.push(this.riderLatLng);
+
+                const marker = new google.maps.Marker({
             position: new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng),
             icon: {
                 url: 'assets/images/rider_ic.svg',
@@ -57,16 +67,15 @@ export class GooglemapComponent implements OnInit {
             },
             title: ''
         });
-        marker.setMap(this.map);
-        google.maps.event.addListener(marker, 'click', () => {
+               this.removeMarker();
+               this.marker.push(marker)
+               this.setMarker()
+        google.maps.event.addListener(this.marker, 'click', () => {
             const infowindow = new google.maps.InfoWindow({
                 content: this.order.rider.name
             });
-            infowindow.open(this.map, marker);
+            infowindow.open(this.map, this.marker);
         });
-        this.plotPickUpDrop();
-    }
-    plotPickUpDrop() {
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
             lng: this.order.pick_up_location.longitude,
@@ -108,12 +117,27 @@ export class GooglemapComponent implements OnInit {
             });
             infowindow.open(this.map, dropMarker);
         });
-         // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
-         // this.map.fitBounds(bounds);
-         this.getRiderPathFromHerePathThenCacheLocally(this.order).then()
+                // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
+                // this.map.fitBounds(bounds);
+        this.getRiderPathFromHerePathThenCacheLocally(this.order).then()
+            });
+        if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
+          this.sub.unsubscribe()
+        }
     }
 
 
+    setMarker(){
+        for(let i = 0; i< this.marker.length; i++){
+            this.marker[i].setMap(this.map)
+        }
+     }
+    removeMarker(){
+        for(let i = 0; i< this.marker.length; i++){
+            this.marker[i].setMap(null)
+        }
+        this.marker = [];
+    }
 
     async getRiderPathFromHerePathThenCacheLocally(order: any) {
         let origin, destination;
@@ -138,20 +162,19 @@ export class GooglemapComponent implements OnInit {
                     ],
                 }).subscribe((res: any) =>{
                 this.coordinates = res.features[0].geometry.coordinates;
-                this.showPath(this.coordinates)
+
+
+                const coordsClean = this.coordinates.map((x:any) =>{
+                    const dataArray =   x.slice()
+                    return {lat: x[1], lng:x[0]}
+                })
+                new google.maps.Polyline({ strokeColor: 'blue',
+                    map: this.map,
+                    path: coordsClean, geodesic: true, visible: true,
+                });
             });
         }
 
-    }
-    showPath(coordinates: any){
-        const coordsClean = coordinates.map((x:any) =>{
-          const dataArray =   x.slice()
-            return {lat: x[1], lng:x[0]}
-        })
-        new google.maps.Polyline({ strokeColor: 'blue',
-            map: this.map,
-            path: coordsClean, geodesic: true, visible: true,
-        });
     }
 }
 

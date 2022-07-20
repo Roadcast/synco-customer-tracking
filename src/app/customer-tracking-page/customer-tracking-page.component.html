@@ -15,7 +15,6 @@
     <div class="row">
       <div class="col">
         <h2>Order ID <span>{{order.id.substr(-6, 6) | uppercase}}</span></h2>
-
         <div class="row address">
           <div class="col-2"><img src="assets/images/location_ic.svg" alt=""></div>
           <div class="col-10 pl-0">
@@ -37,7 +36,7 @@
         <div class="status"><img src="assets/images/order-status.jpg" alt=""></div>
       </div>
       <div class="col-12 rider">
-        Rider has picked up your order
+       {{order.status_name}}
       </div>
     </div>
     <div class="row user">
@@ -58,6 +57,59 @@
         Facing Issue? <a href="#">Chat with us</a>
       </div>
     </div>
+    <!-- Scrollable modal -->
   </div>
 </section>
+
+<!-- Optional JavaScript; choose one of the two! -->
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
 <!-- Order Container End Here -->
+
+<!-- Feedback Pop Up Start Here -->
+
+  <div  *ngIf="order.status_name === 'delivered'">
+    <div class="overlay-b">
+    <div class="feedback-popup">
+      <div class="cont">
+        <div class="stars">
+          <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'" ></ngx-star-rating >
+        </div>
+      </div>
+      <div class="message">{{order.status_name | uppercase}}</div>
+      <div class="input-group flex-nowrap">
+        <input type="text" class="form-control" [(ngModel)]="feedbackorder" placeholder="What would you like to share" aria-label="Username" aria-describedby="addon-wrapping">
+        <button class="btn" id="addon-wrapping" (click)="feedback()"><i class="fa fa-location-arrow"></i></button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+
+
+
+  <div  *ngIf="order.status_name === 'delivered'">
+  <div class="overlay-b" *ngIf="rating.rating">
+  <div class="feedback-popup"  style="height: 250px" >
+    <form [formGroup]="form">
+      <div class="cont">
+        <div class="stars">
+          <ngx-star-rating formControlName="rating2" [id]="'rating2'" [(ngModel)]="rating.rating" [disabled] ="true"></ngx-star-rating>
+        </div>
+      </div>
+    </form>
+    <div class="message">{{order.status_name | uppercase}}</div>
+    <div class="input-group flex-nowrap">
+      <input type="text" class="form-control" readonly [(ngModel)]="rating.feedback" placeholder="What would you like to share" aria-label="Username" aria-describedby="addon-wrapping">
+      <button class="btn" id="addon-wrapping1" disabled (click)="feedback()"><i class="fa fa-location-arrow"></i></button>
+    </div>
+    <div class="message">Your Feedback is Successfully</div>
+  </div>
+  </div>
+  </div>
+
+<!-- Feedback Pop Up End Here -->

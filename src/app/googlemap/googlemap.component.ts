@@ -29,6 +29,7 @@ export class GooglemapComponent implements OnInit {
     marker:any = [];
     sub: Subscription = new Subscription();
     private riderMarker: google.maps.Marker | undefined;
+    private oldRiderLatLng: any;
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
 
@@ -98,15 +99,14 @@ export class GooglemapComponent implements OnInit {
 
                 this.orderService.init().then();
                 this.order = this.orderService.order;
-                this.riderLatLng = {
-                    lat:  this.order.rider_position.latitude,
-                    lng:  this.order.rider_position.longitude,
-                };
-                this.markers.push(this.riderLatLng);
 
                 if (!this.riderMarker) {
+                    this.riderLatLng = {
+                        lat:  this.order.rider_position.latitude,
+                        lng:  this.order.rider_position.longitude,
+                    };
                     this.riderMarker = new google.maps.Marker({
-                        position: new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng),
+                        position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
                         icon: {
                             url: 'assets/images/rider_ic.png',
                             scaledSize: new google.maps.Size(40, 40), // size
@@ -121,12 +121,58 @@ export class GooglemapComponent implements OnInit {
                     });
                     this.riderMarker.setMap(this.map);
                 }
-                this.riderMarker.setPosition(new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng));
-                this.map.fitbounds(new google.maps.LatLngBounds(this.riderLatLng,
-                    new google.maps.LatLng(this.order.delivery_location.latitude, this.order.delivery_location.longitude)));
+                this.oldRiderLatLng = this.riderLatLng;
+                this.markers.push(this.riderLatLng);
+
+                this.transition({lat: this.oldRiderLatLng.lat, lng: this.oldRiderLatLng.lng},
+                    {lat: this.order.rider_position.latitude, lng: this.order.rider_position.longitude});
+                // this.riderMarker.setPosition(new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng));
+
+                // this.map.fitbounds(new google.maps.LatLngBounds(this.riderLatLng,
+                //     new google.maps.LatLng(this.order.delivery_location.latitude, this.order.delivery_location.longitude)));
             });
         if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
             this.sub.unsubscribe()
+        }
+    }
+
+    numDeltas = 100;
+    delay = 10;
+    index = 0;
+
+    transition(oldPosition: { lat: number; lng: number; }, newPosition: { lat: number; lng: number; }) {
+        const i = 0;
+
+        const deltaLat = (newPosition.lat - oldPosition.lat) / this.numDeltas;
+        const deltaLng = (newPosition.lng - oldPosition.lng) / this.numDeltas;
+
+        this.moveMarker(i, deltaLat, deltaLng);
+    }
+
+    moveMarker(i: any, deltaLat: number, deltaLng: number) {
+        this.riderLatLng.lat += deltaLat;
+        this.riderLatLng.lng += deltaLng;
+        const latlng = new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng);
+
+        // var y = Math.sin(this.riderLatLng.lng-this.oldRiderLatLng.lng) * Math.cos(this.riderLatLng.lat);
+        // var x = Math.cos(this.oldRiderLatLng.lat)*Math.sin(this.riderLatLng.lat) -
+        //     Math.sin(this.oldRiderLatLng.lat)*Math.cos(this.riderLatLng.lat)*Math.cos(this.riderLatLng.lng-this.oldRiderLatLng.lng);
+        // var brng = Math.atan2(y, x) * 180 / Math.PI;
+
+        // // @ts-ignore
+        // console.log('brng', brng);
+        // @ts-ignore
+        this.riderMarker.setPosition(latlng);
+        // // @ts-ignore
+        // var icon = this.riderMarker.getIcon();
+        // // @ts-ignore
+        // icon.rotation = brng;
+        // // @ts-ignore
+        // this.riderMarker.setIcon(icon);
+        if (i !== this.numDeltas) {
+            setTimeout(() => this.moveMarker(i + 1, deltaLat, deltaLng), this.delay);
+        } else {
+            this.index++;
         }
     }
 

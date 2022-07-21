@@ -45,7 +45,8 @@
           <div class="col-3 u-pic"><img src="assets/images/user.jpg" alt=""></div>
           <div class="col-6 u-name"><strong>{{order.rider.name}}<img src="assets/images/info_ic.svg" alt=""></strong>
             {{order.rider.mobile_number}}</div>
-          <div class="col-3 callbtn txtright"><img src="assets/images/call_ic.svg" alt=""></div>
+          <div class="col-3 callbtn txtright"><a href="tel: {{order.rider ? order.rider.mobile_number : ''}}"
+                                                 style="text-decoration: none"><img src="assets/images/call_ic.svg" alt=""></a></div>
         </div>
       </div>
     </div>

@@ -93,7 +93,7 @@
 
 
   <div  *ngIf="order.status_name === 'delivered'">
-  <div class="overlay-b" *ngIf="rating.rating">
+  <div class="overlay-b" *ngIf="rating?.rating">
   <div class="feedback-popup"  style="height: 250px" >
     <form [formGroup]="form">
       <div class="cont">

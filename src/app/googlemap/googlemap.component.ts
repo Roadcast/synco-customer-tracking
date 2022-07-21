@@ -28,6 +28,7 @@ export class GooglemapComponent implements OnInit {
     pollOrderSubscription: any;
     marker:any = [];
     sub: Subscription = new Subscription();
+    private riderMarker: google.maps.Marker | undefined;
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
 
@@ -48,38 +49,10 @@ export class GooglemapComponent implements OnInit {
             disableDefaultUI: true,
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-        this.sub = interval(2000)
-            .subscribe(() => {
-
-                this.orderService.init().then();
-                this.order = this.orderService.order;
-        this.riderLatLng = {
-            lat:  this.order.rider_position.latitude,
-            lng:  this.order.rider_position.longitude,
-        }
-        this.markers.push(this.riderLatLng);
-
-                const marker = new google.maps.Marker({
-            position: new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng),
-            icon: {
-                url: 'assets/images/rider_ic.svg',
-                scaledSize: new google.maps.Size(35, 35), // size
-            },
-            title: ''
-        });
-               this.removeMarker();
-               this.marker.push(marker)
-               this.setMarker()
-        google.maps.event.addListener(this.marker, 'click', () => {
-            const infowindow = new google.maps.InfoWindow({
-                content: this.order.rider.name
-            });
-            infowindow.open(this.map, this.marker);
-        });
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
             lng: this.order.pick_up_location.longitude,
-        }
+        };
         this.markers.push(this.pickupLatLng);
         const pickupMarker = new google.maps.Marker({
             position: new google.maps.LatLng(this.pickupLatLng.lat, this.pickupLatLng.lng
@@ -100,8 +73,8 @@ export class GooglemapComponent implements OnInit {
         this.dropLatLng = {
             lat: this.order.delivery_location.latitude,
             lng: this.order.delivery_location.longitude,
-        }
-        this.markers.push(this.dropLatLng)
+        };
+        this.markers.push(this.dropLatLng);
         const dropMarker = new google.maps.Marker({
             position: new google.maps.LatLng(this.dropLatLng.lat, this.dropLatLng.lng),
             icon: {
@@ -117,26 +90,44 @@ export class GooglemapComponent implements OnInit {
             });
             infowindow.open(this.map, dropMarker);
         });
-                // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
-                // this.map.fitBounds(bounds);
-        this.getRiderPathFromHerePathThenCacheLocally(this.order).then()
+
+        this.getRiderPathFromHerePathThenCacheLocally(this.order).then();
+
+        this.sub = interval(4000)
+            .subscribe(() => {
+
+                this.orderService.init().then();
+                this.order = this.orderService.order;
+                this.riderLatLng = {
+                    lat:  this.order.rider_position.latitude,
+                    lng:  this.order.rider_position.longitude,
+                };
+                this.markers.push(this.riderLatLng);
+
+                if (!this.riderMarker) {
+                    this.riderMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng),
+                        icon: {
+                            url: 'assets/images/rider_ic.png',
+                            scaledSize: new google.maps.Size(40, 40), // size
+                        },
+                        title: ''
+                    });
+                    google.maps.event.addListener(this.riderMarker, 'click', () => {
+                        const infowindow = new google.maps.InfoWindow({
+                            content: this.order.rider.name
+                        });
+                        infowindow.open(this.map, this.riderMarker);
+                    });
+                    this.riderMarker.setMap(this.map);
+                }
+                this.riderMarker.setPosition(new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng));
+                this.map.fitbounds(new google.maps.LatLngBounds(this.riderLatLng,
+                    new google.maps.LatLng(this.order.delivery_location.latitude, this.order.delivery_location.longitude)));
             });
         if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
-          this.sub.unsubscribe()
+            this.sub.unsubscribe()
         }
-    }
-
-
-    setMarker(){
-        for(let i = 0; i< this.marker.length; i++){
-            this.marker[i].setMap(this.map)
-        }
-     }
-    removeMarker(){
-        for(let i = 0; i< this.marker.length; i++){
-            this.marker[i].setMap(null)
-        }
-        this.marker = [];
     }
 
     async getRiderPathFromHerePathThenCacheLocally(order: any) {
@@ -165,14 +156,17 @@ export class GooglemapComponent implements OnInit {
 
 
                 const coordsClean = this.coordinates.map((x:any) =>{
-                    const dataArray =   x.slice()
+                    const dataArray =   x.slice();
                     return {lat: x[1], lng:x[0]}
-                })
+                });
                 new google.maps.Polyline({ strokeColor: 'blue',
                     map: this.map,
                     path: coordsClean, geodesic: true, visible: true,
                 });
             });
+            this.map.fitbounds(new google.maps.LatLngBounds(
+                new google.maps.LatLng(order.rider_position.latitude, order.rider_position.longitude),
+                new google.maps.LatLng(order.delivery_location.latitude, order.delivery_location.longitude)));
         }
 
     }

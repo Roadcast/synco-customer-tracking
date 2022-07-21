@@ -12,7 +12,14 @@ import {interval} from "rxjs";
 })
 export class CustomerTrackingPageComponent implements OnInit {
 
-  order: Order = {} as Order;
+  order: Order = {
+    id: '',
+    rider: {
+      name: ''
+    },
+    delivery_address: {
+      google_address: ''
+    }} as Order;
   feedbackorder = '';
   feedbackStatus: any;
   rating: any = {

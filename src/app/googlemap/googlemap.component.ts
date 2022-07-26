@@ -1,8 +1,7 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Order} from "../order";
 import {OrderService} from "../order.service";
 import {HttpClient} from "@angular/common/http";
-import {GeoJSON} from 'leaflet';
 import {interval, Subscription} from "rxjs";
 
 @Component({
@@ -30,13 +29,16 @@ export class GooglemapComponent implements OnInit {
     sub: Subscription = new Subscription();
     private riderMarker: google.maps.Marker | undefined;
     private oldRiderLatLng: any;
+    getpoints: any;
+    getData = [];
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
 
     async ngOnInit() {
         await this.orderService.init().then();
         this.order = this.orderService.order;
-        this.mapReady();
+        // this.mapReady();
+        this.dataFirstCall();
     }
 
     mapReady(){
@@ -59,8 +61,8 @@ export class GooglemapComponent implements OnInit {
             position: new google.maps.LatLng(this.pickupLatLng.lat, this.pickupLatLng.lng
             ),
             icon: {
-                url: 'assets/images/merchant.png',
-                scaledSize: new google.maps.Size(25, 25), // size
+                url: 'assets/images/store.svg',
+                scaledSize: new google.maps.Size(35, 35), // size
             },
             title: '',
         });
@@ -79,8 +81,8 @@ export class GooglemapComponent implements OnInit {
         const dropMarker = new google.maps.Marker({
             position: new google.maps.LatLng(this.dropLatLng.lat, this.dropLatLng.lng),
             icon: {
-                url: 'assets/images/customer.png',
-                scaledSize: new google.maps.Size(25, 25), // size
+                url: 'assets/images/home.svg',
+                scaledSize: new google.maps.Size(35, 35), // size
             },
             title: ''
         });
@@ -108,7 +110,7 @@ export class GooglemapComponent implements OnInit {
                     this.riderMarker = new google.maps.Marker({
                         position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
                         icon: {
-                            url: 'assets/images/rider_ic.png',
+                            url: 'assets/images/bike.svg',
                             scaledSize: new google.maps.Size(40, 40), // size
                         },
                         title: ''
@@ -139,7 +141,7 @@ export class GooglemapComponent implements OnInit {
     numDeltas = 100;
     delay = 10;
     index = 0;
-
+    markerStore: any;
     transition(oldPosition: { lat: number; lng: number; }, newPosition: { lat: number; lng: number; }) {
         const i = 0;
 
@@ -153,22 +155,8 @@ export class GooglemapComponent implements OnInit {
         this.riderLatLng.lat += deltaLat;
         this.riderLatLng.lng += deltaLng;
         const latlng = new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng);
-
-        // var y = Math.sin(this.riderLatLng.lng-this.oldRiderLatLng.lng) * Math.cos(this.riderLatLng.lat);
-        // var x = Math.cos(this.oldRiderLatLng.lat)*Math.sin(this.riderLatLng.lat) -
-        //     Math.sin(this.oldRiderLatLng.lat)*Math.cos(this.riderLatLng.lat)*Math.cos(this.riderLatLng.lng-this.oldRiderLatLng.lng);
-        // var brng = Math.atan2(y, x) * 180 / Math.PI;
-
-        // // @ts-ignore
-        // console.log('brng', brng);
         // @ts-ignore
         this.riderMarker.setPosition(latlng);
-        // // @ts-ignore
-        // var icon = this.riderMarker.getIcon();
-        // // @ts-ignore
-        // icon.rotation = brng;
-        // // @ts-ignore
-        // this.riderMarker.setIcon(icon);
         if (i !== this.numDeltas) {
             setTimeout(() => this.moveMarker(i + 1, deltaLat, deltaLng), this.delay);
         } else {
@@ -210,12 +198,244 @@ export class GooglemapComponent implements OnInit {
                     path: coordsClean, geodesic: true, visible: true,
                 });
             });
-            this.map.fitbounds(new google.maps.LatLngBounds(
-                new google.maps.LatLng(order.rider_position.latitude, order.rider_position.longitude),
-                new google.maps.LatLng(order.delivery_location.latitude, order.delivery_location.longitude)));
+            // this.map.fitbounds(new google.maps.LatLngBounds(
+            //     new google.maps.LatLng(order.rider_position.latitude, order.rider_position.longitude),
+            //     new google.maps.LatLng(order.delivery_location.latitude, order.delivery_location.longitude)));
         }
 
     }
+    dataFirstCall() {
+        const lat = 24.880667
+        const lng = 67.040669
+        // var self = this;
+        //         var marker = new google.maps.Marker({
+        //             animation: google.maps.Animation.DROP,
+        //
+        //             position: new google.maps.LatLng(lat,lng),
+        //             map: self.map,
+        //         });
+        //     this.drawpoints(marker);
+        var self = this;
+        const mapOptions = {
+            center: {
+                lat: lat,
+                lng:  lng,
+            },
+            zoom: 12,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            disableDefaultUI: true,
+        };
+        this.drawpoints(mapOptions)
+        this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+        var marker = new google.maps.Marker({
+            animation: google.maps.Animation.DROP,
+            position: new google.maps.LatLng(lat, lng),
+            title: lat.toString(),
+            map: self.map,
+        });
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.880749,
+                            "lon": 67.041306,
+
+                        },
+                    ]
+
+                });
+
+        }, 2000)
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.881024,
+                            "lon": 67.042035,
+                            "data": {
+                            }
+
+                        },
+                    ]
+
+                });
+
+        }, 3000)
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.881520,
+                            "lon": 67.043127,
+                            "data": {
+                            }
+                        },
+                    ]
+
+                });
+
+        }, 4000)
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.881734,
+                            "lon": 67.043758,
+                            "data": {
+                            }
+                        },
+                    ]
+
+                });
+
+        }, 5000)
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.882291,
+                            "lon": 67.044930,
+                            "data": {
+                            }
+                        },
+                    ]
+
+                });
+
+        }, 6000)
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.882496,
+                            "lon": 67.045239,
+                            "data": {
+                            }
+                        },
+                    ]
+
+                });
+
+        }, 7000)
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.882817,
+                            "lon": 67.046076,
+                            "data": {
+                            }
+                        },
+                    ]
+
+                });
+
+        }, 8000)
+        setTimeout(function () {
+            self.drawpoints(
+                {
+                    "Points": [
+                        {
+                            "type": "person",
+                            "id": 'A',
+                            "lat": 24.883157,
+                            "lon": 67.046548,
+                            "data": {
+                            }
+                        },
+                    ]
+
+                });
+
+        }, 90000)
+    }
+    drawpoints(data:any) {
+        const SlidingMarker = require('marker-animate-unobtrusive');
+        let self = this;
+        let i = 0;
+        var Colors = [
+            "#FF0000",
+            "#00FF00"
+        ];
+        for (let key in data.Points){
+            let value = data.Points[key];
+            console.log('value', value);
+            // self.getpoints.push(new google.maps.LatLng(value.lat, value.lon));
+            // if (this.markerStore.hasOwnProperty(value.id)) {
+            //     var myLatlng = new google.maps.LatLng(value.lat, value.lon);
+            //     //pushing previous cordinate of marker
+            //     // @ts-ignore
+            //     this.markerStore[res.id].previousLatLngs.push(myLatlng);
+            //     // @ts-ignore
+            //     this.markerStore[res.id].setPosition(myLatlng);
+            //     setTimeout(function(){self.map.panTo(myLatlng);},2000);
+            //     var lineSymbol = {
+            //         path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
+            //     };
+            //     //create polyline
+            //     // @ts-ignore
+            //     var flightPath = new google.maps.Polyline({
+            //         path: this.markerStore[value.id].previousLatLngs,
+            //         geodesic: true,
+            //         icons: [{
+            //             icon: lineSymbol,
+            //             offset: '100%'
+            //         }],
+            //         strokeColor: Colors[i],
+            //         strokeOpacity: 1.0,
+            //         strokeWeight: 2
+            //     });
+            //     setInterval(function(){  flightPath.setMap(self.map);},1000);
+            //     i++;
+            // }
+            // else {
+            //     var latlng = new google.maps.LatLng(value.lat, value.lon);
+            //     var marker = new SlidingMarker({
+            //         animation: google.maps.Animation.DROP,
+            //         position: new google.maps.LatLng(value.lat, value.lon),
+            //         map: self.map,
+            //         // title: "I'm sliding marker",
+            //         duration: 1000,
+            //         easing: "easeOutQuad"
+            //
+            //     });
+            //     marker.setPosition(latlng);
+            //     // @ts-ignore
+            //     this.markerStore[res.id] = marker;
+            //     // @ts-ignore
+            //     this.markerStore[res.id].previousLatLngs = [];
+            //     // @ts-ignore
+            //     this.markerStore[res.id].previousLatLngs.push(new google.maps.LatLng(res.lat, res.lon));
+            //     //
+            // }
+        }
+        // data.Points.forEach( (res: any) => {
+        // });
+    }
+    // changeRadius(event: Event) {
+    //     heatmap.set('radius', heatmap.get('radius') ? null : 20);
+    // }
 }
 
 

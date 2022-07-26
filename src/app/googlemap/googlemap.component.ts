@@ -207,14 +207,6 @@ export class GooglemapComponent implements OnInit {
     dataFirstCall() {
         const lat = 24.880667
         const lng = 67.040669
-        // var self = this;
-        //         var marker = new google.maps.Marker({
-        //             animation: google.maps.Animation.DROP,
-        //
-        //             position: new google.maps.LatLng(lat,lng),
-        //             map: self.map,
-        //         });
-        //     this.drawpoints(marker);
         var self = this;
         const mapOptions = {
             center: {
@@ -226,8 +218,9 @@ export class GooglemapComponent implements OnInit {
             disableDefaultUI: true,
         };
         this.drawpoints(mapOptions)
+        const SlidingMarker = require('marker-animate-unobtrusive');
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-        var marker = new google.maps.Marker({
+        var marker = new SlidingMarker({
             animation: google.maps.Animation.DROP,
             position: new google.maps.LatLng(lat, lng),
             title: lat.toString(),
@@ -371,7 +364,6 @@ export class GooglemapComponent implements OnInit {
         }, 90000)
     }
     drawpoints(data:any) {
-        const SlidingMarker = require('marker-animate-unobtrusive');
         let self = this;
         let i = 0;
         var Colors = [

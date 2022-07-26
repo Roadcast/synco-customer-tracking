@@ -31,8 +31,10 @@ export class GooglemapComponent implements OnInit {
     sub: Subscription = new Subscription();
     private riderMarker:any;
     private oldRiderLatLng: any;
+    oldBearingData: any;
     getpoints: any;
     getData = [];
+    bikeSvg: any;
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
 
@@ -114,7 +116,7 @@ export class GooglemapComponent implements OnInit {
             map: this.map,
             icon: riderIcon,
             title: '',
-            durationMs: 500,
+            durationMs: 2000,
             position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
         });
 
@@ -124,23 +126,28 @@ export class GooglemapComponent implements OnInit {
                 this.order = this.orderService.order;
 
                 this.riderLatLng = {
-                    lat:  this.order.rider_position.latitude + Math.random(),
-                    lng:  this.order.rider_position.longitude + Math.random(),
+                    lat:  this.order.rider_position.latitude,
+                    lng:  this.order.rider_position.longitude,
                 };
 
                 const bearing = this.getBearing(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng, this.riderLatLng.lat, this.riderLatLng.lng);
-                console.log(bearing);
-
+                const bearingData =Number (bearing.toFixed(0));
+                console.log('old bearing', this.oldBearingData)
+                if (bearingData === 0){
+                    this.bikeSvg = this.oldBearingData - (this.oldBearingData % 15)
+                }else {
+                    this.bikeSvg = bearingData - (bearingData % 15)
+                    this.oldBearingData = bearingData
+                }
                 const riderIcon = {
-                    url: 'assets/images/bike.svg',
+                    url: 'assets/images/svg/' + this.bikeSvg + '.svg',
                     scaledSize: new google.maps.Size(40, 40),
                     rotation: bearing
                 };
 
                 this.riderMarker.setIcon(riderIcon);
-                this.riderMarker.animatedSetPosition(new google.maps.LatLng(this.order.rider_position.latitude + Math.random(), this.order.rider_position.longitude + Math.random()));
+                this.riderMarker.animatedSetPosition(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
                 this.oldRiderLatLng = this.riderLatLng;
-
             });
         if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
             this.sub.unsubscribe()

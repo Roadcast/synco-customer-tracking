@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "synco-jfl-track",
+    "public": "dist/customer_tracking",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

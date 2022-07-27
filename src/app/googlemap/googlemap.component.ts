@@ -117,6 +117,7 @@ export class GooglemapComponent implements OnInit {
             icon: riderIcon,
             title: '',
             durationMs: 2000,
+            cbAfterMove: this.panMap,
             position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
         });
 
@@ -152,6 +153,10 @@ export class GooglemapComponent implements OnInit {
         if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
             this.sub.unsubscribe()
         }
+    }
+
+    panMap(newPosition: google.maps.LatLng) {
+        this.map.panTo(newPosition);
     }
 
     radians(n: number) {

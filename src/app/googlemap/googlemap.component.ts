@@ -51,7 +51,7 @@ export class GooglemapComponent implements OnInit {
                 lat: this.order.delivery_location.latitude,
                 lng:  this.order.delivery_location.longitude,
             },
-            zoom: 12,
+            zoom: 14,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: true,
         };
@@ -116,10 +116,13 @@ export class GooglemapComponent implements OnInit {
             map: this.map,
             icon: riderIcon,
             title: '',
-            durationMs: 2000,
-            cbAfterMove: this.panMap,
+            durationMs: 4000,
             position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
         });
+
+        setTimeout(() => {
+            this.map.panTo(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
+        }, 200);
 
         this.sub = interval(4000)
             .subscribe(() => {
@@ -133,11 +136,11 @@ export class GooglemapComponent implements OnInit {
 
                 const bearing = this.getBearing(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng, this.riderLatLng.lat, this.riderLatLng.lng);
                 const bearingData =Number (bearing.toFixed(0));
-                console.log('old bearing', this.oldBearingData)
+                console.log('old bearing', this.oldBearingData);
                 if (bearingData === 0){
                     this.bikeSvg = this.oldBearingData - (this.oldBearingData % 15)
                 }else {
-                    this.bikeSvg = bearingData - (bearingData % 15)
+                    this.bikeSvg = bearingData - (bearingData % 15);
                     this.oldBearingData = bearingData
                 }
                 const riderIcon = {
@@ -147,7 +150,11 @@ export class GooglemapComponent implements OnInit {
                 };
 
                 this.riderMarker.setIcon(riderIcon);
+                this.riderMarker.durationMs = 4000;
                 this.riderMarker.animatedSetPosition(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
+                setTimeout(() => {
+                    this.map.panTo(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
+                }, 2000);
                 this.oldRiderLatLng = this.riderLatLng;
             });
         if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
@@ -156,7 +163,10 @@ export class GooglemapComponent implements OnInit {
     }
 
     panMap(newPosition: google.maps.LatLng) {
-        this.map.panTo(newPosition);
+        console.log('test');
+        setTimeout(() => {
+            this.map.panTo(newPosition);
+        }, 100);
     }
 
     radians(n: number) {

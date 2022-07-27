@@ -163,7 +163,6 @@ export class GooglemapComponent implements OnInit {
     }
 
     panMap(newPosition: google.maps.LatLng) {
-        console.log('test');
         setTimeout(() => {
             this.map.panTo(newPosition);
         }, 100);

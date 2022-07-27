@@ -3,7 +3,7 @@ import {OrderService} from "../order.service";
 import {Order} from "../order";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {interval} from "rxjs";
+import {interval, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-customer-tracking-page',
@@ -26,6 +26,7 @@ export class CustomerTrackingPageComponent implements OnInit {
   };
   rating3 = 0;
   public form: FormGroup;
+  sub: Subscription | any;
   constructor(public  orderService: OrderService, private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
       rating1: ['', Validators.required],
@@ -37,8 +38,18 @@ export class CustomerTrackingPageComponent implements OnInit {
     await this.orderService.init().then();
     this.order = this.orderService.order;
     this.rating = this.orderService.rating;
-
+    this.pollingData();
   }
+  pollingData(){
+    this.sub = interval(4000).subscribe(()=>{
+      this.orderService.init().then();
+      this.order = this.orderService.order;
+    })
+    if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
+      this.sub.unsubscribe()
+    }
+  }
+
   feedback() {
     const api_url = 'https://jfl-api-dev.roadcast.co.in/api/v1/';
     fetch(api_url + 'order/order_feedback/' + `${this.order.id}`, {

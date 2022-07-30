@@ -145,18 +145,20 @@ export class TestMapComponent implements OnInit {
 
         let initialPositionOfMarker = [this.riderLatLng.lat, this.riderLatLng.lng];
 
-        function startAnimationOfMarker(result: number[]) {
+        const startAnimationOfMarker = (result: number[]) => {
             i = 0;
             diffLat = (result[0] - initialPositionOfMarker[0]) / initialDiff;
             diffLng = (result[1] - initialPositionOfMarker[1]) / initialDiff;
             moveMarker();
+
         }
 
-        function moveMarker() {
+        const moveMarker = () => {
             initialPositionOfMarker[0] += diffLat;
             initialPositionOfMarker[1] += diffLng;
             const newLatLng = new google.maps.LatLng(initialPositionOfMarker[0], initialPositionOfMarker[1]);
             marker2.setPosition(newLatLng);
+
             if (i != initialDiff) {
                 i++;
                 setTimeout(moveMarker, delay);
@@ -179,7 +181,7 @@ export class TestMapComponent implements OnInit {
                 this.newPositionsList.push(this.riderLatLng)
 
                 const lastPosn = new google.maps.LatLng(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng)
-                this.map.panTo(newPosition);
+                //this.map.panTo(newPosition);
                 // this.map.setCenter(newPosition);
                 const bearing = this.getBearing(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng, this.riderLatLng.lat, this.riderLatLng.lng);
                 const bearingData = Number(bearing.toFixed(0));
@@ -194,11 +196,11 @@ export class TestMapComponent implements OnInit {
                         anchor: new google.maps.Point(25, 25),
                         url: 'assets/images/bike.svg',
                         scaledSize: new google.maps.Size(40, 40),
-                        // rotation: bearing
+                         rotation: bearing
                     })
                 } else {
                     marker2.setIcon({
-                        anchor: new google.maps.Point(25, 0),
+                        anchor: new google.maps.Point(25, 25),
                         url: 'assets/images/svg/' + this.bikeSvg + '.svg',
                         scaledSize: new google.maps.Size(40, 40),
                         rotation: bearing

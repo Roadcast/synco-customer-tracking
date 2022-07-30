@@ -10,13 +10,15 @@ import { HttpClientModule} from "@angular/common/http";
 import { ErrorpageComponent } from './errorpage/errorpage.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxStarRatingModule} from "ngx-star-rating";
+import { TestMapComponent } from './test-map/test-map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CustomerTrackingPageComponent,
     GooglemapComponent,
-    ErrorpageComponent
+    ErrorpageComponent,
+    TestMapComponent
   ],
     imports: [
         BrowserModule,

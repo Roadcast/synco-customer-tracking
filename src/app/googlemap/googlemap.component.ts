@@ -4,6 +4,9 @@ import {OrderService} from "../order.service";
 import {HttpClient} from "@angular/common/http";
 import {interval, Subscription} from "rxjs";
 import SmoothMarker from 'smooth-icon-marker';
+import Marker = google.maps.Marker;
+import LatLng = google.maps.LatLng;
+import Polyline = google.maps.Polyline;
 
 
 @Component({
@@ -29,12 +32,12 @@ export class GooglemapComponent implements OnInit {
     pollOrderSubscription: any;
     marker:any = [];
     sub: Subscription = new Subscription();
-    private riderMarker:any;
     private oldRiderLatLng: any;
     oldBearingData: any;
     getpoints: any;
     getData = [];
     bikeSvg: any;
+    polyline: any;
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
 
@@ -55,6 +58,8 @@ export class GooglemapComponent implements OnInit {
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: true,
         };
+
+        this.polyline = new Polyline()
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
@@ -90,6 +95,7 @@ export class GooglemapComponent implements OnInit {
             },
             title: ''
         });
+
         dropMarker.setMap(this.map);
         google.maps.event.addListener(dropMarker, 'click', () => {
             const infowindow = new google.maps.InfoWindow({
@@ -112,11 +118,10 @@ export class GooglemapComponent implements OnInit {
             rotation: 0
         };
 
-        this.riderMarker = new SmoothMarker({
+        const marker1 = new Marker({
             map: this.map,
             icon: riderIcon,
             title: '',
-            durationMs: 4000,
             position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
         });
 
@@ -143,22 +148,34 @@ export class GooglemapComponent implements OnInit {
                     this.bikeSvg = bearingData - (bearingData % 15);
                     this.oldBearingData = bearingData
                 }
-                const riderIcon = {
+                marker1.setIcon({
                     url: 'assets/images/svg/' + this.bikeSvg + '.svg',
                     scaledSize: new google.maps.Size(40, 40),
                     rotation: bearing
-                };
+                })
 
-                this.riderMarker.setIcon(riderIcon);
-                this.riderMarker.durationMs = 4000;
-                this.riderMarker.animatedSetPosition(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
-                setTimeout(() => {
-                    this.map.panTo(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
-                }, 2000);
+                const  newPosition = new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude)
+                const  deliveryPosition = new google.maps.LatLng(this.order.delivery_location.latitude, this.order.delivery_location.longitude)
+
+                console.log(newPosition.lat() +" lat : "+ newPosition.lng())
+                this.getRiderPathFromHerePathThenCacheLocally(this.order).then();
+                moveMarker(newPosition)
+                this.map.panTo(newPosition)
                 this.oldRiderLatLng = this.riderLatLng;
             });
         if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
             this.sub.unsubscribe()
+        }
+        const numDeltas = 1000;
+        const delay = 20;
+        let i = 0;
+
+        function moveMarker(linepos: LatLng){
+            marker1.setPosition(linepos);
+            if(i!=numDeltas){
+                i++;
+                setTimeout(moveMarker, delay);
+            }
         }
     }
 
@@ -223,10 +240,12 @@ export class GooglemapComponent implements OnInit {
                     const dataArray =   x.slice();
                     return {lat: x[1], lng:x[0]}
                 });
-                new google.maps.Polyline({ strokeColor: 'blue',
+                this.polyline.setMap(null)
+                this.polyline = new google.maps.Polyline({ strokeColor: 'blue',
                     map: this.map,
                     path: coordsClean, geodesic: true, visible: true,
                 });
+                console.log('polylines created')
             });
         }
 

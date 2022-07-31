@@ -5,6 +5,7 @@ import {interval, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import Marker = google.maps.Marker;
 import Polyline = google.maps.Polyline;
+import {inspect} from "util";
 
 @Component({
     selector: 'app-test-map',
@@ -47,17 +48,27 @@ export class TestMapComponent implements OnInit {
 
     mapReady() {
         const mapOptions = {
+
+          //  gestureHandling:"greedy"
+        };
+
+        this.polyline = new Polyline()
+        this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
             center: {
                 lat: this.order.delivery_location.latitude,
                 lng: this.order.delivery_location.longitude,
             },
             zoom: 14,
-            //mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: true,
-        };
-
-        this.polyline = new Polyline()
-        this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, mapOptions);
+            scrollwheel: false,
+            mapTypeControl: false,
+            scaleControl: false,
+            draggable: true,
+            disableDoubleClickZoom: false,
+            zoomControl: false,
+            gestureHandling:'greedy'
+        });
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
             lng: this.order.pick_up_location.longitude,

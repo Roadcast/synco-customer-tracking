@@ -6,9 +6,9 @@ import {TestMapComponent} from "./test-map/test-map.component";
 // import {FeedbackComponent} from "./feedback/feedback.component";
 
 const routes: Routes = [
-  {path:'', component:TestMapComponent},
-  // {path:'', component:CustomerTrackingPageComponent},
-  // {path:'tracking_page', component:CustomerTrackingPageComponent},
+ // {path:'', component:TestMapComponent},
+   {path:'', component:CustomerTrackingPageComponent},
+   {path:'tracking_page', component:CustomerTrackingPageComponent},
   // {path:'error', component: ErrorpageComponent},
 ];
 

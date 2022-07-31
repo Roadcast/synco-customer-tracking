@@ -14,10 +14,6 @@ import Polyline = google.maps.Polyline;
 export class TestMapComponent implements OnInit {
     @ViewChild('map', {static: false}) mapElement: any;
 
-    options: google.maps.MapOptions = {
-        zoomControl: true,
-        gestureHandling: 'greedy',
-    }
     riderLatLng: any;
     pickupLatLng: any;
     dropLatLng: any;
@@ -56,16 +52,12 @@ export class TestMapComponent implements OnInit {
                 lng: this.order.delivery_location.longitude,
             },
             zoom: 14,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            //mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: true,
         };
 
-        const newPositions = {
-            lat: 0.0,
-            lng: 0.0
-        }
         this.polyline = new Polyline()
-        this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+        this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, mapOptions);
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
             lng: this.order.pick_up_location.longitude,
@@ -181,8 +173,8 @@ export class TestMapComponent implements OnInit {
                 this.newPositionsList.push(this.riderLatLng)
 
                 const lastPosn = new google.maps.LatLng(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng)
-                //this.map.panTo(newPosition);
-                // this.map.setCenter(newPosition);
+                this.map.panTo(newPosition);
+                this.map.setCenter(newPosition);
                 const bearing = this.getBearing(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng, this.riderLatLng.lat, this.riderLatLng.lng);
                 const bearingData = Number(bearing.toFixed(0));
                 if (bearingData === 0) {

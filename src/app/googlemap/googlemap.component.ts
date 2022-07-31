@@ -18,8 +18,8 @@ export class GooglemapComponent implements OnInit {
     @ViewChild('map', {static: false}) mapElement: any;
 
     options: google.maps.MapOptions = {
-        zoomControl: true,
-        gestureHandling: 'greedy',
+       // zoomControl: true,
+      //  gestureHandling: 'greedy',
     }
     riderLatLng: any;
     pickupLatLng: any;
@@ -54,9 +54,9 @@ export class GooglemapComponent implements OnInit {
                 lat: this.order.delivery_location.latitude,
                 lng:  this.order.delivery_location.longitude,
             },
-            zoom: 14,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            disableDefaultUI: true,
+           // zoom: 14,
+           // mapTypeId: google.maps.MapTypeId.ROADMAP,
+           // disableDefaultUI: true,
         };
 
         this.polyline = new Polyline()

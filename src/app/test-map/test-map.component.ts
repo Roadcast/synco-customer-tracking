@@ -5,7 +5,7 @@ import {interval, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import Marker = google.maps.Marker;
 import Polyline = google.maps.Polyline;
-import {inspect} from "util";
+import * as Colorette from "colorette";
 
 @Component({
     selector: 'app-test-map',
@@ -32,6 +32,7 @@ export class TestMapComponent implements OnInit {
     getData = [];
     bikeSvg: any;
     polyline: any;
+    polylineColor:any;
 
     // private newPositionsList: any = [];
     private newPositionsList: any = [];
@@ -49,8 +50,11 @@ export class TestMapComponent implements OnInit {
     mapReady() {
         const mapOptions = {
 
-          //  gestureHandling:"greedy"
+            //  gestureHandling:"greedy"
         };
+
+        const Color = require('color');
+        this.polylineColor = Color('rgb(255, 255, 255)')
 
         this.polyline = new Polyline()
         this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
@@ -67,7 +71,7 @@ export class TestMapComponent implements OnInit {
             draggable: true,
             disableDoubleClickZoom: false,
             zoomControl: false,
-            gestureHandling:'greedy'
+            gestureHandling: 'greedy'
         });
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
@@ -139,12 +143,11 @@ export class TestMapComponent implements OnInit {
             });
         //  var bounds = new google.maps.LatLngBounds();
 
-        const initialDiff = 10000;
-        const delay = 0;
-        var i = 0;
+        const initialDiff = 100;
+        const delay = 100;
+        let i = 0;
         let diffLat: any;
         let diffLng: any;
-
 
         let initialPositionOfMarker = [this.riderLatLng.lat, this.riderLatLng.lng];
 
@@ -153,14 +156,18 @@ export class TestMapComponent implements OnInit {
             diffLat = (result[0] - initialPositionOfMarker[0]) / initialDiff;
             diffLng = (result[1] - initialPositionOfMarker[1]) / initialDiff;
             moveMarker();
-
         }
 
         const moveMarker = () => {
             initialPositionOfMarker[0] += diffLat;
             initialPositionOfMarker[1] += diffLng;
             const newLatLng = new google.maps.LatLng(initialPositionOfMarker[0], initialPositionOfMarker[1]);
+            const dropDes = new google.maps.LatLng(this.dropLatLng.lat, this.dropLatLng.lng);
             marker2.setPosition(newLatLng);
+            const  centerMap=()=>{
+                this.map.setCenter(newLatLng);
+            }
+            setTimeout(centerMap,2000)
 
             if (i != initialDiff) {
                 i++;
@@ -168,8 +175,8 @@ export class TestMapComponent implements OnInit {
             }
         }
 
-        this.map.panTo(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
-        this.subscribe = interval(2000)
+        this.map.setCenter(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
+        this.subscribe = interval(4000)
             .subscribe(() => {
                 this.orderService.init().then();
                 this.order = this.orderService.order;
@@ -178,14 +185,7 @@ export class TestMapComponent implements OnInit {
                     lat: this.order.rider_position.latitude,
                     lng: this.order.rider_position.longitude,
                 };
-
-
-                const newPosition = new google.maps.LatLng(this.riderLatLng.lat, this.riderLatLng.lng)
                 this.newPositionsList.push(this.riderLatLng)
-
-                const lastPosn = new google.maps.LatLng(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng)
-                this.map.panTo(newPosition);
-                this.map.setCenter(newPosition);
                 const bearing = this.getBearing(this.oldRiderLatLng.lat, this.oldRiderLatLng.lng, this.riderLatLng.lat, this.riderLatLng.lng);
                 const bearingData = Number(bearing.toFixed(0));
                 if (bearingData === 0) {
@@ -198,19 +198,19 @@ export class TestMapComponent implements OnInit {
                     marker2.setIcon({
                         anchor: new google.maps.Point(25, 25),
                         url: 'assets/images/bike.svg',
-                        scaledSize: new google.maps.Size(40, 40),
-                         rotation: bearing
+                        scaledSize: new google.maps.Size(36, 36),
+                        rotation: bearing
                     })
                 } else {
                     marker2.setIcon({
                         anchor: new google.maps.Point(25, 25),
                         url: 'assets/images/svg/' + this.bikeSvg + '.svg',
-                        scaledSize: new google.maps.Size(40, 40),
+                        scaledSize: new google.maps.Size(36, 36),
                         rotation: bearing
                     })
                 }
+
                 this.getRiderPathFromHerePathThenCacheLocally(this.order).then();
-              //  initialPositionOfMarker = [this.oldRiderLatLng.lat, this.oldRiderLatLng.lng]
                 const newLatLng = [this.riderLatLng.lat, this.riderLatLng.lng];
                 startAnimationOfMarker(newLatLng)
                 this.oldRiderLatLng = this.riderLatLng;
@@ -235,9 +235,9 @@ export class TestMapComponent implements OnInit {
         endLat = this.radians(endLat);
         endLong = this.radians(endLong);
 
-        var dLong = endLong - startLong;
+        let dLong = endLong - startLong;
 
-        var dPhi = Math.log(Math.tan(endLat / 2.0 + Math.PI / 4.0) / Math.tan(startLat / 2.0 + Math.PI / 4.0));
+        const dPhi = Math.log(Math.tan(endLat / 2.0 + Math.PI / 4.0) / Math.tan(startLat / 2.0 + Math.PI / 4.0));
         if (Math.abs(dLong) > Math.PI) {
             if (dLong > 0.0)
                 dLong = -(2.0 * Math.PI - dLong);
@@ -274,15 +274,24 @@ export class TestMapComponent implements OnInit {
                 const coordsClean = this.coordinates.map((x: any) => {
                     return {lat: x[1], lng: x[0]}
                 });
-                this.polyline.setMap(null)
-                this.polyline = new google.maps.Polyline({
-                    strokeColor: 'blue',
-                    map: this.map,
-                    path: coordsClean, geodesic: true, visible: true,
+                const updatePath = () => {
+                    this.polyline.setMap(null)
+                    if (this.polyline == null) {
+                        this.polyline = new google.maps.Polyline({
+                            strokeColor: 'blue',
+                            map: this.map,
+                            path: coordsClean, geodesic: true, visible: true,
+                        });
+                    } else {
+                        this.polyline = new google.maps.Polyline({
+                            strokeColor: 'blue',
+                            map: this.map,
+                            path: coordsClean, geodesic: true, visible: true,
+                        });
+                    }
+                }
+                setTimeout(updatePath, 4000)
                 });
-
-                // console.log('polylines created')
-            });
         }
 
     }

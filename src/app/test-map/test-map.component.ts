@@ -52,9 +52,6 @@ export class TestMapComponent implements OnInit {
             //  gestureHandling:"greedy"
         };
 
-        const Color = require('color');
-        this.polylineColor = Color('rgb(255, 255, 255)')
-
         this.polyline = new Polyline()
         this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
             center: {

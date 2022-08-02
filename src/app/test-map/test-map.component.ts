@@ -5,7 +5,6 @@ import {interval, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import Marker = google.maps.Marker;
 import Polyline = google.maps.Polyline;
-import * as Colorette from "colorette";
 
 @Component({
     selector: 'app-test-map',

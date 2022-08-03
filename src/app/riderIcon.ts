@@ -12,7 +12,7 @@ c0,0,0.1-0.1,0.1-0.1c1.8-2,2.9-4.6,2.9-7.4C22,4.9,17.1,0,11,0z`,
       anchor: new google.maps.Point(11, 11),
       strokeOpacity: 0,
     },
-    offset: '0%',
+    offset: '100%',
     fixedRotation: true,
   },
     {
@@ -31,7 +31,7 @@ C16,19.6,13.6,20.6,11,20.6z`,
         anchor: new google.maps.Point(11, 11),
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: true,
     }];
   return iconList;
@@ -56,7 +56,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -77,7 +77,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -92,7 +92,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -111,7 +111,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -138,7 +138,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -161,7 +161,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -177,7 +177,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -193,7 +193,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -213,7 +213,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -229,7 +229,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
     {
@@ -246,7 +246,7 @@ export const getRiderIconBike = () => {
         anchor: anchorPoint,
         strokeOpacity: 0,
       },
-      offset: '0%',
+      offset: '100%',
       fixedRotation: false,
     },
   ];
@@ -263,7 +263,7 @@ export const getRiderIconBike = () => {
           anchor: anchorPoint,
           strokeOpacity: 0,
         },
-        offset: '0%',
+        offset: '100%',
         fixedRotation: false,
       });
     });

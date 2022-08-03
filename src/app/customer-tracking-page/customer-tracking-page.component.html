@@ -33,7 +33,28 @@
       <div class="w-100"></div>
       <div class="col-12">
         <h3>Order Status</h3>
-        <div class="status"><img src="assets/images/order-status.jpg" alt=""></div>
+          <div class="row" style=" text-align: center;">
+            <div class="col" style="padding: 0;">
+              <div *ngIf="order.status_code >= 300"><img src="assets/images/order1.svg"></div>
+              <div  *ngIf="order.status_code < 300"><img src="assets/images/order2.svg"></div>
+              <div> Pick Up</div>
+            </div>
+            <div class="col" style="padding: 0;">
+              <div *ngIf="order.status_code >=400"><img src="assets/images/order1.svg"></div>
+              <div  *ngIf="order.status_code < 400"><img src="assets/images/order2.svg"></div>
+              <div> On Progress</div>
+            </div>
+            <div class="col" style="padding: 0;">
+              <div *ngIf="order.status_code >= 500"><img src="assets/images/order1.svg"></div>
+              <div *ngIf="order.status_code < 500"><img src="assets/images/order2.svg"></div>
+              <div>On Delivery</div>
+            </div>
+            <div class="col" style="padding: 0;">
+              <div *ngIf="order.status_code >= 600"><img src="assets/images/order1.svg"></div>
+              <div *ngIf="order.status_code < 600"><img src="assets/images/order2.svg"></div>
+              <div>Delivered</div>
+            </div>
+          </div>
       </div>
       <div class="col-12 rider">
        {{order.status_name}}

@@ -3,6 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="db6f7d90-b7ed-4b9e-9c0d-86c7ed5c7269" name="Changes" comment="symbol animation not fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/googlemap/googlemap.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/googlemap/googlemap.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/test-map/test-map.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/test-map/test-map.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +31,13 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="ts.external.directory.path" value="C:\Users\digvijay pandey\WebstormProjects\jfl-customer-tracking\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -54,7 +64,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="190be773-b8d8-4e5e-a43f-0305799ee18b" name="Changes" comment="added customer tracking" />
+      <changelist id="db6f7d90-b7ed-4b9e-9c0d-86c7ed5c7269" name="Changes" comment="symbol animation not fixed" />
       <created>1658942923999</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -72,6 +82,10 @@
       <workItem from="1659332298549" duration="715000" />
       <workItem from="1659344545772" duration="4894000" />
       <workItem from="1659378239808" duration="12033000" />
+      <workItem from="1659445307911" duration="205000" />
+      <workItem from="1659518251988" duration="725000" />
+      <workItem from="1659522985333" duration="5349000" />
+      <workItem from="1659528503643" duration="4000000" />
     </task>
     <task id="LOCAL-00001" summary="rider movement">
       <created>1659202798043</created>
@@ -87,11 +101,35 @@
       <option name="project" value="LOCAL" />
       <updated>1659203012566</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="symbol animation not fixed">
+      <created>1659441044014</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659441044014</updated>
+    </task>
+    <task id="LOCAL-00004" summary="symbol animation not fixed">
+      <created>1659441071714</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1659441071714</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -108,7 +146,8 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="rider movement" />
-    <option name="LAST_COMMIT_MESSAGE" value="rider movement" />
+    <MESSAGE value="symbol animation not fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="symbol animation not fixed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

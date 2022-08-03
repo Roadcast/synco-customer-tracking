@@ -44,7 +44,7 @@ export class GooglemapComponent implements OnInit {
     async ngOnInit() {
         await this.orderService.init().then();
         this.order = this.orderService.order;
-        this.mapReady();
+      //  this.mapReady();
         // this.dataFirstCall();
     }
 
@@ -110,6 +110,7 @@ export class GooglemapComponent implements OnInit {
             lat:  this.order.rider_position.latitude,
             lng:  this.order.rider_position.longitude,
         };
+
         this.oldRiderLatLng = this.riderLatLng;
 
         const riderIcon = {

@@ -3,8 +3,9 @@ import {OrderService} from "../order.service";
 import {Order} from "../order";
 import {interval, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import Marker = google.maps.Marker;
+import {getRiderIconBike} from "../riderIcon";
 import Polyline = google.maps.Polyline;
+import LatLng = google.maps.LatLng;
 
 @Component({
     selector: 'app-test-map',
@@ -25,14 +26,14 @@ export class TestMapComponent implements OnInit {
     pollOrderSubscription: any;
     marker: any = [];
     subscribe: Subscription = new Subscription();
-    private oldRiderLatLng: any;
     oldBearingData: any;
     getpoints: any;
     getData = [];
     bikeSvg: any;
     polyline: any;
-    polylineColor:any;
-
+    polylineColor: any;
+    animationDirectionPathList: google.maps.Polyline[] = [];
+    private oldRiderLatLng: any;
     // private newPositionsList: any = [];
     private newPositionsList: any = [];
 
@@ -61,13 +62,13 @@ export class TestMapComponent implements OnInit {
             zoom: 14,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: true,
-            scrollwheel: false,
+            scrollwheel: true,
             mapTypeControl: false,
-            scaleControl: false,
+            scaleControl: true,
             draggable: true,
             disableDoubleClickZoom: false,
             zoomControl: false,
-            gestureHandling: 'greedy'
+            gestureHandling: 'cooperative'
         });
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
@@ -118,8 +119,8 @@ export class TestMapComponent implements OnInit {
             lat: this.order.rider_position.latitude,
             lng: this.order.rider_position.longitude,
         };
-        const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
-        this.map.fitBounds(bounds);
+        /*const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
+        this.map.fitBounds(bounds);*/
         this.oldRiderLatLng = this.riderLatLng;
 
         const riderIcon = {
@@ -131,14 +132,14 @@ export class TestMapComponent implements OnInit {
             scaledSize: new google.maps.Size(40, 40),
         };
 
-        const marker2 = new Marker(
-            {
-                map: this.map,
-                icon: riderIcon,
-                title: '',
-                position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
-                // duration:3000
-            });
+        /* const marker2 = new Marker(
+             {
+                 map: this.map,
+                 icon: riderIcon,
+                 title: '',
+                 position: new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude),
+                 // duration:3000
+             });*/
         //  var bounds = new google.maps.LatLngBounds();
 
         const initialDiff = 10000;
@@ -161,11 +162,11 @@ export class TestMapComponent implements OnInit {
             initialPositionOfMarker[1] += diffLng;
             const newLatLng = new google.maps.LatLng(initialPositionOfMarker[0], initialPositionOfMarker[1]);
             const dropDes = new google.maps.LatLng(this.dropLatLng.lat, this.dropLatLng.lng);
-            marker2.setPosition(newLatLng);
-           /* const  centerMap=()=>{
-                this.map.setCenter(newLatLng);
-            }*/
-           // setTimeout(centerMap,2000)
+            //marker2.setPosition(newLatLng);
+            /* const  centerMap=()=>{
+                 this.map.setCenter(newLatLng);
+             }*/
+            // setTimeout(centerMap,2000)
 
             if (i != initialDiff) {
                 i++;
@@ -173,8 +174,37 @@ export class TestMapComponent implements OnInit {
             }
         }
 
+        const startAnimationOfPolyLine = (result: number[]) => {
+            i = 0;
+            diffLat = (result[0] - initialPositionOfMarker[0]) / initialDiff;
+            diffLng = (result[1] - initialPositionOfMarker[1]) / initialDiff;
+            movePolyLine();
+        }
+
+        const movePolyLine = () => {
+            initialPositionOfMarker[0] += diffLat;
+            initialPositionOfMarker[1] += diffLng;
+            const newLatLng = new google.maps.LatLng(initialPositionOfMarker[0], initialPositionOfMarker[1]);
+            const dropDes = new google.maps.LatLng(this.dropLatLng.lat, this.dropLatLng.lng);
+            var path = this.polyline.getPath();
+// add new point
+            path.push(newLatLng);
+// update the polyline with the updated path
+            this.polyline.setPath(path);
+            //marker2.setPosition(newLatLng);
+            /* const  centerMap=()=>{
+                 this.map.setCenter(newLatLng);
+             }*/
+            // setTimeout(centerMap,2000)
+
+            if (i != initialDiff) {
+                i++;
+                setTimeout(movePolyLine, delay);
+            }
+        }
+
         this.map.setCenter(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
-        this.subscribe = interval(2000)
+        this.subscribe = interval(5000)
             .subscribe(() => {
                 this.orderService.init().then();
                 this.order = this.orderService.order;
@@ -192,7 +222,7 @@ export class TestMapComponent implements OnInit {
                     this.bikeSvg = bearingData - (bearingData % 15);
                     this.oldBearingData = bearingData
                 }
-                if (this.oldBearingData === undefined) {
+                /*if (this.oldBearingData === undefined) {
                     marker2.setIcon({
                         anchor: new google.maps.Point(25, 25),
                         url: 'assets/images/bike.svg',
@@ -206,17 +236,19 @@ export class TestMapComponent implements OnInit {
                         scaledSize: new google.maps.Size(36, 36),
                         rotation: bearing
                     })
-                }
+                }*/
 
                 const newLatLng = [this.riderLatLng.lat, this.riderLatLng.lng];
-                startAnimationOfMarker(newLatLng)
+                // startAnimationOfMarker(newLatLng)
                 this.getRiderPathFromHerePathThenCacheLocally(this.order).then();
+               // startAnimationOfPolyLine(newLatLng)
                 console.log(this.riderLatLng)
                 this.oldRiderLatLng = this.riderLatLng;
             });
         if (this.order.status_name === 'delivered' || this.order.status_name === 'cancelled') {
             this.subscribe.unsubscribe()
         }
+
     }
 
 
@@ -247,10 +279,15 @@ export class TestMapComponent implements OnInit {
         return (this.degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0;
     }
 
+
     async getRiderPathFromHerePathThenCacheLocally(order: any) {
+        const initialDiff = 10000;
+        const delay = 0;
+        let i = 0;
+        let diffLat: any;
+        let diffLng: any;
         let origin, destination;
-        if (order.rider_position &&
-            order.rider_position.latitude && order.rider_position.longitude) {
+        if (order.rider_position && order.rider_position.latitude && order.rider_position.longitude) {
 
             origin = [order.rider_position.longitude, order.rider_position.latitude];
         }
@@ -262,6 +299,7 @@ export class TestMapComponent implements OnInit {
                 order.delivery_location.latitude,
             ];
         }
+        var coordsClean:any
         if (origin && destination) {
             const request = this.http.post(
                 'https://routing.roadcast.co.in/ors/v2/directions/driving-car/geojson', {
@@ -270,7 +308,7 @@ export class TestMapComponent implements OnInit {
                     ],
                 }).subscribe((res: any) => {
                 this.coordinates = res.features[0].geometry.coordinates;
-                const coordsClean = this.coordinates.map((x: any) => {
+                coordsClean = this.coordinates.map((x: any) => {
                     return {lat: x[1], lng: x[0]}
                 });
                 this.polyline.setMap(null)
@@ -278,23 +316,50 @@ export class TestMapComponent implements OnInit {
                     strokeColor: 'blue',
                     map: this.map,
                     path: coordsClean, geodesic: true, visible: true,
+                    icons: getRiderIconBike(),
+                    zIndex: 1000
                 });
-                /*const updatePath = () => {
+                console.log(coordsClean[0])
+                console.log(coordsClean[1])
 
-                    if (this.polyline == null) {
 
-                    } else {
-                        this.polyline = new google.maps.Polyline({
-                            strokeColor: 'blue',
-                            map: this.map,
-                            path: coordsClean, geodesic: true, visible: true,
-                        });
-                    }
+                //  startAnimationOfPolyLine(coordsClean)
+
+            });
+            const startAnimationOfPolyLine = (coordsClean: any) => {
+                i = 0;
+                diffLat = (coordsClean[0].lat - coordsClean[1].lat) / initialDiff;
+                diffLng = (coordsClean[0].lng - coordsClean[1].lng) / initialDiff;
+                movePolyLine();
+            }
+
+            const movePolyLine = () => {
+                coordsClean[1].lat += diffLat;
+                coordsClean[1].lng += diffLng;
+                const newLatLng = new google.maps.LatLng(coordsClean[1].lat, coordsClean[1].lng);
+                var path = this.polyline.getPath();
+// add new point
+                path.push(newLatLng);
+// update the polyline with the updated path
+                this.polyline.setPath(path);
+              //  this.polyline.setIcons(getRiderIconBike())
+                //icon.push(getRiderIconBike())
+                //marker2.setPosition(newLatLng);
+                /* const  centerMap=()=>{
+                     this.map.setCenter(newLatLng);
+                 }*/
+                // setTimeout(centerMap,2000)
+
+                if (i != initialDiff) {
+                    i++;
+                    setTimeout(movePolyLine, delay);
                 }
-                setTimeout(updatePath, 3000)*/
-                });
+            }
 
         }
+
+
+
 
     }
 }

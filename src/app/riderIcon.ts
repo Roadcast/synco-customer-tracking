@@ -39,8 +39,8 @@ C16,19.6,13.6,20.6,11,20.6z`,
 
 export const getRiderIconBike = () => {
   const anchorPoint = new google.maps.Point(480, 480);
-  const boxColor = '#41a9df';
-  const shirtColor =  '#41a9df';
+  const boxColor = '#006491';
+  const shirtColor =  '#00ddff';
   const capColor =  '#c9171d';
   const bikeColor = '#ED3823';
   const iconScale = 0.075;

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db6f7d90-b7ed-4b9e-9c0d-86c7ed5c7269" name="Changes" comment="fixed all issues with rider movement">
+    <list default="true" id="db6f7d90-b7ed-4b9e-9c0d-86c7ed5c7269" name="Changes" comment="fixed map pan issue while dragging,&#10;fixed order status name,&#10;updated favicon and title,&#10;adjusted marker size,&#10;color balancing in order ui,&#10;fixed issues with gesture handling on mobile,&#10;removed map transition,">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/riderIcon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/riderIcon.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-map/test-map.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/test-map/test-map.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-map/test-map.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/test-map/test-map.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test-map/test-map.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/test-map/test-map.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +33,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pc/WebstormProjects/jfl-customer-tracking/src/app",
+    "last_opened_file_path": "C:/Users/pc/WebstormProjects/jfl-customer-tracking/src",
     "nodejs_package_manager_path": "npm",
     "ts.external.directory.path": "C:\\Users\\pc\\WebstormProjects\\jfl-customer-tracking\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
@@ -46,6 +41,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\pc\WebstormProjects\jfl-customer-tracking\src" />
       <recent name="C:\Users\pc\WebstormProjects\jfl-customer-tracking\src\app" />
       <recent name="D:\roadcast-web\jfl-tracking\src\assets\images" />
     </key>
@@ -93,7 +89,7 @@
       <workItem from="1659522985333" duration="5349000" />
       <workItem from="1659528503643" duration="4000000" />
       <workItem from="1659633323631" duration="947000" />
-      <workItem from="1659634350682" duration="5476000" />
+      <workItem from="1659634350682" duration="6807000" />
     </task>
     <task id="LOCAL-00001" summary="rider movement">
       <created>1659202798043</created>
@@ -130,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659567144965</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fixed map pan issue while dragging,&#10;fixed order status name,&#10;updated favicon and title,&#10;adjusted marker size,&#10;color balancing in order ui,&#10;fixed issues with gesture handling on mobile,&#10;removed map transition,">
+      <created>1659641365097</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1659641365097</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,7 +166,8 @@
     <MESSAGE value="rider movement" />
     <MESSAGE value="symbol animation not fixed" />
     <MESSAGE value="fixed all issues with rider movement" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed all issues with rider movement" />
+    <MESSAGE value="fixed map pan issue while dragging,&#10;fixed order status name,&#10;updated favicon and title,&#10;adjusted marker size,&#10;color balancing in order ui,&#10;fixed issues with gesture handling on mobile,&#10;removed map transition," />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed map pan issue while dragging,&#10;fixed order status name,&#10;updated favicon and title,&#10;adjusted marker size,&#10;color balancing in order ui,&#10;fixed issues with gesture handling on mobile,&#10;removed map transition," />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

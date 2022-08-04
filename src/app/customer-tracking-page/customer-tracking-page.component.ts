@@ -4,6 +4,7 @@ import {Order} from "../order";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {interval, Subscription} from "rxjs";
+import {getRiderIconFace} from "../riderIcon";
 
 @Component({
   selector: 'app-customer-tracking-page',
@@ -11,6 +12,7 @@ import {interval, Subscription} from "rxjs";
   styleUrls: ['./customer-tracking-page.component.css']
 })
 export class CustomerTrackingPageComponent implements OnInit {
+  getRiderIconFace: any = getRiderIconFace();
 
   order: Order = {
     id: '',

@@ -43,7 +43,7 @@ export const getRiderIconBike = () => {
   const shirtColor =  '#00ddff';
   const capColor =  '#c9171d';
   const bikeColor = '#ED3823';
-  const iconScale = 0.075;
+  const iconScale = 0.050;
   const iconList = [
     {
       icon: {

@@ -249,6 +249,7 @@ export const getRiderIconBike = () => {
       offset: '100%',
       fixedRotation: false,
     },
+
   ];
 /*
   if (config.extraIcons && config.extraIcons.length) {

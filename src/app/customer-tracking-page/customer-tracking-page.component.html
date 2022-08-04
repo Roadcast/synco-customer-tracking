@@ -42,12 +42,12 @@
             <div class="col" style="padding: 0;">
               <div *ngIf="order.status_code >=400"><img src="assets/images/order1.svg"></div>
               <div  *ngIf="order.status_code < 400"><img src="assets/images/order2.svg"></div>
-              <div> On Progress</div>
+              <div>Dispatched</div>
             </div>
             <div class="col" style="padding: 0;">
               <div *ngIf="order.status_code >= 500"><img src="assets/images/order1.svg"></div>
               <div *ngIf="order.status_code < 500"><img src="assets/images/order2.svg"></div>
-              <div>On Delivery</div>
+              <div>At destination</div>
             </div>
             <div class="col" style="padding: 0;">
               <div *ngIf="order.status_code >= 600"><img src="assets/images/order1.svg"></div>

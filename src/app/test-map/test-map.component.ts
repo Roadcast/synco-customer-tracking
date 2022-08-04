@@ -59,7 +59,7 @@ export class TestMapComponent implements OnInit {
             draggable: true,
             disableDoubleClickZoom: false,
             zoomControl: false,
-            gestureHandling: 'cooperative'
+            gestureHandling: 'greedy'
         });
         this.pickupLatLng = {
             lat: this.order.pick_up_location.latitude,
@@ -71,7 +71,7 @@ export class TestMapComponent implements OnInit {
             ),
             icon: {
                 url: 'assets/images/store.svg',
-                scaledSize: new google.maps.Size(35, 35), // size
+                scaledSize: new google.maps.Size(48, 48), // size
             },
             title: '',
         });
@@ -91,7 +91,7 @@ export class TestMapComponent implements OnInit {
             position: new google.maps.LatLng(this.dropLatLng.lat, this.dropLatLng.lng),
             icon: {
                 url: 'assets/images/home.svg',
-                scaledSize: new google.maps.Size(35, 35), // size
+                scaledSize: new google.maps.Size(48, 48), // size
             },
             title: ''
         });
@@ -135,6 +135,7 @@ export class TestMapComponent implements OnInit {
             const newLatLng = new google.maps.LatLng(initialPositionOfMarker[0], initialPositionOfMarker[1]);
             const path = this.riderPolyLine.getPath();
             path.push(newLatLng);
+
             if (i != initialDiff) {
                 i++;
                 setTimeout(moveMarker, delay);
@@ -193,7 +194,7 @@ export class TestMapComponent implements OnInit {
                     strokeColor: riderPolyLineColor,
                     map: this.map,
                     icons: getRiderIconBike(),
-                    zIndex: 10000
+                    zIndex: 100000
                 });
 
                 this.pathPolyLine = new google.maps.Polyline({
@@ -203,9 +204,9 @@ export class TestMapComponent implements OnInit {
                 });
 
                 const zoomToObject = (obj: { getPath: () => { (): any; new(): any; getArray: { (): any; new(): any; }; }; }) =>{
-                    var bounds = new google.maps.LatLngBounds();
-                    var points = obj.getPath().getArray();
-                    for (var n = 0; n < points.length ; n++){
+                    const bounds = new google.maps.LatLngBounds();
+                    const points = obj.getPath().getArray();
+                    for (let n = 0; n < points.length ; n++){
                         bounds.extend(points[n]);
                     }
                     this.map.fitBounds(bounds);

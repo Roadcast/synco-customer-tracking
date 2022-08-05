@@ -21,22 +21,22 @@
             <div class="row">
               <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >= 300"><img src="assets/images/pickup.svg"></div>
-                <div  *ngIf="order.status_code < 300"><img src="assets/images/pickup.svg"></div>
+                <div  *ngIf="order.status_code < 300"><img src="assets/images/pickup-g.svg"></div>
                 <p>Pick Up</p>
               </div>
               <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >=400"><img src="assets/images/dispatched.svg"></div>
-                <div  *ngIf="order.status_code < 400"><img src="assets/images/dispatched.svg"></div>
+                <div  *ngIf="order.status_code < 400"><img src="assets/images/dispatched-g.svg"></div>
                 <p>Dispatched</p>
               </div>
               <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >= 500"><img src="assets/images/reached.svg"></div>
-                <div *ngIf="order.status_code < 500"><img src="assets/images/reached.svg"></div>
+                <div *ngIf="order.status_code < 500"><img src="assets/images/reached-g.svg"></div>
                 <p>Reached</p>
               </div>
               <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >= 600"><img src="assets/images/delivered.svg"></div>
-                <div *ngIf="order.status_code < 600"><img src="assets/images/delivered.svg"></div>
+                <div *ngIf="order.status_code < 600"><img src="assets/images/delivered-g.svg"></div>
                 <p>Delivered</p>
               </div>
             </div>
@@ -112,7 +112,7 @@
 
 
 <div  *ngIf="order.status_name === 'delivered'">
-  <div *ngIf="rating?.rating">
+  <div>
   <div class="feedback-popup">
     <div class="s-message"><img src="assets/images/successful.gif" alt=""><p>Your order has been delivered successfully.</p></div>
     <div class="botcont">
@@ -121,7 +121,7 @@
             <div class="cont">
             <div class="head">Your feedback is important to us!</div>
               <div class="stars">
-                <ngx-star-rating formControlName="rating2" [id]="'rating2'" [(ngModel)]="rating.rating" [disabled] ="true"></ngx-star-rating>
+                <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'" ></ngx-star-rating >
               </div>
             </div>
           </form>

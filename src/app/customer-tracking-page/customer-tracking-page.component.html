@@ -20,23 +20,23 @@
           <div class="col-12">
             <div class="row">
               <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >= 300"><img src="assets/images/order1.svg"></div>
-                <div  *ngIf="order.status_code < 300"><img src="assets/images/order2.svg"></div>
+                <div *ngIf="order.status_code >= 300"><img src="assets/images/pickup.svg"></div>
+                <div  *ngIf="order.status_code < 300"><img src="assets/images/pickup.svg"></div>
                 <p>Pick Up</p>
               </div>
               <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >=400"><img src="assets/images/order1.svg"></div>
-                <div  *ngIf="order.status_code < 400"><img src="assets/images/order2.svg"></div>
+                <div *ngIf="order.status_code >=400"><img src="assets/images/dispatched.svg"></div>
+                <div  *ngIf="order.status_code < 400"><img src="assets/images/dispatched.svg"></div>
                 <p>Dispatched</p>
               </div>
               <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >= 500"><img src="assets/images/order1.svg"></div>
-                <div *ngIf="order.status_code < 500"><img src="assets/images/order2.svg"></div>
+                <div *ngIf="order.status_code >= 500"><img src="assets/images/reached.svg"></div>
+                <div *ngIf="order.status_code < 500"><img src="assets/images/reached.svg"></div>
                 <p>Reached</p>
               </div>
               <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >= 600"><img src="assets/images/order1.svg"></div>
-                <div *ngIf="order.status_code < 600"><img src="assets/images/order2.svg"></div>
+                <div *ngIf="order.status_code >= 600"><img src="assets/images/delivered.svg"></div>
+                <div *ngIf="order.status_code < 600"><img src="assets/images/delivered.svg"></div>
                 <p>Delivered</p>
               </div>
             </div>

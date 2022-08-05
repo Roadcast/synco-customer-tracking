@@ -4,7 +4,7 @@
 <!-- Header End Here -->
 
 <section class="gmap">
-  <div class="powered">Powered By <img src="assets/images/rc_ic.svg" alt="map"></div>
+  <div class="powered"><img src="assets/images/rc_ic.svg" alt="map"></div>
   <app-test-map></app-test-map>
 </section>
 
@@ -15,30 +15,29 @@
 
     <div class="row">
       <div class="col">
-        <h2>Order ID #{{order.id.substr(-6, 6) | uppercase}}<span style="font-size: x-small; align-content: center">Less than 5 minutes</span></h2>
+        <h2>Order ID #{{order.id.substr(-6, 6) | uppercase}}<span>Less than 5 minutes</span></h2>
         <div class="row orderstatus">
-          <div class="w-100"></div>
           <div class="col-12">
-            <div class="row" style=" text-align: center; margin-top: 8px">
-              <div class="col" style="padding: 0;">
+            <div class="row">
+              <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >= 300"><img src="assets/images/order1.svg"></div>
                 <div  *ngIf="order.status_code < 300"><img src="assets/images/order2.svg"></div>
-                <div style="margin-top: 8px; font-weight: bold"> Pick Up</div>
+                <p>Pick Up</p>
               </div>
-              <div class="col" style="padding: 0;">
+              <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >=400"><img src="assets/images/order1.svg"></div>
                 <div  *ngIf="order.status_code < 400"><img src="assets/images/order2.svg"></div>
-                <div style="margin-top: 8px ; font-weight: bold" >Dispatched</div>
+                <p>Dispatched</p>
               </div>
-              <div class="col" style="padding: 0;">
+              <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >= 500"><img src="assets/images/order1.svg"></div>
                 <div *ngIf="order.status_code < 500"><img src="assets/images/order2.svg"></div>
-                <div style="margin-top: 8px; font-weight: bold">At destination</div>
+                <p>Reached</p>
               </div>
-              <div class="col" style="padding: 0;">
+              <div class="col orderstatus-itms">
                 <div *ngIf="order.status_code >= 600"><img src="assets/images/order1.svg"></div>
                 <div *ngIf="order.status_code < 600"><img src="assets/images/order2.svg"></div>
-                <div style="margin-top: 8px; font-weight: bold">Delivered</div>
+                <p>Delivered</p>
               </div>
             </div>
           </div>
@@ -47,8 +46,8 @@
           </div>-->
         </div>
         <div class="row address">
-          <div class="col-2"><img src="assets/images/location_ic.svg" alt=""></div>
-          <div class="col-10 pl-0">
+          <div class="col-1"><img src="assets/images/location_ic.svg" alt=""></div>
+          <div class="col-11 c-address">
             {{order.delivery_address.google_address}}
           </div>
         </div>
@@ -58,20 +57,23 @@
     <div class="row user">
       <div class="col">
         <div class="row">
-          <div class="col-3 u-pic"><img src="assets/images/user.jpg" alt=""></div>
-          <div class="col-6 u-name"><strong>{{order.rider.name}}<img src="assets/images/info_ic.svg" alt=""></strong>
+          <div class="col-2 u-pic"><img src="assets/images/user.jpg" alt=""></div>
+          <div class="col-7 u-name"><strong>{{order.rider.name}}<img src="assets/images/info_ic.svg" alt=""></strong>
             {{order.rider.mobile_number}}</div>
           <div class="col-3 callbtn txtright"><a href="tel: {{order.rider ? order.rider.mobile_number : ''}}"
                                                  style="text-decoration: none"><img src="assets/images/call_ic.svg" alt=""></a></div>
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row bottombtn">
       <div class="col-12">
         <button type="button" class="btn btn-primary w-100">View Order Info</button>
       </div>
       <div class="col-12 issue">
         Facing Issue? <a href="#">Chat with us</a>
+      </div>
+      <div class="col-12 poweredbot">
+        Powered by RoadCast
       </div>
     </div>
     <!-- Scrollable modal -->

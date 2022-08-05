@@ -69,7 +69,7 @@ b, strong {font-weight: 700;}
 ul, ol {list-style: none;margin: 0;}
 img {height: auto;width: auto;max-width: 100%;}
 img, a {outline: none;box-shadow: none;border: 0;}
-header {width: 100%;height: 49px; background: #fff;position: fixed; top:0; z-index: 20;box-shadow: 0 0 6px 0 rgba(0, 0, 0, .15); padding: 10px;}
+header {width: 100%;height: 49px; background: #fff;position: fixed; top:0; z-index: 20; /*box-shadow: 0 0 6px 0 rgba(0, 0, 0, .15);*/ padding: 10px;}
 header .backarrow {position: absolute;left: 0;top: 0;width: 49px;height: 49px;padding: 10px;}
 header .logo {position: absolute;left: 50%;top: 0;width: 200px;height: 49px;margin-left: -100px;text-align: center
 }
@@ -100,7 +100,7 @@ header .alert {
     position: absolute;
     right: 15px;
     top: 15px;
-    z-index: 9999;
+    z-index: 8;
 }
 .gmap .powered img {
     float: right;
@@ -322,24 +322,34 @@ table {
     z-index: 99999;
 }
 .feedback-popup {
-    border-radius: 10px;
     background: #fff;
-    padding: 20px;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    width: 300px;
-    height: 200px;
-    z-index: 999999;
-    margin: -100px 0 0 -150px;
+    position: absolute;
+    left:0;
+    top:49px;
+    width:100vw;
+    height:calc(100vh - 49px);
+    z-index: 9;
+    margin:0;
 }
-.feedback-popup .message {
+.feedback-popup .s-message {
     text-align: center;
     font-size: 14px;
-    padding: 10px;
+    padding: 10px; position: relative;
 }
-.feedback-popup .form-control {
-    padding: 10px;
+
+.message {display: none;}
+
+.feedback-popup .s-message p {
+    position:absolute; width: 100%; bottom: 18%; left: 0; color: #66bb6a; font-size: 16px; font-weight: 600;
+}
+.botcont {padding:30px}
+.feedback-form {background:#f3f3f3; border-radius: 30px; padding: 30px;}
+.feedback-form .head {font-size:14px; color:#333; font-weight: 600;}
+
+
+.feedback-popup textarea.form-control {margin-bottom: 10px;
+    padding: 10px; border-radius: 16px;
+    font-size: 14px;
 }
 .feedback-popup .btn {
     padding-left: 10px;
@@ -350,4 +360,12 @@ table {
 }
 
 
-
+.success {
+    position: absolute;
+    left:0;
+    top:0;
+    width:100vw;
+    height:100vh;
+    z-index: 9999999;
+    margin:0; background:url('/assets/images/success.gif') no-repeat top center #fff; display: none;
+}

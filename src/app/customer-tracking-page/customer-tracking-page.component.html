@@ -111,25 +111,30 @@
 
 
 
-
-  <div  *ngIf="order.status_name === 'delivered'">
-  <div class="overlay-b" *ngIf="rating?.rating">
-  <div class="feedback-popup"  style="height: 250px" >
-    <form [formGroup]="form">
-      <div class="cont">
-        <div class="stars">
-          <ngx-star-rating formControlName="rating2" [id]="'rating2'" [(ngModel)]="rating.rating" [disabled] ="true"></ngx-star-rating>
+<div  *ngIf="order.status_name === 'delivered'">
+  <div *ngIf="rating?.rating">
+  <div class="feedback-popup">
+    <div class="s-message"><img src="assets/images/successful.gif" alt=""><p>Your order has been delivered successfully.</p></div>
+    <div class="botcont">
+        <div class="feedback-form">
+          <form [formGroup]="form">
+            <div class="cont">
+            <div class="head">Your feedback is important to us!</div>
+              <div class="stars">
+                <ngx-star-rating formControlName="rating2" [id]="'rating2'" [(ngModel)]="rating.rating" [disabled] ="true"></ngx-star-rating>
+              </div>
+            </div>
+          </form>
+          <div class="message">{{order.status_name | uppercase}}</div>
+          <div>
+            <textarea class="form-control" [(ngModel)]="rating.feedback" rows="3" placeholder="What would you like to share"></textarea>
+            <button type="button" class="btn btn-primary w-100" (click)="feedback()">Submit Feedback</button>
+          </div>
         </div>
-      </div>
-    </form>
-    <div class="message">{{order.status_name | uppercase}}</div>
-    <div class="input-group flex-nowrap">
-      <input type="text" class="form-control" readonly [(ngModel)]="rating.feedback" placeholder="What would you like to share" aria-label="Username" aria-describedby="addon-wrapping">
-      <button class="btn" id="addon-wrapping1" disabled (click)="feedback()"><i class="fa fa-location-arrow"></i></button>
-    </div>
-    <div class="message">Your Feedback is Successfully</div>
   </div>
   </div>
   </div>
 
+ <div class="success"></div>
+</div>
 <!-- Feedback Pop Up End Here -->

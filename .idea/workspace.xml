@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db6f7d90-b7ed-4b9e-9c0d-86c7ed5c7269" name="Changes" comment="adjusted bike icon size">
+    <list default="true" id="db6f7d90-b7ed-4b9e-9c0d-86c7ed5c7269" name="Changes" comment="add drop off eta , feedback message">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/customer-tracking-page/customer-tracking-page.component.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,17 +25,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/pc/WebstormProjects/jfl-customer-tracking/src&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\pc\\WebstormProjects\\jfl-customer-tracking\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jfl-customer-tracking-main" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Users\digvijay pandey\WebstormProjects\jfl-customer-tracking\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\pc\WebstormProjects\jfl-customer-tracking\src" />
@@ -89,6 +84,7 @@
       <workItem from="1659633323631" duration="947000" />
       <workItem from="1659634350682" duration="7785000" />
       <workItem from="1659643644305" duration="1308000" />
+      <workItem from="1659686979759" duration="4352000" />
     </task>
     <task id="LOCAL-00001" summary="rider movement">
       <created>1659202798043</created>
@@ -139,7 +135,21 @@
       <option name="project" value="LOCAL" />
       <updated>1659642470324</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="order icon update">
+      <created>1659689272462</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1659689272462</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add drop off eta , feedback message">
+      <created>1659691320552</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1659691320552</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,7 +184,9 @@
     <MESSAGE value="fixed all issues with rider movement" />
     <MESSAGE value="fixed map pan issue while dragging,&#10;fixed order status name,&#10;updated favicon and title,&#10;adjusted marker size,&#10;color balancing in order ui,&#10;fixed issues with gesture handling on mobile,&#10;removed map transition," />
     <MESSAGE value="adjusted bike icon size" />
-    <option name="LAST_COMMIT_MESSAGE" value="adjusted bike icon size" />
+    <MESSAGE value="order icon update" />
+    <MESSAGE value="add drop off eta , feedback message" />
+    <option name="LAST_COMMIT_MESSAGE" value="add drop off eta , feedback message" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

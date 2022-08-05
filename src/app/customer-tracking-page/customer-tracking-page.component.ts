@@ -46,7 +46,7 @@ export class CustomerTrackingPageComponent implements OnInit {
     this.sub = interval(4000).subscribe(()=>{
       this.orderService.init().then();
       this.order = this.orderService.order;
-    })
+    });
     if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
       this.sub.unsubscribe()
     }

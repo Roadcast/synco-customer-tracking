@@ -43,8 +43,8 @@ export class TestMapComponent implements OnInit {
     }
 
     mapReady() {
-        this.riderPolyLine = new Polyline()
-        this.pathPolyLine = new Polyline()
+        this.riderPolyLine = new Polyline();
+        this.pathPolyLine = new Polyline();
         this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
             center: {
                 lat: this.order.delivery_location.latitude,
@@ -55,9 +55,9 @@ export class TestMapComponent implements OnInit {
             disableDefaultUI: true,
             scrollwheel: true,
             mapTypeControl: false,
-            scaleControl: true,
+            scaleControl: false,
             draggable: true,
-            disableDoubleClickZoom: false,
+            disableDoubleClickZoom: true,
             zoomControl: false,
             gestureHandling: 'greedy'
         });
@@ -110,8 +110,8 @@ export class TestMapComponent implements OnInit {
             lat: this.order.rider_position.latitude,
             lng: this.order.rider_position.longitude,
         };
-        const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
-        this.map.fitBounds(bounds);
+        // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
+        // this.map.fitBounds(bounds);
         this.oldRiderLatLng = this.riderLatLng;
 
         const initialDiff = 10000;
@@ -127,7 +127,7 @@ export class TestMapComponent implements OnInit {
             diffLat = (result[0] - initialPositionOfMarker[0]) / initialDiff;
             diffLng = (result[1] - initialPositionOfMarker[1]) / initialDiff;
             moveMarker();
-        }
+        };
 
         const moveMarker = () => {
             initialPositionOfMarker[0] += diffLat;
@@ -140,10 +140,10 @@ export class TestMapComponent implements OnInit {
                 i++;
                 setTimeout(moveMarker, delay);
             }
-        }
+        };
 
         this.map.setCenter(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
-        this.subscribe = interval(5000)
+        this.subscribe = interval(3000)
             .subscribe(() => {
                 this.orderService.init().then();
                 this.order = this.orderService.order;
@@ -151,10 +151,14 @@ export class TestMapComponent implements OnInit {
                     lat: this.order.rider_position.latitude,
                     lng: this.order.rider_position.longitude,
                 };
-                this.newPositionsList.push(this.riderLatLng)
+                this.newPositionsList.push(this.riderLatLng);
                 const newLatLng = [this.riderLatLng.lat, this.riderLatLng.lng];
-                startAnimationOfMarker(newLatLng)
+                startAnimationOfMarker(newLatLng);
                 this.oldRiderLatLng = this.riderLatLng;
+
+                // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.oldRiderLatLng);
+                // this.map.fitBounds(bounds);
+
             });
         if (this.order.status_name === 'delivered' || this.order.status_name === 'cancelled') {
             this.subscribe.unsubscribe()
@@ -210,12 +214,12 @@ export class TestMapComponent implements OnInit {
                         bounds.extend(points[n]);
                     }
                     this.map.fitBounds(bounds);
-                }
+                };
 
-                zoomToObject(this.pathPolyLine)
+                zoomToObject(this.pathPolyLine);
 
-                console.log(coordsClean[0])
-                console.log(coordsClean[1])
+                console.log(coordsClean[0]);
+                console.log(coordsClean[1]);
 
             });
         }

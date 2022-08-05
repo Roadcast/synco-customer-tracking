@@ -170,7 +170,12 @@ header .alert {
     width:22px; height:22px; display: inline-block; margin-bottom: 5px;
 }
 
-.ordercont .container .orderstatus  .orderstatus-itms p {
+.ordercont .container .orderstatus .grey{
+   opacity: 0.5;
+}
+.ordercont .container .orderstatus  .orderstatus-itms .grey p {color:#ccc}
+
+  .ordercont .container .orderstatus  .orderstatus-itms p {
     font-weight: 700;
 }
 

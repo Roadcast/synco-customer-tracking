@@ -12,43 +12,50 @@
 <!-- Order Container Start Here -->
 <section class="ordercont">
   <div class="container">
-
     <div class="row">
       <div class="col">
-        <h2>Order ID #{{order.id.substr(-6, 6) | uppercase}}<span>Less than {{(order.drop_off_eta / 60).toFixed(0)}} minutes</span></h2>
         <div class="row orderstatus">
+          <div class="col-6"><h2>Order ID</h2></div>
+          <div class="col-6 txt-right"><h2>#{{order.id.substr(-6, 6) | uppercase}}</h2></div>
+          <div class="w-100"></div>
           <div class="col-12">
             <div class="row">
-              <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >= 300"><img src="assets/images/pickup.svg"></div>
-                <div  *ngIf="order.status_code < 300"><img src="assets/images/pickup-g.svg"></div>
-                <p>Pick Up</p>
+              <div class="col-6">
+
+                <ol class="timeline">
+                  <li class="active"><img src="assets/images/tick.png">Pickup</li>
+                  <li><img src="assets/images/tick.png">Dispatched</li>
+                  <li><img src="assets/images/tick.png">Reached</li>
+                  <li><img src="assets/images/tick.png">Delivered</li>
+                </ol>
+
+<!--                <div class="col-12 orderstatus-itms">-->
+<!--                <div *ngIf="order.status_code >= 300"><img src="assets/images/pickup.svg"></div>-->
+<!--                <div  *ngIf="order.status_code < 300"><img src="assets/images/pickup-g.svg"></div>-->
+<!--                <p>Pick Up</p>-->
+<!--              </div>-->
+<!--                <div class="col-12 orderstatus-itms">-->
+<!--                  <div *ngIf="order.status_code >=400"><img src="assets/images/dispatched.svg"></div>-->
+<!--                  <div  *ngIf="order.status_code < 400"><img src="assets/images/dispatched-g.svg"></div>-->
+<!--                  <p>Dispatched</p>-->
+<!--                </div>-->
+<!--                <div class="col-12 orderstatus-itms">-->
+<!--                  <div *ngIf="order.status_code >= 500"><img src="assets/images/reached.svg"></div>-->
+<!--                  <div *ngIf="order.status_code < 500"><img src="assets/images/reached-g.svg"></div>-->
+<!--                  <p>Reached</p>-->
+<!--                </div>-->
+<!--                <div class="col-12 orderstatus-itms">-->
+<!--                  <div *ngIf="order.status_code >= 600"><img src="assets/images/delivered.svg"></div>-->
+<!--                  <div *ngIf="order.status_code < 600"><img src="assets/images/delivered-g.svg"></div>-->
+<!--                  <p>Delivered</p>-->
+<!--                </div>-->
+
               </div>
-              <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >=400"><img src="assets/images/dispatched.svg"></div>
-                <div  *ngIf="order.status_code < 400"><img src="assets/images/dispatched-g.svg"></div>
-                <p>Dispatched</p>
-              </div>
-              <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >= 500"><img src="assets/images/reached.svg"></div>
-                <div *ngIf="order.status_code < 500"><img src="assets/images/reached-g.svg"></div>
-                <p>Reached</p>
-              </div>
-              <div class="col orderstatus-itms">
-                <div *ngIf="order.status_code >= 600"><img src="assets/images/delivered.svg"></div>
-                <div *ngIf="order.status_code < 600"><img src="assets/images/delivered-g.svg"></div>
-                <p>Delivered</p>
-              </div>
+              <div class="col-6 txt-right"><img src="assets/images/graph.jpg"></div>
             </div>
           </div>
-         <!-- <div class="col-12 rider">
-            {{order.status_name}}
-          </div>-->
-        </div>
-        <div class="row address">
-          <div class="col-1"><img src="assets/images/location_ic.svg" alt=""></div>
-          <div class="col-11 c-address">
-            {{order.delivery_address.google_address}}
+         <div class="col-12 rider">
+            Rider has picked up your order
           </div>
         </div>
       </div>
@@ -58,10 +65,10 @@
       <div class="col">
         <div class="row">
           <div class="col-2 u-pic"><img src="assets/images/user.jpg" alt=""></div>
-          <div class="col-7 u-name"><strong>{{order.rider.name}}<img src="assets/images/info_ic.svg" alt=""></strong>
+          <div class="col-6 u-name"><strong>{{order.rider.name}}</strong>
             {{order.rider.mobile_number}}</div>
-          <div class="col-3 callbtn txtright"><a href="tel: {{order.rider ? order.rider.mobile_number : ''}}"
-                                                 style="text-decoration: none"><img src="assets/images/call_ic.svg" alt=""></a></div>
+          <div class="col-4 callbtn txtright"><img src="assets/images/info_ic.svg" alt=""><a href="tel: {{order.rider ? order.rider.mobile_number : ''}}"
+                                                 style="text-decoration: none"><img src="assets/images/call_ic.svg" alt="" class="ml-6"></a></div>
         </div>
       </div>
     </div>

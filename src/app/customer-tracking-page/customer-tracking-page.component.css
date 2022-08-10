@@ -387,14 +387,9 @@ table {
     position: absolute;
     width: 2px;
     background-color: #eee;
-    top: 0;
+    top: -32px;
     bottom: 0;
     left:10px;
-}
-
-.timeline>li::before:first-child {
-    content:'';
-    background-color: #f00 !important;
 }
 
 /*Circle*/
@@ -414,20 +409,33 @@ table {
 .timeline>li.active::before{
     background-color: #0074ad;
 }
+
+.timeline>li.active1::before{
+    background-color: #0074ad; display: none;
+}
+.timeline>li.active1::after{
+    background-color: #0074ad;
+    left:0; border: 3px solid #0074ad;
+}
+
 .timeline>li.active::after{
     background-color: #0074ad;
     left:0; border: 3px solid #0074ad;
+}
+
+.timeline>li.active, .timeline>li.active1{
+    color:#0074ad;
 }
 
 .timeline>li img{
     display:none;
 }
 .timeline>li.active img{
-    position:absolute; left:4px; top:3px; z-index: 99; display: inline-block;
+    position:absolute; left:6px; top:7px; z-index: 99; display: inline-block;
 }
 
-.timeline>li.active img{
-    position:absolute; left:4px; top:3px; z-index: 99;
+.timeline>li.active1 img{
+    position:absolute; left:6px; top:7px; z-index: 99; display: inline-block;
 }
 
 .timeline>li{
@@ -447,3 +455,6 @@ table {
 .timeline>li:nth-last-child(1)::before{
     width: 0;
 }
+
+
+.timeline>li:first-child::before {width: 0 !important;}

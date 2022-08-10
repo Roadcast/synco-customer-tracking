@@ -20,14 +20,18 @@
           <div class="w-100"></div>
           <div class="col-12">
             <div class="row">
-              <div class="col-6">
-
+              <div class="col-7">
                 <ol class="timeline" *ngIf="order.status_code !== 600">
-                  <li [ngClass]="order.status_code >= 300 ? 'active' : ''"><img src="assets/images/tick.png">Pickup</li>
-                  <li [ngClass]="order.status_code >= 400 ? 'active' : ''"><img src="assets/images/tick.png">Dispatched</li>
-                  <li [ngClass]="order.status_code >= 500 ? 'active' : ''"><img src="assets/images/tick.png">Reached</li>
-                  <li [ngClass]="order.status_code >= 600 ? 'active' : ''"><img src="assets/images/tick.png">Delivered</li>
+                  <li [ngClass]="order.status_code >= 400 ? 'active' : ''"><img src="assets/images/tick-w.png">Start Bike</li>
+                  <li [ngClass]="order.status_code >= 500 ? 'active' : ''"><img src="assets/images/tick-w.png">Reached Customer Parking</li>
+                  <li [ngClass]="order.status_code >= 600 ? 'active' : ''"><img src="assets/images/tick-w.png">Delivered</li>
                 </ol>
+
+                <!--<ol class="timeline">
+                  <li class="active"><img src="assets/images/tick-w.png">Start Bike</li>
+                  <li class="active"><img src="assets/images/tick-w.png">Reached Customer Parking</li>
+                  <li class="active"><img src="assets/images/tick-w.png">Delivered</li>
+                </ol>-->
 
 <!--                <div class="col-12 orderstatus-itms">-->
 <!--                <div *ngIf="order.status_code >= 300"><img src="assets/images/pickup.svg"></div>-->
@@ -51,7 +55,7 @@
 <!--                </div>-->
 
               </div>
-              <div class="col-6 txt-right"><img src="assets/images/graph.jpg"></div>
+              <div class="col-5 txt-right"><img src="assets/images/graph.jpg"></div>
             </div>
           </div>
          <div class="col-12 rider">

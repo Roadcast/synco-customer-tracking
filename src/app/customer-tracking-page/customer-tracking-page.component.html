@@ -5,9 +5,9 @@
 
 <section class="gmap">
   <div class="powered"><img src="assets/images/rc_ic.svg" alt="map"></div>
+  <div class="recenter"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 121.64 122.86"><title>direction-top</title><path d="M59,1.24.2,120.08a1.92,1.92,0,0,0,.88,2.58,1.89,1.89,0,0,0,1.76,0h0l58-30.87,58,30.87h0a1.89,1.89,0,0,0,1.76,0,1.92,1.92,0,0,0,.88-2.58L62.64,1.24a2,2,0,0,0-3.64,0Z" fill="#0074ad"/></svg></div>
   <app-test-map></app-test-map>
 </section>
-
 
 <!-- Order Container Start Here -->
 <section class="ordercont">
@@ -22,9 +22,9 @@
             <div class="row">
               <div class="col-7">
                 <ol class="timeline" *ngIf="order.status_code !== 600">
-                  <li [ngClass]="order.status_code >= 400 ? 'active' : ''"><img src="assets/images/tick-w.png">Start Bike</li>
-                  <li [ngClass]="order.status_code >= 500 ? 'active' : ''"><img src="assets/images/tick-w.png">Reached Customer Parking</li>
-                  <li [ngClass]="order.status_code >= 600 ? 'active' : ''"><img src="assets/images/tick-w.png">Delivered</li>
+                  <li [ngClass]="order.status_code >= 400 ? 'active' : 'active'"><img src="assets/images/tick-w.png">Start Bike<span>2:00 PM</span></li>
+                  <li [ngClass]="order.status_code >= 500 ? 'active' : ''"><img src="assets/images/tick-w.png">Reached Customer Parking<span>4:30 PM</span></li>
+                  <li [ngClass]="order.status_code >= 600 ? 'active' : ''"><img src="assets/images/tick-w.png">Delivered<span>4:40 PM</span></li>
                 </ol>
 
                 <!--<ol class="timeline">
@@ -58,9 +58,18 @@
               <div class="col-5 txt-right"><img src="assets/images/graph.jpg"></div>
             </div>
           </div>
+
          <div class="col-12 rider">
             Rider has picked up your order
           </div>
+
+          <div class="row address">
+            <!--<div class="col-1"><img src="assets/images/location_ic.svg" alt=""></div>-->
+            <div class="col-12">
+              E94 B Block, Ashok Vihar Road, New Delhi, New Delhi, 110053
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -90,14 +99,10 @@
     <!-- Scrollable modal -->
   </div>
 </section>
-
 <!-- Order Container End Here -->
 
 
 <!-- Feedback Pop Up Start Here -->
-
-
-
 <div  *ngIf="order.status_name === 'delivered'">
   <div>
   <div class="feedback-popup">

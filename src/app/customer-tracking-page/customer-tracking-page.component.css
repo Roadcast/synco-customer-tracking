@@ -107,6 +107,18 @@ header .alert {
     width: 20px;
     margin: 0;
 }
+
+.gmap .recenter {
+    background: #f5f5f5;
+    border-radius: 50%;
+    line-height: 36px;
+    position: absolute; width: 42px; height: 42px;
+    right: 15px;
+    bottom: 45px;
+    z-index: 8; text-align: center;
+}
+.gmap .recenter svg {width:16px; height: 16px;}
+
 .ordercont {
     background: #f5f5f5;
     border-radius: 30px 30px 0 0;
@@ -132,9 +144,9 @@ header .alert {
     align-items: center;
     background: #f5f5f5;
     border-radius: 15px;
-    padding: 10px;
+    padding: 8px 12px;
     font-size: .8rem;
-    line-height: 1.5;
+    line-height: 1.2;
     margin: 0 0 10px 0;
 }
 .ordercont .container .address img {
@@ -152,7 +164,7 @@ header .alert {
     align-items: center;
     background: #fff;
     border-radius: 15px;
-    padding: 10px 15px;
+    padding: 10px 15px 2px 15px;
     margin: 10px 0 10px 0;
     font-size: .75rem;
     line-height: 1.5;
@@ -185,12 +197,12 @@ header .alert {
 }
 .ordercont .container .orderstatus .rider {
     text-align: center;
-    color: #707070;
+    color: #707070; margin-bottom: 8px;
 }
 .ordercont .container .user {
     background: #fff;
     border-radius: 15px;
-    padding: 10px;
+    padding:6px 10px;
     margin: 0 0 10px 0;
 }
 .ordercont .container .user .row {
@@ -250,7 +262,7 @@ header .alert {
 
 .btn {
     border-radius: 15px;
-    background: #0074ad; height: 41px;
+    background: #0074ad; height: 41px; border:1px solid #0074ad;
 }
 .b-color {
     color: #0074ad;
@@ -447,10 +459,10 @@ table {
     counter-increment: item;
     padding: 1px 0 0 30px;
     margin-left: 0;
-    min-height:32px;
+    min-height:40px;
     position: relative;
     background-color: white;
-    list-style: none; font-weight: 700;
+    list-style: none; font-weight: 700; line-height: 1.2;
 }
 .timeline>li:nth-last-child(1)::before{
     width: 0;
@@ -458,3 +470,7 @@ table {
 
 
 .timeline>li:first-child::before {width: 0 !important;}
+
+.timeline>li span {display:block; font-weight: 400;}
+
+.pl-10 {padding-left:10px;}

@@ -261,8 +261,8 @@ header .alert {
 .bottombtn {padding-bottom: 20px;}
 
 .btn {
-    border-radius: 15px;
-    background: #0074ad; height: 41px; border:1px solid #0074ad;
+    border-radius: 6px; font-size: 14px;
+    background: #0074ad; line-height: 42px; height: 42px; border:1px solid #0074ad;
 }
 .b-color {
     color: #0074ad;
@@ -459,7 +459,7 @@ table {
     counter-increment: item;
     padding: 1px 0 0 30px;
     margin-left: 0;
-    min-height:40px;
+    min-height:44px;
     position: relative;
     background-color: white;
     list-style: none; font-weight: 700; line-height: 1.2;
@@ -471,6 +471,6 @@ table {
 
 .timeline>li:first-child::before {width: 0 !important;}
 
-.timeline>li span {display:block; font-weight: 400;}
+.timeline>li span {display:block; font-weight: 400; padding-top: 4px; color: #666 !important;}
 
 .pl-10 {padding-left:10px;}

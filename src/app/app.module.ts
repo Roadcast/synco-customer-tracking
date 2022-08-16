@@ -11,6 +11,7 @@ import { ErrorpageComponent } from './errorpage/errorpage.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxStarRatingModule} from "ngx-star-rating";
 import { TestMapComponent } from './test-map/test-map.component';
+import { OrderSummaryComponent } from './order-summary/order-summary.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TestMapComponent } from './test-map/test-map.component';
     CustomerTrackingPageComponent,
     GooglemapComponent,
     ErrorpageComponent,
-    TestMapComponent
+    TestMapComponent,
+    OrderSummaryComponent
   ],
     imports: [
         BrowserModule,

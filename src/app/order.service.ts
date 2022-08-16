@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpBackend, HttpClient} from "@angular/common/http";
+import {log} from "util";
 
 @Injectable({
     providedIn: 'root'
@@ -8,6 +9,7 @@ import {HttpBackend, HttpClient} from "@angular/common/http";
 export class OrderService {
     order: any;
     rating: any;
+    order_status: any;
 
     constructor(private router: Router, private httpDirect: HttpClient, handler: HttpBackend) {
         this.httpDirect = new HttpClient(handler);
@@ -27,5 +29,6 @@ export class OrderService {
         const data = await response.json()
         this.order = data.data
         this.rating = data.rating
+        this.order_status = data.order_status
     }
 }

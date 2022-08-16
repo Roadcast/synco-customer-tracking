@@ -29,6 +29,24 @@ export class CustomerTrackingPageComponent implements OnInit {
   rating3 = 0;
   public form: FormGroup;
   sub: Subscription | any;
+  order_status: any;
+  orderStatusDist = {
+    50: null,
+    200: null,
+    300: null,
+    400: null,
+    500: null,
+    600: null,
+  };
+  orderStatusDate = {
+    50: '',
+    200: '',
+    300: '',
+    400: '',
+    500: '',
+    600: '',
+  };
+  feedbackPolling = false;
   constructor(public  orderService: OrderService, private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
       rating1: ['', Validators.required],
@@ -40,18 +58,32 @@ export class CustomerTrackingPageComponent implements OnInit {
     await this.orderService.init().then();
     this.order = this.orderService.order;
     this.rating = this.orderService.rating;
+    this.order_status = this.orderService.order_status;
+    this.order_status.forEach((row: any) => {
+      // @ts-ignore
+      this.orderStatusDist[row.status_code] = row.status_code;
+      // @ts-ignore
+      this.orderStatusDate[row.status_code] = row.created_on;
+    })
     this.pollingData();
   }
   pollingData(){
     this.sub = interval(4000).subscribe(()=>{
       this.orderService.init().then();
       this.order = this.orderService.order;
+      this.order_status = this.orderService.order_status;
+      this.order_status.forEach((row: any) => {
+        // @ts-ignore
+        this.orderStatusDist[row.status_code] = row.status_code;
+        // @ts-ignore
+        this.orderStatusDate[row.status_code] = row.created_on;
+      });
     });
+
     if(this.order.status_name === 'delivered' || this.order.status_name === 'cancelled'){
-      this.sub.unsubscribe()
+       this.sub.unsubscribe()
     }
   }
-
   feedback() {
     const api_url = 'https://jfl-api-dev.roadcast.co.in/api/v1/';
     fetch(api_url + 'order/order_feedback/' + `${this.order.id}`, {

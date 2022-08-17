@@ -474,3 +474,49 @@ table {
 .timeline>li span {display:block; font-weight: 400; padding-top: 4px; color: #666 !important;}
 
 .pl-10 {padding-left:10px;}
+
+
+.order-summary-cont {background:#f9f9f9; position: absolute; z-index: 14; left: 0; top: 0; width: 100%; height:120%; padding: 49px 15px 15px 15px;}
+.order-summary-cont .info {color:#0074AD; font-weight: 500; font-size:1rem; line-height: 49px; position: relative;}
+.order-summary-cont .summary {background: #fff; border-radius: 12px; padding:10px 15px; margin:0 0 50px 0;}
+.order-summary-cont .summary .txt {font-weight: 400; color:#555; font-size:0.8rem; line-height: 1.4; margin:0 0 10px 30px; padding-right: 30px;}
+.order-summary-cont .summary .head {display:block; font-weight: 500; color:#333; font-size:0.9rem; line-height: 24px; margin:0 0 2px 0;}
+.order-summary-cont .summary .head img {float:left; width:20px; height: 20px; margin:3px 8px 0 0;}
+.order-summary-cont .summary .items-details {margin-top: 20px;}
+.order-summary-cont .summary .items-details table {width:100%;}
+.order-summary-cont .summary .items-details table tr td {font-weight: 400; color:#333; font-size:0.77rem; padding:5px 0; vertical-align: top;}
+.order-summary-cont .summary .items-details table tr td strong {font-weight: 700; font-size:0.9rem;}
+
+.discount {color:#0074AD !important;}
+.btn {
+    border-radius: 6px; font-size: 14px;
+    background: #0074ad;  height: 42px; border:1px solid #0074ad;
+}
+
+.text-right {text-align: right;}
+.text-center {text-align: center !important;}
+
+.f-cat {margin-top:4px; width: 12px; height: 12px; border:1px solid #F55F4B; border-radius:3px; background:#fff; text-align: center;}
+.f-cat span {display:inline-block; width: 6px; height: 6px; border-radius: 50%; background:#F55F4B; margin:0 0 6px 0;}
+
+.non-veg {border-color:#F55F4B !important;}
+.non-veg span {background:#F55F4B !important;}
+
+.veg {border-color:#57F18C !important;}
+.veg span {background:#57F18C !important;}
+
+.semibold {font-weight:600 !important;}
+.bold {font-weight:700 !important;}
+
+.blue {color:#0074AD !important;}
+.close-btn {position: absolute;
+    top: 12px;
+    right: 0;
+    background: #0074AD;
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    line-height: 21px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 400;}

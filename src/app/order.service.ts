@@ -10,6 +10,7 @@ export class OrderService {
     order: any;
     rating: any;
     order_status: any;
+    orderPayment: any;
 
     constructor(private router: Router, private httpDirect: HttpClient, handler: HttpBackend) {
         this.httpDirect = new HttpClient(handler);
@@ -30,5 +31,6 @@ export class OrderService {
         this.order = data.data
         this.rating = data.rating
         this.order_status = data.order_status
+        this.orderPayment = data.order_payment[0]
     }
 }

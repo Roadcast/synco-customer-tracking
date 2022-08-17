@@ -355,9 +355,10 @@ table {
 
 .message {display: none;}
 
-.feedback-popup .s-message p {
-    position:absolute; width: 100%; bottom: 18%; left: 0; color: #66bb6a; font-size: 16px; font-weight: 600;
-}
+.feedback-popup .s-message .txts {position:absolute; width: 100%; bottom: 10%; left: 0; text-align: center;}
+.feedback-popup .s-message .txts .success-text {color: #000; font-size: 18px; font-weight: 700; margin-bottom:10px;}
+.feedback-popup .s-message .txts .order-id {color: #000; font-size: 16px;}
+
 .botcont {padding:30px}
 .feedback-form {background:#f3f3f3; border-radius: 30px; padding: 30px;}
 .feedback-form .head {font-size:14px; color:#333; font-weight: 600;}
@@ -489,7 +490,7 @@ table {
 
 .discount {color:#0074AD !important;}
 .btn {
-    border-radius: 6px; font-size: 14px;
+    border-radius: 14px; font-size: 14px;
     background: #0074ad;  height: 42px; border:1px solid #0074ad;
 }
 

@@ -77,10 +77,17 @@
 <!-- Order Container End Here -->
 
 <!-- Feedback Pop Up Start Here -->
-<div *ngIf="order.status_name === 'delivered'">
-  <div class="feedback-popup" *ngIf="!rating?.feedback">
-    <div class="s-message"><img src="assets/images/successful.gif" alt=""><p>Your order has been delivered successfully.</p></div>
-    <div class="botcont" >
+<!--<div *ngIf="order.status_name === 'delivered'">-->
+<div>
+  <!--<div class="feedback-popup" *ngIf="!rating?.feedback">-->
+  <div class="feedback-popup">
+    <div class="s-message">
+      <img src="assets/images/successful.gif" alt="">
+      <div class="txts"><p class="success-text">Order Successfully Delivered</p>
+        <p class="order-id">Order ID:  <strong>#2353456</strong></p></div>
+
+    </div>
+    <div class="botcont">
         <div class="feedback-form">
             <div class="cont">
             <div class="head">Your feedback is important to us!</div>
@@ -90,8 +97,8 @@
             </div>
           <div class="message">{{order.status_name | uppercase}}</div>
           <div>
-            <textarea [(ngModel)]="feedbackorder" class="form-control" rows="2" placeholder="What would you like to share"></textarea>
-            <button type="button" class="btn btn-primary w-100" (click)="feedback()">Submit Feedback</button>
+            <textarea [(ngModel)]="feedbackorder" class="form-control" rows="2" placeholder="What would you like to share..."></textarea>
+            <button type="button" class="btn btn-primary w-100" (click)="feedback()">SEND FEEDBACK</button>
           </div>
         </div>
   </div>
@@ -102,9 +109,9 @@
 <div  *ngIf="order.status_name === 'delivered'">
   <div class="feedback-popup" *ngIf="rating?.feedback">
     <div class="s-message"><img src="assets/images/successful.gif" alt=""><p>Your order has been delivered successfully.</p></div>
-    <div class="botcont" >
+    <div class="botcont">
       <div  style="text-align: center;font-size: 14px;
-           padding: 10px; position: relative; font-weight: bold"><p>Thanks for feedback.</p></div>
+           padding: 10px; position: relative; font-weight: bold"><p>Thank You for Your Feedback.</p></div>
     </div>
   </div>
   </div>

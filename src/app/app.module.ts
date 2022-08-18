@@ -42,10 +42,11 @@ import {NgCircleProgressModule} from "ng-circle-progress";
             "animationDuration": 1000,
             "showUnits": false,
             "showSubtitle":true,
-            "subtitle": "30",
+            "subtitle": "0",
+            "maxPercent": 0,
             "subtitleFontSize":"12",
             "showBackground": false,
-            "clockwise": true,
+            "clockwise": false,
             "startFromZero": false,
             "lazy": true})
     ],

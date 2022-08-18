@@ -25,18 +25,19 @@
             <div class="row">
               <div class="col-7">
                 <ol class="timeline">
-                  <li [ngClass]="orderStatusDist['400'] === 400 ? 'active' : ''"><img src="assets/images/tick-w.png">Start Bike<span>at {{orderStatusDate["400"] | date: 'hh:mma'}}</span></li>
-                  <li [ngClass]="orderStatusDist['500'] === 500 ? 'active' : ''"><img src="assets/images/tick-w.png">Reached Customer Parking<span>at {{orderStatusDate["500"] | date: 'hh:mma'}}</span></li>
-                  <li [ngClass]="orderStatusDist['600'] === 600 ? 'active' : ''"><img src="assets/images/tick-w.png">Delivered<span>at {{orderStatusDate["600"] | date: 'hh:mma'}}</span></li>
+                  <li [ngClass]="orderStatusDist['400'] === 400 ? 'active' : ''"><img src="assets/images/tick-w.png">Start Bike<span>at {{orderStatusDate["400"] | date: 'hh:mm a'}}</span></li>
+                  <li [ngClass]="orderStatusDist['500'] === 500 ? 'active' : ''"><img src="assets/images/tick-w.png">Reached Customer Parking<span>at {{orderStatusDate["500"] | date: 'hh:mm a'}}</span></li>
+                  <li [ngClass]="orderStatusDist['600'] === 600 ? 'active' : ''"><img src="assets/images/tick-w.png">Delivered<span>at {{orderStatusDate["600"] | date: 'hh:mm a'}}</span></li>
                 </ol>
               </div>
               <div class="col-5 txt-right">
                   <circle-progress
-                          [percent]='70'
+                          [percent]="currentUpdateTime"
                           [radius]="55"
                           [titleFontSize]="'12'"
                           [title]="notes"
-                          [subtitle]="'70'"
+                          [subtitle]="subTitleTime"
+                          [maxPercent]="firstLocationTime"
                   ></circle-progress>
             </div>
             </div>
@@ -54,9 +55,13 @@
         <div class="row">
           <div class="col-2 u-pic"><img src="assets/images/user.jpg" alt=""></div>
           <div class="col-6 u-name"><strong>{{order.rider.name}}</strong>
-            {{order.rider.mobile_number}}</div>
-          <div class="col-4 callbtn txtright"><img src="assets/images/info_ic.svg" alt=""><a href="tel: {{order.rider ? order.rider.mobile_number : ''}}"
-                                                 style="text-decoration: none"><img src="assets/images/call_ic.svg" alt="" class="ml-6"></a></div>
+           </div>
+          <div class="col-4 callbtn txtright">
+            <img src="assets/images/info_ic.svg" alt="">
+            <a href="tel: {{order.rider ? riderNumber : ''}}"
+                                                 style="text-decoration: none">
+              <img src="assets/images/call_ic.svg" alt="" class="ml-6"></a>
+          </div>
         </div>
       </div>
     </div>
@@ -65,7 +70,7 @@
         <button type="button" class="btn btn-primary w-100" (click)="orderSummary()">VIEW ORDER INFO</button>
       </div>
       <div class="col-12 issue">
-        Facing Issue? <a href="#">Chat with us</a>
+        Facing Issue? <a>Chat with us</a>
       </div>
       <div class="col-12 poweredbot">
         Powered by RoadCast
@@ -77,14 +82,12 @@
 <!-- Order Container End Here -->
 
 <!-- Feedback Pop Up Start Here -->
-<!--<div *ngIf="order.status_name === 'delivered'">-->
-<div>
-  <!--<div class="feedback-popup" *ngIf="!rating?.feedback">-->
-  <div class="feedback-popup">
+<div *ngIf="order.status_name === 'delivered'">
+    <div class="feedback-popup" *ngIf="!rating?.feedback">
     <div class="s-message">
       <img src="assets/images/successful.gif" alt="">
       <div class="txts"><p class="success-text">Order Successfully Delivered</p>
-        <p class="order-id">Order ID:  <strong>#2353456</strong></p></div>
+        <p class="order-id">Order ID:  <strong>#{{order.id.substr(-6, 6) | uppercase}}</strong></p></div>
 
     </div>
     <div class="botcont">
@@ -92,7 +95,27 @@
             <div class="cont">
             <div class="head">Your feedback is important to us!</div>
               <div class="stars">
-                <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'" ></ngx-star-rating >
+<!--                <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'"></ngx-star-rating>-->
+                <div class="star-rating" (click)="getRating($event, '1')">
+                    <img *ngIf="rating3 < 1" src="assets/images/grey_1.svg" alt="">
+                    <img *ngIf="rating3 >=1" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
+                </div>
+                <div class="star-rating" (click)="getRating($event,'2')">
+                  <img *ngIf="rating3 < 2" src="assets/images/grey_2.svg" alt="">
+                  <img *ngIf="rating3 >=2" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
+                </div>
+                <div class="star-rating" (click)="getRating($event,'3')">
+                  <img *ngIf="rating3 < 3" src="assets/images/grey_3.svg" alt="">
+                  <img *ngIf="rating3 >=3" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
+                </div>
+                <div class="star-rating"  (click)="getRating($event,'4')">
+                  <img *ngIf="rating3 < 4" src="assets/images/grey_4.svg" alt="">
+                  <img *ngIf="rating3 >= 4" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
+                </div>
+                <div class="star-rating" (click)="getRating($event,'5')">
+                  <img *ngIf="rating3 < 5" src="assets/images/grey_5.svg" alt="">
+                  <img *ngIf="rating3 >= 5" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
+                </div>
               </div>
             </div>
           <div class="message">{{order.status_name | uppercase}}</div>
@@ -105,9 +128,8 @@
   </div>
 </div>
 
-<!-- Feedback Pop Up End Here -->
 <div  *ngIf="order.status_name === 'delivered'">
-  <div class="feedback-popup" *ngIf="rating?.feedback">
+  <div class="feedback-popup" *ngIf="rating?.rating">
     <div class="s-message"><img src="assets/images/successful.gif" alt=""><p>Your order has been delivered successfully.</p></div>
     <div class="botcont">
       <div  style="text-align: center;font-size: 14px;
@@ -115,6 +137,7 @@
     </div>
   </div>
   </div>
+<!-- Feedback Pop Up End Here-->
 
 
 <!-- Order Summary Start Here -->
@@ -134,7 +157,7 @@
           </div>
           <div class="mode">
             <p class="head"><img src="assets/images/payment.svg" alt=""> Payment Mode</p>
-            <p class="txt">Paid: <span  class="blue">{{order_Payment.mode}}</span></p>
+            <p class="txt">Paid: <span  class="blue">{{order_Payment?.mode}}</span></p>
           </div>
 
           <div class="date">
@@ -152,8 +175,8 @@
               <tr *ngFor="let item of order.order_items">
                 <td style="width:18px;"><div class="f-cat veg"><span></span></div></td>
                 <td>{{item.name}}</td>
-                <td class="text-center" style="width:48px;">x {{item.quantity}}</td>
-                <td style="width:66px;" class="text-right">₹{{item.amount}}</td>
+                <td class="text-center" style="width:48px;">x {{item?.quantity}}</td>
+                <td style="width:66px;" class="text-right">₹{{item?.amount}}</td>
               </tr>
               <!--              <tr>-->
               <!--                <td><div class="f-cat non-veg"><span></span></div></td>-->
@@ -167,11 +190,11 @@
               </tr>
               <tr>
                 <td colspan="2">Discount</td>
-                <td colspan="2" class="text-right discount">-₹{{(order_Payment.discount_amount).toFixed(2)}}</td>
+                <td colspan="2" class="text-right discount">-₹{{(order_Payment?.discount_amount).toFixed(2)}}</td>
               </tr>
               <tr>
                 <td colspan="2">Taxes &amp; Charges</td>
-                <td colspan="2" class="text-right">₹{{order_Payment.tax}}</td>
+                <td colspan="2" class="text-right">₹{{order_Payment?.tax}}</td>
               </tr>
               <tr>
                 <td colspan="2"><strong>Grand Total</strong></td>

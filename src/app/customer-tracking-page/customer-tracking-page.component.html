@@ -43,8 +43,14 @@
             </div>
           </div>
 
-         <div class="col-12 rider">
-            Rider has picked up your order
+         <div class="col-12 rider" *ngIf="order.status_code === 400">
+              Rider has picked up your order
+          </div>
+          <div class="col-12 rider"  *ngIf="order.status_code === 500">
+              Rider has reached your gate
+          </div>
+          <div class="col-12 rider"  *ngIf="order.status_code === 600">
+              Rider has delivered your order
           </div>
         </div>
       </div>

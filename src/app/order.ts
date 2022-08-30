@@ -23,10 +23,12 @@ export interface Order {
     customer_id: string;
     delivery_address_id: string;
     order_status: OrderStatus[];
+    order_items: OrderItem[];
     total: number;
     branch_name: string;
     created_on: Date;
     user_id: number;
+    sub_total: number;
     zone_id: string;
     zone_name: string;
     delivered_at: string;
@@ -203,6 +205,12 @@ export interface OrderStatus {
     geom: Geom;
     user: User;
     created_on: Date;
+}
+export interface OrderItem {
+    amount: number;
+    name: string;
+    notes: string;
+    quantity: string;
 }
 
 export interface Status {

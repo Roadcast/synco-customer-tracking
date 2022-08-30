@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpBackend, HttpClient} from "@angular/common/http";
-import {environment} from "../environments/environment";
+import {log} from "util";
 
 @Injectable({
     providedIn: 'root'
@@ -9,6 +9,8 @@ import {environment} from "../environments/environment";
 export class OrderService {
     order: any;
     rating: any;
+    order_status: any;
+    orderPayment: any;
 
     constructor(private router: Router, private httpDirect: HttpClient, handler: HttpBackend) {
         this.httpDirect = new HttpClient(handler);
@@ -21,12 +23,14 @@ export class OrderService {
         if (!myParam) {
             await this.router.navigateByUrl('error');
         }
-        const api_url = environment.apiUrl;
+        const api_url = 'https://jfl-api-dev.roadcast.co.in/api/v1/';
         const response = await fetch(api_url + 'order/order_tracking/' + myParam, {
             method: "GET",
         });
-        const data = await response.json();
-        this.order = data.data;
-        this.rating = data.rating;
+        const data = await response.json()
+        this.order = data.data
+        this.rating = data.rating
+        this.order_status = data.order_status
+        this.orderPayment = data.order_payment[0]
     }
 }

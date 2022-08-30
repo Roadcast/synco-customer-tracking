@@ -78,7 +78,7 @@ export class TestMapComponent implements OnInit {
         pickupMarker.setMap(this.map);
         google.maps.event.addListener(pickupMarker, 'click', () => {
             const infowindow = new google.maps.InfoWindow({
-                content: 'Pickup'
+                content: "Domino's store"
             });
             infowindow.open(this.map, pickupMarker);
         });
@@ -168,7 +168,7 @@ export class TestMapComponent implements OnInit {
 
     async getRiderPathFromHerePathThenCacheLocally(order: any) {
         const riderPolyLineColor = '#0078AC';
-        const pathPolyLineColor = '#D2112C';
+        const pathPolyLineColor = '#0047b3';
         let origin, destination;
         if (order.rider_position && order.rider_position.latitude && order.rider_position.longitude) {
 

@@ -11,6 +11,7 @@ import { ErrorpageComponent } from './errorpage/errorpage.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxStarRatingModule} from "ngx-star-rating";
 import { TestMapComponent } from './test-map/test-map.component';
+import {NgCircleProgressModule} from "ng-circle-progress";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { TestMapComponent } from './test-map/test-map.component';
     CustomerTrackingPageComponent,
     GooglemapComponent,
     ErrorpageComponent,
-    TestMapComponent
+    TestMapComponent,
   ],
     imports: [
         BrowserModule,
@@ -27,6 +28,27 @@ import { TestMapComponent } from './test-map/test-map.component';
         FormsModule,
         ReactiveFormsModule,
         NgxStarRatingModule,
+        NgCircleProgressModule.forRoot({
+            "radius": 60,
+            "space": -10,
+            "outerStrokeGradient": true,
+            "outerStrokeWidth": 10,
+            "outerStrokeColor": "#4882c2",
+            "outerStrokeGradientStopColor": "#53a9ff",
+            "innerStrokeColor": "#e7e8ea",
+            "innerStrokeWidth": 10,
+            "title": "UI",
+            "animateTitle": false,
+            "animationDuration": 1000,
+            "showUnits": false,
+            "showSubtitle":true,
+            "subtitle": "0",
+            "maxPercent": 0,
+            "subtitleFontSize":"12",
+            "showBackground": false,
+            "clockwise": false,
+            "startFromZero": false,
+            "lazy": true})
     ],
   providers: [],
   bootstrap: [AppComponent]

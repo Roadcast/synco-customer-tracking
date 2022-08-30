@@ -61,7 +61,7 @@ header .alert {position: absolute;right: 0;top: 0;width: 49px;height: 49px;paddi
 .issue a {color: #000;font-weight: 700;}
 .issue a:hover {color: #0074ad;}
 .poweredbot {position:fixed; left:0; bottom:0; width:100%; background:#fff; z-index: 99; padding:6px 0;text-align: center;color: #ccc;font-size: .6rem;}
-.bottombtn {padding-bottom: 20px;}
+.bottombtn {padding-bottom: 15px;}
 .btn {border-radius: 6px; font-size: 14px;background: #0074ad; line-height: 42px; height: 42px; border:1px solid #0074ad;}
 .b-color {color: #0074ad;}
 .gr-color {color: #707070}

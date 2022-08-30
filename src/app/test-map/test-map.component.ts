@@ -110,8 +110,12 @@ export class TestMapComponent implements OnInit {
             lat: this.order.rider_position.latitude,
             lng: this.order.rider_position.longitude,
         };
-        // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.riderLatLng);
-        // this.map.fitBounds(bounds);
+        this.orderService.riderPosition.subscribe(res =>{
+            const bounds = new google.maps.LatLngBounds(res);
+            this.map.fitBounds(bounds);
+            this.map.setZoom(15);
+        })
+
         this.oldRiderLatLng = this.riderLatLng;
 
         const initialDiff = 10000;

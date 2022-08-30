@@ -138,13 +138,13 @@ export class CustomerTrackingPageComponent implements OnInit {
     // return d;
     const time = d/40;
     this.updatedTime = Number(time*60);
-    console.log('this.update time', this.updatedTime);
+    // console.log('this.update time', this.updatedTime);
     this.subTitleTime = (this.updatedTime).toFixed(0) + ' min';
     this.firstLocationTime = this.order.drop_off_eta/60
     const firstPerValue = 100/ this.firstLocationTime;
     this.currentUpdateTime = ( this.firstLocationTime - this.updatedTime)* firstPerValue;
-    console.log('this.current update time', this.currentUpdateTime);
-    console.log('thiis. first location time', this.firstLocationTime);
+    // console.log('this.current update time', this.currentUpdateTime);
+    // console.log('thiis. first location time', this.firstLocationTime);
   }
 
   deg2rad(deg: any) {
@@ -191,7 +191,7 @@ export class CustomerTrackingPageComponent implements OnInit {
     }).then(async( res) => {
        const riderData  =  await res.json()
        this.riderNumber = riderData.virtualNumber;
-      console.log('vvvvvvvvvvvvvvvvvv', this.riderNumber)
+      // console.log('vvvvvvvvvvvvvvvvvv', this.riderNumber)
     });
   }
 
@@ -204,7 +204,12 @@ export class CustomerTrackingPageComponent implements OnInit {
   }
 
   getRating(event: any, value: any) {
-    console.log('value', value)
     this.rating3 = value;
+  }
+
+  riderPan() {
+    this.orderService.riderPosition.next({lat:this.order.rider_position.latitude,
+      lng: this.order.rider_position.longitude})
+    console.log('riderpan', this.order.rider_position)
   }
 }

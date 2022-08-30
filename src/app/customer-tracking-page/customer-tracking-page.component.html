@@ -7,7 +7,10 @@
 <!-- Google Map Start Here -->
 <section class="gmap">
   <div class="powered"><img src="assets/images/rc_ic.svg" alt="map"></div>
-  <div class="recenter"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 121.64 122.86"><title>direction-top</title><path d="M59,1.24.2,120.08a1.92,1.92,0,0,0,.88,2.58,1.89,1.89,0,0,0,1.76,0h0l58-30.87,58,30.87h0a1.89,1.89,0,0,0,1.76,0,1.92,1.92,0,0,0,.88-2.58L62.64,1.24a2,2,0,0,0-3.64,0Z" fill="#0074ad"/></svg></div>
+  <div class="recenter" (click)="riderPan()"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 121.64 122.86"><title>direction-top</title>
+      <path d="M59,1.24.2,120.08a1.92,1.92,0,0,0,.88,2.58,1.89,1.89,0,0,0,1.76,0h0l58-30.87,58,30.87h0a1.89,
+      1.89,0,0,0,1.76,0,1.92,1.92,0,0,0,.88-2.58L62.64,1.24a2,2,0,0,0-3.64,0Z" fill="#0074ad"/></svg></div>
   <app-test-map></app-test-map>
 </section>
 <!-- Google Map End Here -->
@@ -212,11 +215,11 @@
         </div>
       </div>
     </div>
-    <div class="row bottombtn">
-      <div class="col-12">
-        <button type="button" class="btn btn-primary w-100">CANCEL ORDER</button>
-      </div>
-    </div>
+<!--    <div class="row bottombtn">-->
+<!--      <div class="col-12">-->
+<!--&lt;!&ndash;        <button type="button" class="btn btn-primary w-100">CANCEL ORDER</button>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </section>
 <!-- Order Summary End Here -->

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://jfl-api-dev.roadcast.co.in/api/v1/',
+  apiUrl: 'https://jfl-api-qa.roadcast.co.in/api/v1/',
 };
 
 /*

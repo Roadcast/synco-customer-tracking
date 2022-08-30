@@ -6,6 +6,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {interval, Subscription} from "rxjs";
 import {getRiderIconFace} from "../riderIcon";
 import * as moment from "moment";
+import {environment} from "../../environments/environment";
 
 
 @Component({
@@ -153,7 +154,7 @@ export class CustomerTrackingPageComponent implements OnInit {
 
 
   feedback() {
-    const api_url = 'https://jfl-api-dev.roadcast.co.in/api/v1/';
+    const api_url = environment.apiUrl;
     fetch(api_url + 'order/order_feedback/' + `${this.order.id}`, {
       method: 'POST',
       headers: {
@@ -166,17 +167,17 @@ export class CustomerTrackingPageComponent implements OnInit {
         rider_id: this.order.rider_id,
       })
     }).then(async( res) => {
-     const resData =  await res.json()
-      this.feedbackStatus = resData.status
-      await this.orderService.init()
+     const resData =  await res.json();
+      this.feedbackStatus = resData.status;
+      await this.orderService.init();
       this.order = this.orderService.order;
       this.rating = this.orderService.rating;
     })
   }
   numberMasking(){
-    const date = this.order.created_on
+    const date = this.order.created_on;
     console.log('date ', moment(date).format('YYYY-MM-DD'));
-    const api_url = 'https://jfl-api-dev.roadcast.co.in/api/v1/';
+    const api_url = environment.apiUrl;
     fetch(api_url + 'order/virtual_number', {
       method: 'POST',
       headers: {
@@ -189,7 +190,7 @@ export class CustomerTrackingPageComponent implements OnInit {
         employee_code: this.order.rider_id,
       })
     }).then(async( res) => {
-       const riderData  =  await res.json()
+       const riderData  =  await res.json();
        this.riderNumber = riderData.virtualNumber;
       // console.log('vvvvvvvvvvvvvvvvvv', this.riderNumber)
     });
@@ -209,7 +210,7 @@ export class CustomerTrackingPageComponent implements OnInit {
 
   riderPan() {
     this.orderService.riderPosition.next({lat:this.order.rider_position.latitude,
-      lng: this.order.rider_position.longitude})
+      lng: this.order.rider_position.longitude});
     console.log('riderpan', this.order.rider_position)
   }
 }

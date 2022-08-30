@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {log} from "util";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class OrderService {
     rating: any;
     order_status: any;
     orderPayment: any;
+    riderPosition = new BehaviorSubject({lat: 0, lng: 0})
 
     constructor(private router: Router, private httpDirect: HttpClient, handler: HttpBackend) {
         this.httpDirect = new HttpClient(handler);

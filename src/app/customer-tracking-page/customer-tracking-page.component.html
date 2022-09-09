@@ -225,12 +225,39 @@
 <!-- Order Summary End Here -->
 
 <!--info button page start here-->
-<section class="order-summary-cont" *ngIf="infoModelValue">
-    <div class="container">
+<section class="info-window" *ngIf="infoModelValue">
+    <div class="container info-popup">
+        <div class="close-btn" (click)="infoModelClose()" style="top:10px; right: 30px;">x</div>
         <div class="row">
-            <div class="col-12 info"> INFO PAGE <div class="close-btn" (click)="infoModelClose()">x</div> </div>
+            <div class="col-12 topimg">
+                <img src="assets/images/info-pic.svg" alt="">
+            </div>
+        </div>
+        <div class="row infotext">
+            <div class="col-1">
+                <img src="assets/images/tick-g.svg" alt="">
+            </div>
+            <div class="col-11">
+                <p>
+                    <strong>Contact-less Delivery</strong>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make.</p>
+            </div>
+            <div class="col-1">
+                <img src="assets/images/tick-g.svg" alt="">
+            </div>
+            <div class="col-11">
+                <p>
+                    <strong>Daily Body Temperature Check</strong>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+            </div>
+        </div>
 
-            <h1>data here</h1>
+        <div class="row driverdet">
+            <div class="col-12">
+                <p><strong>Ashish Verma</strong><br>
+                    <strong>Vaccinated against Covid-19</strong> <span class="vc">View Certificate</span></p>
+                <p class="bt">Body Temperature <span class="tempr">97F</span></p>
+            </div>
         </div>
     </div>
 </section>

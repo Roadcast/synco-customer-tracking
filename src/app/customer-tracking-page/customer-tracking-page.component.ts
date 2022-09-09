@@ -58,6 +58,7 @@ export class CustomerTrackingPageComponent implements OnInit {
   currentUpdateTime: any;
   subTitleTime: any;
   riderNumber: any;
+  infoModelValue: boolean = false;
   constructor(public orderService: OrderService, private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
       rating1: ['', Validators.required],
@@ -212,5 +213,13 @@ export class CustomerTrackingPageComponent implements OnInit {
     this.orderService.riderPosition.next({lat:this.order.rider_position.latitude,
       lng: this.order.rider_position.longitude});
     console.log('riderpan', this.order.rider_position)
+  }
+
+  infoModel() {
+    this.infoModelValue = true;
+  }
+
+  infoModelClose() {
+    this.infoModelValue = false;
   }
 }

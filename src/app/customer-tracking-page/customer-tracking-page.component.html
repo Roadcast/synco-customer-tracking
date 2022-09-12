@@ -22,7 +22,7 @@
       <div class="col">
         <div class="row orderstatus">
           <div class="col-6"><h2>Order ID</h2></div>
-          <div class="col-6 txt-right"><h2>#{{order.id.substr(-6, 6) | uppercase}}</h2></div>
+          <div class="col-6 txt-right"><h2>#{{order.external_id | uppercase}}</h2></div>
           <div class="w-100"></div>
           <div class="col-12">
             <div class="row">
@@ -78,9 +78,9 @@
       <div class="col-12">
         <button type="button" class="btn btn-primary w-100" (click)="orderSummary()">VIEW ORDER INFO</button>
       </div>
-      <div class="col-12 issue">
-        Facing Issue? <a>Chat with us</a>
-      </div>
+<!--      <div class="col-12 issue">-->
+<!--        Facing Issue? <a>Chat with us</a>-->
+<!--      </div>-->
       <div class="col-12 poweredbot">
         Powered by RoadCast
       </div>
@@ -183,8 +183,7 @@
               </tr>
               <tr *ngFor="let item of order.order_items">
                 <td style="width:18px;"><div class="f-cat veg"><span></span></div></td>
-                <td>{{item.name}}</td>
-                <td class="text-center" style="width:48px;">x {{item?.quantity}}</td>
+                <td>{{item.name}} X{{item?.quantity}}</td>
                 <td style="width:66px;" class="text-right">₹{{item?.amount}}</td>
               </tr>
               <!--              <tr>-->
@@ -207,7 +206,7 @@
               </tr>
               <tr>
                 <td colspan="2"><strong>Grand Total</strong></td>
-                <td colspan="2" class="text-right"><strong>₹00.00</strong></td>
+                <td colspan="2" class="text-right"><strong>₹{{order.sub_total}}</strong></td>
               </tr>
               </tbody>
             </table>
@@ -215,11 +214,6 @@
         </div>
       </div>
     </div>
-<!--    <div class="row bottombtn">-->
-<!--      <div class="col-12">-->
-<!--&lt;!&ndash;        <button type="button" class="btn btn-primary w-100">CANCEL ORDER</button>&ndash;&gt;-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
 </section>
 <!-- Order Summary End Here -->
@@ -240,7 +234,7 @@
             <div class="col-11">
                 <p>
                     <strong>Contact-less Delivery</strong>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make.</p>
+             On your request for contactless delivery, our delivery executive will leave your order at your doorstep after calling you, once he has reached your location. Please remember to collect the order.</p>
             </div>
             <div class="col-1">
                 <img src="assets/images/tick-g.svg" alt="">
@@ -248,13 +242,13 @@
             <div class="col-11">
                 <p>
                     <strong>Daily Body Temperature Check</strong>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+                   Our store employees temperature are screened everyday and it is ensured their body temperature is always less than 99.4F/37.4C</p>
             </div>
         </div>
 
         <div class="row driverdet">
             <div class="col-12">
-                <p><strong>Ashish Verma</strong><br>
+                <p><strong>{{order.rider.name}}</strong><br>
                     <strong>Vaccinated against Covid-19</strong> <span class="vc">View Certificate</span></p>
                 <p class="bt">Body Temperature <span class="tempr">97F</span></p>
             </div>

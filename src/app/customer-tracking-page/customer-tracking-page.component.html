@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col">
         <div class="row orderstatus">
-          <div class="col-6"><h2>Order ID</h2></div>
+          <div class="col-6"><h2>Order No</h2></div>
           <div class="col-6 txt-right"><h2>#{{order.external_id | uppercase}}</h2></div>
           <div class="w-100"></div>
           <div class="col-12">
@@ -91,12 +91,12 @@
 <!-- Order Container End Here -->
 
 <!-- Feedback Pop Up Start Here -->
-<div *ngIf="order.status_name === 'delivered'">
+<div *ngIf="order.status_name === 'delivered' || order.status_name === 'reached_store'">
     <div class="feedback-popup" *ngIf="!rating?.feedback">
     <div class="s-message">
       <img src="assets/images/successful.gif" alt="">
       <div class="txts"><p class="success-text">Order Successfully Delivered</p>
-        <p class="order-id">Order ID:  <strong>#{{order.id.substr(-6, 6) | uppercase}}</strong></p></div>
+        <p class="order-id">Order No:  <strong>#{{order.external_id | uppercase}}</strong></p></div>
 
     </div>
     <div class="botcont">
@@ -137,7 +137,7 @@
   </div>
 </div>
 
-<div  *ngIf="order.status_name === 'delivered'">
+<div  *ngIf="order.status_name === 'delivered' || order.status_name === 'reached_store'">
   <div class="feedback-popup" *ngIf="rating?.rating">
     <div class="s-message"><img src="assets/images/successful.gif" alt=""><p>Your order has been delivered successfully.</p></div>
     <div class="botcont">
@@ -250,7 +250,7 @@
             <div class="col-12">
                 <p><strong>{{order.rider.name}}</strong><br>
                     <strong>Vaccinated against Covid-19</strong> <span class="vc">View Certificate</span></p>
-                <p class="bt">Body Temperature <span class="tempr">97F</span></p>
+                <p class="bt">Body Temperature <span class="tempr">{{body_temp}}&#8457;</span></p>
             </div>
         </div>
     </div>

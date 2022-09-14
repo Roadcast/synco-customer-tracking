@@ -53,6 +53,7 @@ export class CustomerTrackingPageComponent implements OnInit {
   notes = 'Delivery in';
   orderSummaryValue: boolean = false;
   order_Payment: any;
+  body_temp: any;
   firstLocationTime: any;
   updatedTime: any = 0;
   currentUpdateTime: any;
@@ -71,8 +72,9 @@ export class CustomerTrackingPageComponent implements OnInit {
     this.order = this.orderService.order;
     this.rating = this.orderService.rating;
     this.order_status = this.orderService.order_status;
-    this.order_Payment = this.orderService.orderPayment
-
+    this.order_Payment = this.orderService.orderPayment;
+    const bodytemp = this.orderService.body_temp;
+    this.body_temp = bodytemp.body_temp_vaccination_status.EmployeeBodyTemp
     // const lat1 = this.order.rider_position.latitude;
     // const lng1 = this.order.rider_position.longitude;
     // const lat2 = this.order.delivery_location.latitude;
@@ -212,7 +214,6 @@ export class CustomerTrackingPageComponent implements OnInit {
   riderPan() {
     this.orderService.riderPosition.next({lat:this.order.rider_position.latitude,
       lng: this.order.rider_position.longitude});
-    console.log('riderpan', this.order.rider_position)
   }
 
   infoModel() {

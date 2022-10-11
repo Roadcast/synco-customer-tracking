@@ -74,25 +74,7 @@ export class CustomerTrackingPageComponent implements OnInit {
     this.order_status = this.orderService.order_status;
     this.order_Payment = this.orderService.orderPayment;
     const bodytemp = this.orderService.body_temp;
-    this.body_temp = bodytemp.body_temp_vaccination_status.EmployeeBodyTemp
-    // const lat1 = this.order.rider_position.latitude;
-    // const lng1 = this.order.rider_position.longitude;
-    // const lat2 = this.order.delivery_location.latitude;
-    // const lng2 = this.order.delivery_location.longitude;
-    //
-    // var R = 6371; // Radius of the earth in kilometers
-    // var dLat = this.deg2rad1(lat2 - lat1); // deg2rad below
-    // var dLon = this.deg2rad1(lng2 - lng1);
-    // var a =
-    //     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    //     Math.cos(this.deg2rad1(lat1)) * Math.cos(this.deg2rad(lat2)) *
-    //     Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    // var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    // var d = R * c; // Distance in KM
-    // // return d;
-    // const time = d/40;
-    // this.firstLocationTime = Number(time*60);
-    // console.log('this.firstLocationTime', this.firstLocationTime)
+    this.body_temp = bodytemp.body_temp_vaccination_status?.EmployeeBodyTemp
     this.order_status.forEach((row: any) => {
       // @ts-ignore
       this.orderStatusDist[row.status_code] = row.status_code;

@@ -34,7 +34,6 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/here-flexible-polyline.js"
             ]
           },
           "configurations": {

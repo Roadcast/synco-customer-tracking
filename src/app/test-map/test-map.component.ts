@@ -1,10 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {OrderService} from "../order.service";
-import {Order} from "../order";
+import {Geom, Order} from "../order";
 import {interval, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {getRiderIconBike} from "../riderIcon";
 import Polyline = google.maps.Polyline;
+import {environment} from '../../environments/environment';
+import * as HereFlexible from '../here-flexible-polyline';
 
 @Component({
     selector: 'app-test-map',
@@ -105,6 +107,7 @@ export class TestMapComponent implements OnInit {
         });
 
         this.getRiderPathFromHerePathThenCacheLocally(this.order).then();
+        this.fetchRouteFromHereMaps(this.order.pick_up_location, this.order.delivery_location);
 
         this.riderLatLng = {
             lat: this.order.rider_position.latitude,
@@ -230,4 +233,58 @@ export class TestMapComponent implements OnInit {
 
 
     }
+
+    /*
+    Todo : checkLatLngDistance is greater than 50 metres in a polling request then fetchRouteFromHereMaps and animate marker
+     */
+
+
+    checkLatLngDistance(a: Geom, b: Geom) {
+        try {
+            return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(a.latitude, a.longitude),
+                new google.maps.LatLng(b.latitude, b.longitude));
+        } catch (e) {
+            console.error(e);
+            return 0
+        }
+    }
+
+    async fetchRouteFromHereMaps(a: Geom, b: Geom) {
+        try {
+            const response: HereResponse = (await this.http.get(
+                'https://router.hereapi.com/v8/routes', {
+                    params: {
+                        origin:`${a.latitude},${a.longitude}`,
+                        transportMode:'car',
+                        destination:`${b.latitude},${b.longitude}`,
+                        'return':'polyline',
+                        apikey: environment.hereApiKey
+                    },
+                }).toPromise()) as HereResponse;
+            return HereFlexible.decode(response.routes[0].sections[0].polyline).polyline;
+        } catch (e) {
+            console.error(e);
+            return [];
+        }
+    }
+}
+
+export interface HereResponse {
+    routes: HereResponseRoute[];
+}
+
+export interface HereResponseRoute {
+    id: string;
+    sections: HereResponseRouteSection[],
+}
+
+export interface HereResponseRouteSection {
+    id: string;
+    type: string;
+    departure: any;
+    arrival: any;
+    polyline: string;
+    transport: {
+        mode: string;
+    };
 }

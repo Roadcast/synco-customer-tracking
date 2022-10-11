@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://jfl-api-dev.roadcast.co.in/api/v1/',
+  hereApiKey: '3Xz_d2T_zyHKm1WhBNRAdtmToAQ_HhLmWtMstKeFo34',
 };
 
 /*

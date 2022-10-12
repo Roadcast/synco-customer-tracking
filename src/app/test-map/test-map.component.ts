@@ -107,7 +107,6 @@ export class TestMapComponent implements OnInit {
         });
 
         this.getRiderPathFromHerePathThenCacheLocally(this.order).then();
-        this.fetchRouteFromHereMaps(this.order.pick_up_location, this.order.delivery_location);
 
         this.riderLatLng = {
             lat: this.order.rider_position.latitude,
@@ -149,19 +148,49 @@ export class TestMapComponent implements OnInit {
             }
         };
 
+        const handlePollingPosition = (lat: number, lng: number) => {
+            this.riderLatLng = {
+                lat,
+                lng,
+            };
+            this.newPositionsList.push(this.riderLatLng);
+            const newLatLng = [lat, lng];
+            startAnimationOfMarker(newLatLng);
+            this.oldRiderLatLng = this.riderLatLng;
+        }
+
+        const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
         this.map.setCenter(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
         this.subscribe = interval(3000)
-            .subscribe(() => {
+            .subscribe(async () => {
                 this.orderService.init().then();
                 this.order = this.orderService.order;
-                this.riderLatLng = {
-                    lat: this.order.rider_position.latitude,
-                    lng: this.order.rider_position.longitude,
-                };
-                this.newPositionsList.push(this.riderLatLng);
-                const newLatLng = [this.riderLatLng.lat, this.riderLatLng.lng];
-                startAnimationOfMarker(newLatLng);
-                this.oldRiderLatLng = this.riderLatLng;
+
+                let shouldFetchPath = this.checkIfMovedAboveThresholdToFetchPath(this.riderLatLng, this.order.rider_position);
+
+                if (shouldFetchPath) {
+                    try {
+                        const coords = await this.fetchRouteFromHereMaps(this.riderLatLng, this.order.rider_position);
+                        if (coords && coords.length) {
+                            const delayMs = Math.round(3000 / coords.length);
+                            for (const coordinate of coords) {
+                                handlePollingPosition(coordinate[0], coordinate[1]);
+                                await sleep(delayMs);
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        shouldFetchPath = false;
+                    }
+                }
+
+                if (!shouldFetchPath){
+                    handlePollingPosition(this.order.rider_position.latitude, this.order.rider_position.longitude);
+                }
+
+
+
 
                 // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.oldRiderLatLng);
                 // this.map.fitBounds(bounds);
@@ -172,6 +201,7 @@ export class TestMapComponent implements OnInit {
         }
 
     }
+
 
     async getRiderPathFromHerePathThenCacheLocally(order: any) {
         const riderPolyLineColor = '#0078AC';
@@ -234,20 +264,33 @@ export class TestMapComponent implements OnInit {
 
     }
 
-    /*
-    Todo : checkLatLngDistance is greater than 50 metres in a polling request then fetchRouteFromHereMaps and animate marker
-     */
 
-
-    checkLatLngDistance(a: Geom, b: Geom) {
+    checkIfMovedAboveThresholdToFetchPath(a: Geom, b: Geom) {
         try {
-            return google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(a.latitude, a.longitude),
-                new google.maps.LatLng(b.latitude, b.longitude));
+            const aLatLng = new google.maps.LatLng(a.latitude, a.longitude);
+            const bLatLng = new google.maps.LatLng(b.latitude, b.longitude);
+            const newBearing = google.maps.geometry.spherical.computeHeading(aLatLng, bLatLng);
+
+            if (!this.oldBearingData) {
+                this.oldBearingData = newBearing; // happens on first polling
+            }
+
+            if (newBearing != this.oldBearingData) {
+                this.oldBearingData = newBearing;
+                return true; // direction Changed
+            }
+
+            if (google.maps.geometry.spherical.computeDistanceBetween(aLatLng, bLatLng) > 50) {
+                return true; // moved more than 50 metres
+            }
+
         } catch (e) {
             console.error(e);
-            return 0
         }
+        return false;
+
     }
+
 
     async fetchRouteFromHereMaps(a: Geom, b: Geom) {
         try {

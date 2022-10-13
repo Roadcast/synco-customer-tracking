@@ -7,6 +7,7 @@ import {getRiderIconBike} from "../riderIcon";
 import Polyline = google.maps.Polyline;
 import {environment} from '../../environments/environment';
 import * as HereFlexible from '../here-flexible-polyline';
+import {createLogErrorHandler} from "@angular/compiler-cli/ngcc/src/execution/tasks/completion";
 
 @Component({
     selector: 'app-test-map',
@@ -167,11 +168,16 @@ export class TestMapComponent implements OnInit {
                 this.orderService.init().then();
                 this.order = this.orderService.order;
 
-                let shouldFetchPath = this.checkIfMovedAboveThresholdToFetchPath(this.riderLatLng, this.order.rider_position);
-
+                let shouldFetchPath = this.checkIfMovedAboveThresholdToFetchPath({
+                    latitude: this.oldRiderLatLng.lat,
+                    longitude: this.oldRiderLatLng.lng
+                } as Geom, this.order.rider_position);
                 if (shouldFetchPath) {
                     try {
-                        const coords = await this.fetchRouteFromHereMaps(this.riderLatLng, this.order.rider_position);
+                        const coords = await this.fetchRouteFromHereMaps({
+                            latitude: this.oldRiderLatLng.lat,
+                            longitude: this.oldRiderLatLng.lng
+                        } as Geom, this.order.rider_position);
                         if (coords && coords.length) {
                             const delayMs = Math.round(3000 / coords.length);
                             for (const coordinate of coords) {
@@ -267,6 +273,9 @@ export class TestMapComponent implements OnInit {
 
     checkIfMovedAboveThresholdToFetchPath(a: Geom, b: Geom) {
         try {
+            if (a.latitude == b.latitude && a.longitude == b.longitude) {
+                return false;
+            }
             const aLatLng = new google.maps.LatLng(a.latitude, a.longitude);
             const bLatLng = new google.maps.LatLng(b.latitude, b.longitude);
             const newBearing = google.maps.geometry.spherical.computeHeading(aLatLng, bLatLng);
@@ -277,10 +286,11 @@ export class TestMapComponent implements OnInit {
 
             if (newBearing != this.oldBearingData) {
                 this.oldBearingData = newBearing;
-                return true; // direction Changed
+                console.log('rider direction changed');
+                // return true; // direction Changed
             }
 
-            if (google.maps.geometry.spherical.computeDistanceBetween(aLatLng, bLatLng) > 50) {
+            if (google.maps.geometry.spherical.computeDistanceBetween(aLatLng, bLatLng) > 150) {
                 return true; // moved more than 50 metres
             }
 

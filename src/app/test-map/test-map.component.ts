@@ -7,7 +7,7 @@ import {getRiderIconBike} from "../riderIcon";
 import Polyline = google.maps.Polyline;
 import {environment} from '../../environments/environment';
 import * as HereFlexible from '../here-flexible-polyline';
-import {createLogErrorHandler} from "@angular/compiler-cli/ngcc/src/execution/tasks/completion";
+import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Component({
     selector: 'app-test-map',
@@ -21,20 +21,14 @@ export class TestMapComponent implements OnInit {
     pickupLatLng: any;
     dropLatLng: any;
     map: any;
-    coordinates: any = [];
+    coordinates: LatLngLiteral[] = [];
     markers: any = [];
     order: Order = {} as Order;
-    orderHereMapRoutePath = {};
     marker: any = [];
     subscribe: Subscription = new Subscription();
-    oldBearingData: any;
-    getData = [];
-    bikeSvg: any;
-    riderPolyLine: any;
-    pathPolyLine: any;
-    animationDirectionPathList: google.maps.Polyline[] = [];
+    riderPolyLine = new Polyline();
+    pathPolyLine = new Polyline();
     private oldRiderLatLng: any;
-    private newPositionsList: any = [];
 
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
@@ -113,7 +107,7 @@ export class TestMapComponent implements OnInit {
             lat: this.order.rider_position.latitude,
             lng: this.order.rider_position.longitude,
         };
-        this.orderService.riderPosition.subscribe(res =>{
+        this.orderService.riderPosition.subscribe(res => {
             const bounds = new google.maps.LatLngBounds(res);
             this.map.fitBounds(bounds);
             this.map.setZoom(15);
@@ -149,57 +143,40 @@ export class TestMapComponent implements OnInit {
             }
         };
 
-        const handlePollingPosition = (lat: number, lng: number) => {
-            this.riderLatLng = {
-                lat,
-                lng,
-            };
-            this.newPositionsList.push(this.riderLatLng);
-            const newLatLng = [lat, lng];
-            startAnimationOfMarker(newLatLng);
-            this.oldRiderLatLng = this.riderLatLng;
-        }
-
         const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+        const handlePollingPosition = async (lat: number, lng: number) => {
+            const coords = await this.calculateRiderMovementPath({
+                latitude: this.riderLatLng.lat,
+                longitude: this.riderLatLng.lng
+            }, {
+                latitude: lat,
+                longitude: lng
+            });
+            const delayMs = Math.round(3000 / coords.length);
+            for (const latLng of coords) {
+                this.riderLatLng = latLng;
+                startAnimationOfMarker([lat, lng]);
+                this.oldRiderLatLng = latLng;
+                await sleep(delayMs);
+                console.log('sda', new Date(), delayMs, coords.length);
+            }
+            return;
+
+        }
 
         this.map.setCenter(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
         this.subscribe = interval(3000)
             .subscribe(async () => {
+                if (!document.hasFocus()) {
+                    console.log('Browser tab is changed; document.hasFocus() = false');
+                    return;
+                }
                 this.orderService.init().then();
                 this.order = this.orderService.order;
-
-                let shouldFetchPath = this.checkIfMovedAboveThresholdToFetchPath({
-                    latitude: this.oldRiderLatLng.lat,
-                    longitude: this.oldRiderLatLng.lng
-                } as Geom, this.order.rider_position);
-                if (shouldFetchPath) {
-                    try {
-                        const coords = await this.fetchRouteFromHereMaps({
-                            latitude: this.oldRiderLatLng.lat,
-                            longitude: this.oldRiderLatLng.lng
-                        } as Geom, this.order.rider_position);
-                        if (coords && coords.length) {
-                            const delayMs = Math.round(3000 / coords.length);
-                            for (const coordinate of coords) {
-                                handlePollingPosition(coordinate[0], coordinate[1]);
-                                await sleep(delayMs);
-                            }
-                        }
-                    } catch (e) {
-                        console.error(e);
-                        shouldFetchPath = false;
-                    }
+                if (this.riderLatLng.lat !== this.order.rider_position.latitude || this.riderLatLng.lng !== this.order.rider_position.longitude) {
+                    handlePollingPosition(this.order.rider_position.latitude, this.order.rider_position.longitude).then();
                 }
-
-                if (!shouldFetchPath){
-                    handlePollingPosition(this.order.rider_position.latitude, this.order.rider_position.longitude);
-                }
-
-
-
-
-                // const bounds = new google.maps.LatLngBounds(this.dropLatLng, this.oldRiderLatLng);
-                // this.map.fitBounds(bounds);
 
             });
         if (this.order.status_name === 'delivered' || this.order.status_name === 'cancelled') {
@@ -208,113 +185,94 @@ export class TestMapComponent implements OnInit {
 
     }
 
+    async calculateRiderMovementPath(a: Geom, b: Geom): Promise<LatLngLiteral[]> {
+        let coords: LatLngLiteral[] = [];
+        let lowestDistance = 10000;
+        let lowestIndex = 0;
+        this.coordinates.forEach((pathCord, index) => {
+            const diff = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(b.latitude, b.longitude),
+                new google.maps.LatLng(pathCord.lat, pathCord.lng));
+            if (diff <= lowestDistance) {
+                lowestDistance = diff;
+                lowestIndex = index;
+            }
+        });
 
-    async getRiderPathFromHerePathThenCacheLocally(order: any) {
-        const riderPolyLineColor = '#0078AC';
-        const pathPolyLineColor = '#0047b3';
-        let origin, destination;
+        if (lowestDistance < 50) {
+            // rider is on plotted path
+            const riderMovementCoords = this.coordinates.splice(0, lowestIndex);
+            riderMovementCoords.forEach((coordinate) => {
+                coords.push(coordinate)
+            });
+        } else {
+            coords = await this.fetchRouteFromHereMaps(a, b);
+            this.getRiderPathFromHerePathThenCacheLocally(this.order, false).then();
+        }
+        return coords;
+    }
+
+    async getRiderPathFromHerePathThenCacheLocally(order: any, initial= true) {
+        let origin: Geom | undefined = undefined, destination: Geom | undefined = undefined;
         if (order.rider_position && order.rider_position.latitude && order.rider_position.longitude) {
-
-            origin = [order.rider_position.longitude, order.rider_position.latitude];
+            origin = {latitude: order.rider_position.latitude, longitude: order.rider_position.longitude};
         }
         if (order.delivery_location &&
             order.delivery_location.latitude &&
             order.delivery_location.longitude) {
-            destination = [
-                order.delivery_location.longitude,
-                order.delivery_location.latitude,
-            ];
+            destination = {latitude: order.delivery_location.latitude, longitude: order.delivery_location.longitude};
         }
-        let coordsClean: any;
-        if (origin && destination) {
-            const request = this.http.post(
-                'https://routing.roadcast.co.in/ors/v2/directions/driving-car/geojson', {
-                    coordinates: [
-                        origin, destination,
-                    ],
-                }).subscribe((res: any) => {
-                this.coordinates = res.features[0].geometry.coordinates;
-                coordsClean = this.coordinates.map((x: any) => {
-                    return {lat: x[1], lng: x[0]}
-                });
-                this.riderPolyLine = new google.maps.Polyline({
-                    strokeColor: riderPolyLineColor,
-                    map: this.map,
-                    icons: getRiderIconBike(),
-                    zIndex: 100000
-                });
-
-                this.pathPolyLine = new google.maps.Polyline({
-                    strokeColor: pathPolyLineColor,
-                    map: this.map,
-                    path: coordsClean, geodesic: true, visible: true,
-                });
-
-                const zoomToObject = (obj: { getPath: () => { (): any; new(): any; getArray: { (): any; new(): any; }; }; }) =>{
-                    const bounds = new google.maps.LatLngBounds();
-                    const points = obj.getPath().getArray();
-                    for (let n = 0; n < points.length ; n++){
-                        bounds.extend(points[n]);
-                    }
-                    this.map.fitBounds(bounds);
-                };
-
-                zoomToObject(this.pathPolyLine);
-
-                console.log(coordsClean[0]);
-                console.log(coordsClean[1]);
-
-            });
+        if (!origin || !destination) {
+            return;
         }
-
-
-    }
-
-
-    checkIfMovedAboveThresholdToFetchPath(a: Geom, b: Geom) {
+        this.coordinates = await this.fetchRouteFromHereMaps(origin, destination);
         try {
-            if (a.latitude == b.latitude && a.longitude == b.longitude) {
-                return false;
-            }
-            const aLatLng = new google.maps.LatLng(a.latitude, a.longitude);
-            const bLatLng = new google.maps.LatLng(b.latitude, b.longitude);
-            const newBearing = google.maps.geometry.spherical.computeHeading(aLatLng, bLatLng);
-
-            if (!this.oldBearingData) {
-                this.oldBearingData = newBearing; // happens on first polling
-            }
-
-            if (newBearing != this.oldBearingData) {
-                this.oldBearingData = newBearing;
-                console.log('rider direction changed');
-                // return true; // direction Changed
-            }
-
-            if (google.maps.geometry.spherical.computeDistanceBetween(aLatLng, bLatLng) > 150) {
-                return true; // moved more than 50 metres
-            }
-
+            this.pathPolyLine.setMap(null);
         } catch (e) {
-            console.error(e);
+            console.log(e);
         }
-        return false;
+        this.pathPolyLine = new google.maps.Polyline({
+            strokeColor: '#0047b3',
+            map: this.map,
+            path: this.coordinates, geodesic: true, visible: true,
+        });
+        if (initial) {
+            this.riderPolyLine = new google.maps.Polyline({
+                strokeColor: '#0078AC',
+                strokeOpacity: 0,
+                map: this.map,
+                icons: getRiderIconBike(),
+                zIndex: 100000,
+            });
+            const zoomToObject = (obj: { getPath: () => { (): any; new(): any; getArray: { (): any; new(): any; }; }; }) => {
+                const bounds = new google.maps.LatLngBounds();
+                const points = obj.getPath().getArray();
+                for (let n = 0; n < points.length; n++) {
+                    bounds.extend(points[n]);
+                }
+                this.map.fitBounds(bounds);
+            };
+            zoomToObject(this.pathPolyLine as any);
+        }
 
     }
 
 
-    async fetchRouteFromHereMaps(a: Geom, b: Geom) {
+    async fetchRouteFromHereMaps(a: Geom, b: Geom): Promise<LatLngLiteral[]> {
         try {
             const response: HereResponse = (await this.http.get(
                 'https://router.hereapi.com/v8/routes', {
                     params: {
-                        origin:`${a.latitude},${a.longitude}`,
-                        transportMode:'car',
-                        destination:`${b.latitude},${b.longitude}`,
-                        'return':'polyline',
+                        origin: `${a.latitude},${a.longitude}`,
+                        transportMode: 'car',
+                        destination: `${b.latitude},${b.longitude}`,
+                        'return': 'polyline',
                         apikey: environment.hereApiKey
                     },
                 }).toPromise()) as HereResponse;
-            return HereFlexible.decode(response.routes[0].sections[0].polyline).polyline;
+            const latLngList = HereFlexible.decode(response.routes[0].sections[0].polyline).polyline;
+            return latLngList.map((x: any) => {
+                return {lat: x[0], lng: x[1]}
+            });
         } catch (e) {
             console.error(e);
             return [];

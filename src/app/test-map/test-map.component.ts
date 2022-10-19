@@ -198,7 +198,6 @@ export class TestMapComponent implements OnInit {
         for (let i = 0; i <= metres; i++) {
             lat += deltaLat;
             lng += deltaLng;
-            console.log({lat, lng});
             coords.push({lat, lng});
         }
 
@@ -224,6 +223,8 @@ export class TestMapComponent implements OnInit {
             riderMovementCoords.forEach((coordinate) => {
                 if (coords.length) {
                     coords.push(...this.generateAnimationPath(coords[coords.length - 1], coordinate));
+                } else {
+                    // coords.push(...this.generateAnimationPath({lat: a.latitude, lng: a.longitude}, coordinate));
                 }
                 coords.push(coordinate)
             });
@@ -263,6 +264,7 @@ export class TestMapComponent implements OnInit {
                 strokeColor: '#0078AC',
                 strokeOpacity: 0,
                 map: this.map,
+                path: [{lat: origin.latitude + 0.0000001, lng: origin.longitude + 0.00000001}],
                 icons: getRiderIconBike(),
                 zIndex: 100000,
             });

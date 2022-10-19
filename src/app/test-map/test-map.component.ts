@@ -161,6 +161,7 @@ export class TestMapComponent implements OnInit {
         }
 
         this.map.setCenter(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
+        handlePollingPosition(this.order.rider_position.latitude, this.order.rider_position.longitude).then();
         this.subscribe = interval(3000)
             .subscribe(async () => {
                 if (!document.hasFocus()) {

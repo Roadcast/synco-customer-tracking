@@ -4,9 +4,9 @@ import {Geom, Order} from "../order";
 import {interval, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {getRiderIconBike} from "../riderIcon";
-import Polyline = google.maps.Polyline;
 import {environment} from '../../environments/environment';
 import * as HereFlexible from '../here-flexible-polyline';
+import Polyline = google.maps.Polyline;
 import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Component({
@@ -154,8 +154,8 @@ export class TestMapComponent implements OnInit {
             initialPositionOfMarker = {lat: this.riderLatLng.lat, lng: this.riderLatLng.lng};
             for (const latLng of coords) {
                 this.riderLatLng = latLng;
-                initialDiff = delayMs;
-                startAnimationOfMarker({lat, lng});
+                this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng))
+                // startAnimationOfMarker({lat, lng});
                 await sleep(delayMs);
             }
             return;
@@ -270,7 +270,7 @@ export class TestMapComponent implements OnInit {
             const latLngList = HereFlexible.decode(response.routes[0].sections[0].polyline).polyline;
             return latLngList.map((x: any) => {
                 return {lat: x[0], lng: x[1]}
-            });
+            })
         } catch (e) {
             console.error(e);
             return [];

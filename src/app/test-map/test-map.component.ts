@@ -151,7 +151,6 @@ export class TestMapComponent implements OnInit {
                 longitude: lng
             });
             const delayMs = Math.round(3000 / coords.length);
-            initialPositionOfMarker = {lat: this.riderLatLng.lat, lng: this.riderLatLng.lng};
             for (const latLng of coords) {
                 this.riderLatLng = latLng;
                 this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng))
@@ -193,10 +192,14 @@ export class TestMapComponent implements OnInit {
         const deltaLat = (b.lat - a.lat)/metres;
         const deltaLng = (b.lng - a.lng)/metres;
 
+        let lat = a.lat;
+        let lng = a.lng;
+
         for (let i = 0; i <= metres; i++) {
-            a.lat += deltaLat;
-            a.lng += deltaLng;
-            coords.push(a);
+            lat += deltaLat;
+            lng += deltaLng;
+            console.log({lat, lng});
+            coords.push({lat, lng});
         }
 
         return coords;

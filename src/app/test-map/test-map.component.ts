@@ -183,6 +183,25 @@ export class TestMapComponent implements OnInit {
 
     }
 
+    generateAnimationPath(a:LatLngLiteral, b: LatLngLiteral): LatLngLiteral[] {
+        let coords: LatLngLiteral[] = [];
+        let metres = Math.round(google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(a),
+            new google.maps.LatLng(b)));
+
+        metres *= 10;
+
+        const deltaLat = (b.lat - a.lat)/metres;
+        const deltaLng = (b.lng - a.lng)/metres;
+
+        for (let i = 0; i <= metres; i++) {
+            a.lat += deltaLat;
+            a.lng += deltaLng;
+            coords.push(a);
+        }
+
+        return coords;
+    }
+
     async calculateRiderMovementPath(a: Geom, b: Geom): Promise<LatLngLiteral[]> {
         let coords: LatLngLiteral[] = [];
         let lowestDistance = 10000;
@@ -200,6 +219,9 @@ export class TestMapComponent implements OnInit {
             // rider is on plotted path
             const riderMovementCoords = this.coordinates.splice(0, lowestIndex);
             riderMovementCoords.forEach((coordinate) => {
+                if (coords.length) {
+                    coords.push(...this.generateAnimationPath(coords[coords.length - 1], coordinate));
+                }
                 coords.push(coordinate)
             });
         } else {

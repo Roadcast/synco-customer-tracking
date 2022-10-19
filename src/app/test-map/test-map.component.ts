@@ -152,7 +152,6 @@ export class TestMapComponent implements OnInit {
             });
             const delayMs = Math.round(3000 / coords.length);
             for (const latLng of coords) {
-                initialPositionOfMarker = this.riderLatLng;
                 this.riderLatLng = latLng;
                 startAnimationOfMarker({lat, lng});
                 await sleep(delayMs);

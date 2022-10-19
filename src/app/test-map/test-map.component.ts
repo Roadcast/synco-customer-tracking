@@ -112,7 +112,7 @@ export class TestMapComponent implements OnInit {
             this.map.setZoom(15);
         })
 
-        const initialDiff = 10000;
+        let initialDiff = 10000;
         const delay = 0;
         let i = 0;
         let diffLat: any;
@@ -151,8 +151,10 @@ export class TestMapComponent implements OnInit {
                 longitude: lng
             });
             const delayMs = Math.round(3000 / coords.length);
+            initialPositionOfMarker = {lat: this.riderLatLng.lat, lng: this.riderLatLng.lng};
             for (const latLng of coords) {
                 this.riderLatLng = latLng;
+                initialDiff = delayMs;
                 startAnimationOfMarker({lat, lng});
                 await sleep(delayMs);
             }
@@ -165,7 +167,7 @@ export class TestMapComponent implements OnInit {
         this.subscribe = interval(3000)
             .subscribe(async () => {
                 if (!document.hasFocus()) {
-                    console.log('Browser tab is changed; document.hasFocus() = false');
+                    console.log('Browser tab is changed; skipping polling');
                     return;
                 }
                 this.orderService.init().then();

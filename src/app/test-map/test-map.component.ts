@@ -121,19 +121,19 @@ export class TestMapComponent implements OnInit {
         let diffLat: any;
         let diffLng: any;
 
-        let initialPositionOfMarker = [this.riderLatLng.lat, this.riderLatLng.lng];
+        let initialPositionOfMarker: LatLngLiteral = {lat: this.riderLatLng.lat, lng: this.riderLatLng.lng};
 
-        const startAnimationOfMarker = (result: number[]) => {
+        const startAnimationOfMarker = (result:LatLngLiteral) => {
             i = 0;
-            diffLat = (result[0] - initialPositionOfMarker[0]) / initialDiff;
-            diffLng = (result[1] - initialPositionOfMarker[1]) / initialDiff;
+            diffLat = (result.lat - initialPositionOfMarker.lat) / initialDiff;
+            diffLng = (result.lng - initialPositionOfMarker.lng) / initialDiff;
             moveMarker();
         };
 
         const moveMarker = () => {
-            initialPositionOfMarker[0] += diffLat;
-            initialPositionOfMarker[1] += diffLng;
-            const newLatLng = new google.maps.LatLng(initialPositionOfMarker[0], initialPositionOfMarker[1]);
+            initialPositionOfMarker.lat += diffLat;
+            initialPositionOfMarker.lng += diffLng;
+            const newLatLng = new google.maps.LatLng(initialPositionOfMarker.lat, initialPositionOfMarker.lng);
             const path = this.riderPolyLine.getPath();
             path.push(newLatLng);
 
@@ -156,7 +156,7 @@ export class TestMapComponent implements OnInit {
             const delayMs = Math.round(3000 / coords.length);
             for (const latLng of coords) {
                 this.riderLatLng = latLng;
-                startAnimationOfMarker([lat, lng]);
+                startAnimationOfMarker({lat, lng});
                 this.oldRiderLatLng = latLng;
                 await sleep(delayMs);
                 console.log('sda', new Date(), delayMs, coords.length);

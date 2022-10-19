@@ -28,7 +28,6 @@ export class TestMapComponent implements OnInit {
     subscribe: Subscription = new Subscription();
     riderPolyLine = new Polyline();
     pathPolyLine = new Polyline();
-    private oldRiderLatLng: any;
 
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
@@ -113,8 +112,6 @@ export class TestMapComponent implements OnInit {
             this.map.setZoom(15);
         })
 
-        this.oldRiderLatLng = this.riderLatLng;
-
         const initialDiff = 10000;
         const delay = 0;
         let i = 0;
@@ -155,11 +152,10 @@ export class TestMapComponent implements OnInit {
             });
             const delayMs = Math.round(3000 / coords.length);
             for (const latLng of coords) {
+                initialPositionOfMarker = this.riderLatLng;
                 this.riderLatLng = latLng;
                 startAnimationOfMarker({lat, lng});
-                this.oldRiderLatLng = latLng;
                 await sleep(delayMs);
-                console.log('sda', new Date(), delayMs, coords.length);
             }
             return;
 

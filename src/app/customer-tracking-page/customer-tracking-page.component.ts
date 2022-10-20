@@ -60,6 +60,8 @@ export class CustomerTrackingPageComponent implements OnInit {
   subTitleTime: any;
   riderNumber: any;
   infoModelValue: boolean = false;
+  currentApplicationVersion = environment.appVersion;
+
   constructor(public orderService: OrderService, private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
       rating1: ['', Validators.required],

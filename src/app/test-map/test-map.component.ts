@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {OrderService} from "../order.service";
 import {Geom, Order} from "../order";
-import {interval, Subscription} from "rxjs";
+import {debounceTime, interval, Subject, Subscription} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {getRiderIconBike} from "../riderIcon";
 import {environment} from '../../environments/environment';
@@ -28,6 +28,10 @@ export class TestMapComponent implements OnInit {
     subscribe: Subscription = new Subscription();
     riderPolyLine = new Polyline();
     pathPolyLine = new Polyline();
+    riderMovementPath: LatLngLiteral[] = [];
+    movementSubject: Subject<string> = new Subject();
+
+    riderSpeed = 25;
 
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
@@ -36,6 +40,11 @@ export class TestMapComponent implements OnInit {
         await this.orderService.init().then();
         this.order = this.orderService.order;
         this.mapReady();
+        this.movementSubject.pipe(
+            debounceTime(this.riderSpeed)
+        ).subscribe((a?: any) => {
+            this.moveRider();
+        });
     }
 
     mapReady() {
@@ -112,53 +121,25 @@ export class TestMapComponent implements OnInit {
             this.map.setZoom(15);
         })
 
-        let initialDiff = 10000;
-        const delay = 0;
-        let i = 0;
-        let diffLat: any;
-        let diffLng: any;
-
-        let initialPositionOfMarker: LatLngLiteral = {lat: this.riderLatLng.lat, lng: this.riderLatLng.lng};
-
-        const startAnimationOfMarker = (result:LatLngLiteral) => {
-            i = 0;
-            diffLat = (result.lat - initialPositionOfMarker.lat) / initialDiff;
-            diffLng = (result.lng - initialPositionOfMarker.lng) / initialDiff;
-            moveMarker();
-        };
-
-        const moveMarker = () => {
-            initialPositionOfMarker.lat += diffLat;
-            initialPositionOfMarker.lng += diffLng;
-            const newLatLng = new google.maps.LatLng(initialPositionOfMarker.lat, initialPositionOfMarker.lng);
-            const path = this.riderPolyLine.getPath();
-            path.push(newLatLng);
-
-            if (i != initialDiff) {
-                i++;
-                setTimeout(moveMarker, delay);
-            }
-        };
-
-        const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
         const handlePollingPosition = async (lat: number, lng: number) => {
+            let oldLat = this.riderLatLng.lat;
+            let oldLng = this.riderLatLng.lng;
+
+            if (this.riderMovementPath.length) {
+                const latLng = this.riderMovementPath[this.riderMovementPath.length - 1 ];
+                oldLat = latLng.lat;
+                oldLng = latLng.lng;
+            }
+
             const coords = await this.calculateRiderMovementPath({
-                latitude: this.riderLatLng.lat,
-                longitude: this.riderLatLng.lng
+                latitude: oldLat,
+                longitude: oldLng
             }, {
                 latitude: lat,
                 longitude: lng
             });
-            const delayMs = Math.round(3000 / coords.length);
-            for (const latLng of coords) {
-                this.riderLatLng = latLng;
-                this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng))
-                // startAnimationOfMarker({lat, lng});
-                await sleep(delayMs);
-            }
-            return;
-
+            this.riderMovementPath.push(...coords);
+            this.movementSubject.next('true');
         }
 
         this.map.setCenter(new google.maps.LatLng(this.order.rider_position.latitude, this.order.rider_position.longitude));
@@ -180,6 +161,19 @@ export class TestMapComponent implements OnInit {
             this.subscribe.unsubscribe()
         }
 
+    }
+
+    moveRider() {
+        if (!this.riderMovementPath.length) {
+            return;
+        }
+        const latLng = this.riderMovementPath.shift();
+        this.riderLatLng = latLng;
+        if (latLng)
+            this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng));
+        if (this.riderMovementPath.length) {
+            this.movementSubject.next('true');
+        }
     }
 
     generateAnimationPath(a:LatLngLiteral, b: LatLngLiteral): LatLngLiteral[] {
@@ -228,8 +222,12 @@ export class TestMapComponent implements OnInit {
                 }
                 coords.push(coordinate)
             });
+            if (coords.length) {
+                coords.shift();
+            }
         } else {
             coords = await this.fetchRouteFromHereMaps(a, b);
+            this.riderMovementPath = [];
             this.getRiderPathFromHerePathThenCacheLocally(this.order, false).then();
         }
         return coords;

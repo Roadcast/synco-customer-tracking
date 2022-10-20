@@ -31,7 +31,7 @@ export class TestMapComponent implements OnInit {
     riderMovementPath: LatLngLiteral[] = [];
     movementSubject: Subject<string> = new Subject();
 
-    riderSpeed = 25;
+    riderSpeed = 15;
 
     constructor(public orderService: OrderService, private http: HttpClient) {
     }

@@ -183,7 +183,7 @@
               </tr>
               <tr *ngFor="let item of order.order_items">
                 <td style="width:18px;"><div class="f-cat veg"><span></span></div></td>
-                <td>{{item.name}} X{{item?.quantity}}</td>
+                <td>{{item.notes}} X{{item?.quantity}}</td>
                 <td style="width:66px;" class="text-right">₹{{item?.amount}}</td>
               </tr>
               <!--              <tr>-->
@@ -196,14 +196,14 @@
                 <td colspan="2" class="bold">Sub Total</td>
                 <td colspan="2" class="bold text-right">₹{{order.sub_total}}</td>
               </tr>
-              <tr>
-                <td colspan="2">Discount</td>
-                <td colspan="2" class="text-right discount">-₹{{(order_Payment?.discount_amount).toFixed(2)}}</td>
-              </tr>
-              <tr>
-                <td colspan="2">Taxes &amp; Charges</td>
-                <td colspan="2" class="text-right">₹{{order_Payment?.tax}}</td>
-              </tr>
+<!--              <tr>-->
+<!--                <td colspan="2">Discount</td>-->
+<!--                <td colspan="2" class="text-right discount">-₹{{(order_Payment?.discount_amount).toFixed(2)}}</td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td colspan="2">Taxes &amp; Charges</td>-->
+<!--                <td colspan="2" class="text-right">₹{{order_Payment?.tax}}</td>-->
+<!--              </tr>-->
               <tr>
                 <td colspan="2"><strong>Grand Total</strong></td>
                 <td colspan="2" class="text-right"><strong>₹{{order.sub_total}}</strong></td>

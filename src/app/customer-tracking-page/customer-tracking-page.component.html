@@ -145,9 +145,20 @@
            padding: 10px; position: relative; font-weight: bold"><p>Thank You for Your Feedback.</p></div>
     </div>
   </div>
-  </div>
+</div>
 <!-- Feedback Pop Up End Here-->
 
+
+<div  *ngIf="order.status_name === 'cancelled'">
+    <div class="feedback-popup">
+        <div class="s-message"><img src="assets/images/cancel.svg" alt="" style="width: 35%;
+    /* margin-top: 50%; */
+    margin: 16% 0% 15% 0%;">
+            <div class="txts" style="margin-bottom: 4%">
+                <p class="order-id">Order No:  <strong>#{{order.external_id | uppercase}}</strong></p></div>
+            <p style="color: red; font-weight: bold;">Your order has been Cancelled.</p></div>
+    </div>
+</div>
 
 <!-- Order Summary Start Here -->
 <section class="order-summary-cont" *ngIf="orderSummaryValue">

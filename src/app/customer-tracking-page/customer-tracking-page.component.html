@@ -193,9 +193,8 @@
                 <td colspan="2" class="text-right"><strong>Amount</strong></td>
               </tr>
               <tr *ngFor="let item of order.order_items">
-                <td style="width:18px;"><div class="f-cat veg"><span></span></div></td>
-                <td>{{item.notes}} X{{item?.quantity}}</td>
-                <td style="width:66px;" class="text-right">₹{{item?.amount}}</td>
+                <td colspan="2">{{item.notes}} X{{item?.quantity}}</td>
+                <td colspan="2" class="text-right">₹{{item?.amount}}</td>
               </tr>
               <!--              <tr>-->
               <!--                <td><div class="f-cat non-veg"><span></span></div></td>-->

@@ -91,58 +91,58 @@
 <!-- Order Container End Here -->
 
 <!-- Feedback Pop Up Start Here -->
-<div *ngIf="order.status_name === 'delivered' || order.status_name === 'reached_store'">
-    <div class="feedback-popup" *ngIf="!rating?.feedback">
-    <div class="s-message">
-      <img src="assets/images/successful.gif" alt="">
-      <div class="txts"><p class="success-text">Order Successfully Delivered</p>
-        <p class="order-id">Order No:  <strong>#{{order.external_id | uppercase}}</strong></p></div>
+<!--<div *ngIf="order.status_name === 'delivered' || order.status_name === 'reached_store'">-->
+<!--    <div class="feedback-popup" *ngIf="!rating?.feedback">-->
+<!--    <div class="s-message">-->
+<!--      <img src="assets/images/successful.gif" alt="">-->
+<!--      <div class="txts"><p class="success-text">Order Successfully Delivered</p>-->
+<!--        <p class="order-id">Order No:  <strong>#{{order.external_id | uppercase}}</strong></p></div>-->
 
-    </div>
-    <div class="botcont">
-        <div class="feedback-form">
-            <div class="cont">
-            <div class="head">Your feedback is important to us!</div>
-              <div class="stars">
-<!--                <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'"></ngx-star-rating>-->
-                <div class="star-rating" (click)="getRating($event, '1')">
-                    <img *ngIf="rating3 < 1" src="assets/images/grey_1.svg" alt="">
-                    <img *ngIf="rating3 >=1" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
-                </div>
-                <div class="star-rating" (click)="getRating($event,'2')">
-                  <img *ngIf="rating3 < 2" src="assets/images/grey_2.svg" alt="">
-                  <img *ngIf="rating3 >=2" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
-                </div>
-                <div class="star-rating" (click)="getRating($event,'3')">
-                  <img *ngIf="rating3 < 3" src="assets/images/grey_3.svg" alt="">
-                  <img *ngIf="rating3 >=3" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
-                </div>
-                <div class="star-rating"  (click)="getRating($event,'4')">
-                  <img *ngIf="rating3 < 4" src="assets/images/grey_4.svg" alt="">
-                  <img *ngIf="rating3 >= 4" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
-                </div>
-                <div class="star-rating" (click)="getRating($event,'5')">
-                  <img *ngIf="rating3 < 5" src="assets/images/grey_5.svg" alt="">
-                  <img *ngIf="rating3 >= 5" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">
-                </div>
-              </div>
-            </div>
-          <div class="message">{{order.status_name | uppercase}}</div>
-          <div>
-            <textarea [(ngModel)]="feedbackorder" class="form-control" rows="2" placeholder="What would you like to share..."></textarea>
-            <button type="button" class="btn btn-primary w-100" (click)="feedback()">SEND FEEDBACK</button>
-          </div>
-        </div>
-  </div>
-  </div>
-</div>
+<!--    </div>-->
+<!--    <div class="botcont">-->
+<!--        <div class="feedback-form">-->
+<!--            <div class="cont">-->
+<!--            <div class="head">Your feedback is important to us!</div>-->
+<!--              <div class="stars">-->
+<!--&lt;!&ndash;                <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'"></ngx-star-rating>&ndash;&gt;-->
+<!--                <div class="star-rating" (click)="getRating($event, '1')">-->
+<!--                    <img *ngIf="rating3 < 1" src="assets/images/grey_1.svg" alt="">-->
+<!--                    <img *ngIf="rating3 >=1" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">-->
+<!--                </div>-->
+<!--                <div class="star-rating" (click)="getRating($event,'2')">-->
+<!--                  <img *ngIf="rating3 < 2" src="assets/images/grey_2.svg" alt="">-->
+<!--                  <img *ngIf="rating3 >=2" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">-->
+<!--                </div>-->
+<!--                <div class="star-rating" (click)="getRating($event,'3')">-->
+<!--                  <img *ngIf="rating3 < 3" src="assets/images/grey_3.svg" alt="">-->
+<!--                  <img *ngIf="rating3 >=3" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">-->
+<!--                </div>-->
+<!--                <div class="star-rating"  (click)="getRating($event,'4')">-->
+<!--                  <img *ngIf="rating3 < 4" src="assets/images/grey_4.svg" alt="">-->
+<!--                  <img *ngIf="rating3 >= 4" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">-->
+<!--                </div>-->
+<!--                <div class="star-rating" (click)="getRating($event,'5')">-->
+<!--                  <img *ngIf="rating3 < 5" src="assets/images/grey_5.svg" alt="">-->
+<!--                  <img *ngIf="rating3 >= 5" src='{{"assets/images/color_"+ rating3 + ".svg"}}' alt="">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          <div class="message">{{order.status_name | uppercase}}</div>-->
+<!--          <div>-->
+<!--            <textarea [(ngModel)]="feedbackorder" class="form-control" rows="2" placeholder="What would you like to share..."></textarea>-->
+<!--            <button type="button" class="btn btn-primary w-100" (click)="feedback()">SEND FEEDBACK</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--  </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <div  *ngIf="order.status_name === 'delivered' || order.status_name === 'reached_store'">
-  <div class="feedback-popup" *ngIf="rating?.rating">
-    <div class="s-message"><img src="assets/images/successful.gif" alt=""><p>Your order has been delivered successfully.</p></div>
+  <div class="feedback-popup">
+    <div class="s-message"><img src="assets/images/successful.gif" alt="">Order No: <strong>#{{order.external_id | uppercase}}</strong></div>
     <div class="botcont">
       <div  style="text-align: center;font-size: 14px;
-           padding: 10px; position: relative; font-weight: bold"><p>Thank You for Your Feedback.</p></div>
+           padding: 10px; position: relative; font-weight: bold"><p>Your order has been delivered successfully.</p></div>
     </div>
   </div>
 </div>

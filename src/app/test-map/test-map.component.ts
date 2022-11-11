@@ -24,14 +24,13 @@ export class TestMapComponent implements OnInit {
     coordinates: LatLngLiteral[] = [];
     markers: any = [];
     order: Order = {} as Order;
-    marker: any = [];
     subscribe: Subscription = new Subscription();
     riderPolyLine = new Polyline();
     pathPolyLine = new Polyline();
     riderMovementPath: LatLngLiteral[] = [];
     movementSubject: Subject<string> = new Subject();
 
-    riderSpeed = 5;
+    riderSpeed = 15;
 
     constructor(public orderService: OrderService, private http: HttpClient) {
     }

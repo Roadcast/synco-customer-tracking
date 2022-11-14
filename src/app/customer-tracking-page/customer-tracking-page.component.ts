@@ -61,6 +61,7 @@ export class CustomerTrackingPageComponent implements OnInit {
   riderNumber: any;
   infoModelValue: boolean = false;
   currentApplicationVersion = environment.appVersion;
+  currencyCode: any;
 
   constructor(public orderService: OrderService, private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -75,6 +76,7 @@ export class CustomerTrackingPageComponent implements OnInit {
     this.rating = this.orderService.rating;
     this.order_status = this.orderService.order_status;
     this.order_Payment = this.orderService.orderPayment;
+    this.currencyCode = this.orderService.currencyCode;
     const bodytemp = this.orderService.body_temp;
     this.body_temp = bodytemp.body_temp_vaccination_status?.EmployeeBodyTemp
     this.order_status.forEach((row: any) => {

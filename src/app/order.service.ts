@@ -15,6 +15,7 @@ export class OrderService {
     orderPayment: any;
     riderPosition = new BehaviorSubject({lat: 0, lng: 0})
     body_temp: any;
+    currencyCode: any;
 
     constructor(private router: Router, private httpDirect: HttpClient, handler: HttpBackend) {
         this.httpDirect = new HttpClient(handler);
@@ -37,5 +38,10 @@ export class OrderService {
         this.order_status = data.order_status
         this.orderPayment = data.order_payment[0]
         this.body_temp = data.rider_avail
+        const company = await fetch(api_url + 'order/get_redis_company/' + myParam, {
+            method: "GET",
+        });
+        const companyData = await company.json();
+        this.currencyCode = companyData.data.currencyCode;
     }
 }

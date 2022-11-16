@@ -30,7 +30,7 @@ export class TestMapComponent implements OnInit {
     riderMovementPath: LatLngLiteral[] = [];
     movementSubject: Subject<string> = new Subject();
 
-    riderSpeed = 15;
+    riderSpeed = 20;
 
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
@@ -268,7 +268,7 @@ export class TestMapComponent implements OnInit {
                 map: this.map,
                 path: [{lat: origin.latitude + 0.0000001, lng: origin.longitude + 0.00000001}],
                 icons: getRiderIconBike(),
-                zIndex: 100000,
+                zIndex: 9999999999999999999,
             });
             const zoomToObject = (obj: { getPath: () => { (): any; new(): any; getArray: { (): any; new(): any; }; }; }) => {
                 const bounds = new google.maps.LatLngBounds();

@@ -194,7 +194,7 @@
               </tr>
               <tr *ngFor="let item of order.order_items">
                 <td colspan="2">{{item.notes}} X{{item?.quantity}}</td>
-                <td colspan="2" class="text-right">₹{{item?.amount}}</td>
+                <td colspan="2" class="text-right">{{item?.amount | currency : currencyCode}}</td>
               </tr>
               <!--              <tr>-->
               <!--                <td><div class="f-cat non-veg"><span></span></div></td>-->
@@ -216,7 +216,7 @@
 <!--              </tr>-->
               <tr>
                 <td colspan="2"><strong>Grand Total</strong></td>
-                <td colspan="2" class="text-right"><strong>₹{{order.sub_total}}</strong></td>
+                  <td colspan="2" class="text-right"><strong>{{order.sub_total | currency: currencyCode}}</strong></td>
               </tr>
               </tbody>
             </table>

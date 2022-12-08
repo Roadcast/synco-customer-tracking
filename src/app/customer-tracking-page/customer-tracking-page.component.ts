@@ -6,6 +6,9 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {interval, Subscription} from "rxjs";
 import * as moment from "moment";
 import {environment} from "../../environments/environment";
+import {HttpClient} from "@angular/common/http";
+import {HereResponseRoute, HereResponseRouteSection} from "../test-map/test-map.component";
+import * as HereFlexible from '../here-flexible-polyline';
 
 
 @Component({
@@ -60,8 +63,11 @@ export class CustomerTrackingPageComponent implements OnInit {
   infoModelValue: boolean = false;
   currentApplicationVersion = environment.appVersion;
   currencyCode: any;
+  HereFlexible: any;
+  resData: any = {};
+  time: any;
 
-  constructor(public orderService: OrderService, private router: Router, private fb: FormBuilder) {
+  constructor(public orderService: OrderService, private router: Router, private fb: FormBuilder,  private http: HttpClient) {
     this.form = this.fb.group({
       rating1: ['', Validators.required],
       rating2: [4]
@@ -74,6 +80,7 @@ export class CustomerTrackingPageComponent implements OnInit {
     this.rating = this.orderService.rating;
     this.order_status = this.orderService.order_status;
     this.order_Payment = this.orderService.orderPayment;
+    await this.orderService.companyData().then();
     this.currencyCode = this.orderService.currencyCode;
     const bodytemp = this.orderService.body_temp;
     this.body_temp = bodytemp.body_temp_vaccination_status?.EmployeeBodyTemp
@@ -90,7 +97,6 @@ export class CustomerTrackingPageComponent implements OnInit {
   // deg2rad1(deg: any) {
   //   return deg * (Math.PI / 180)
   // }
-
   pollingData(){
     this.sub = interval(4000).subscribe(()=>{
       this.orderService.init().then();
@@ -113,26 +119,27 @@ export class CustomerTrackingPageComponent implements OnInit {
     const lng1 = order.rider_position.longitude;
     const lat2 = order.delivery_location.latitude;
     const lng2 = order.delivery_location.longitude;
-
-    var R = 6371; // Radius of the earth in kilometers
-    var dLat = this.deg2rad(lat2 - lat1); // deg2rad below
-    var dLon = this.deg2rad(lng2 - lng1);
-    var a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c; // Distance in KM
-    // return d;
-    const time = d/40;
-    this.updatedTime = Number(time*60);
-    // console.log('this.update time', this.updatedTime);
+    try {
+      this.http.get('https://route.ls.hereapi.com/routing/7.2/calculateroute.json', {
+          params: {
+            apikey: environment.hereApiKey,
+            waypoint0: `geo!${lat1},${lng1}`,
+            waypoint1: `geo!${lat2},${lng2}`,
+            mode: 'fastest;car;'
+          }
+        }).subscribe(res =>{
+          this.resData =res
+          this.time = this.resData.response.route[0].summary.travelTime
+        })
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(this.time)
+    this.updatedTime = Number(this.time/60);
     this.subTitleTime = (this.updatedTime).toFixed(0) + ' min';
     this.firstLocationTime = this.order.drop_off_eta/60
     const firstPerValue = 100/ this.firstLocationTime;
     this.currentUpdateTime = ( this.firstLocationTime - this.updatedTime)* firstPerValue;
-    // console.log('this.current update time', this.currentUpdateTime);
-    // console.log('thiis. first location time', this.firstLocationTime);
   }
 
   deg2rad(deg: any) {
@@ -207,4 +214,8 @@ export class CustomerTrackingPageComponent implements OnInit {
   infoModelClose() {
     this.infoModelValue = false;
   }
+
+}
+export interface HereApiResponse {
+  routes: '';
 }

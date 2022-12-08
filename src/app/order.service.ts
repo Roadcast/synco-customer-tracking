@@ -37,6 +37,15 @@ export class OrderService {
         this.order_status = data.order_status
         this.orderPayment = data.order_payment[0]
         this.body_temp = data.rider_avail
+    }
+
+    async companyData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('order_id');
+        if (!myParam) {
+            await this.router.navigateByUrl('error');
+        }
+        const api_url = environment.apiUrl;
         const company = await fetch(api_url + 'order/get_redis_company/' + myParam, {
             method: "GET",
         });

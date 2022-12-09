@@ -30,7 +30,7 @@ export class TestMapComponent implements OnInit {
     riderMovementPath: LatLngLiteral[] = [];
     movementSubject: Subject<string> = new Subject();
 
-    riderSpeed = 20;
+    riderSpeed = 15;
 
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
@@ -171,12 +171,15 @@ export class TestMapComponent implements OnInit {
         if (!this.riderMovementPath.length) {
             return;
         }
-        const latLng = this.riderMovementPath.shift();
-        this.riderLatLng = latLng;
-        if (latLng)
-            this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng));
-        if (this.riderMovementPath.length) {
-            this.movementSubject.next('true');
+            const latLng = this.riderMovementPath.shift();
+            this.riderLatLng = latLng;
+            // console.log('riderMovement', this.riderMovementPath);
+        if (this.riderMovementPath.length > 1) {
+            if (latLng)
+                this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng));
+            if (this.riderMovementPath.length) {
+                this.movementSubject.next('true');
+            }
         }
     }
 

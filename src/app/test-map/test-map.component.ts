@@ -32,6 +32,9 @@ export class TestMapComponent implements OnInit {
 
     riderSpeed = 15;
 
+    prevRiderMoveLength = 0;
+
+
     constructor(public orderService: OrderService, private http: HttpClient) {
     }
 
@@ -168,13 +171,18 @@ export class TestMapComponent implements OnInit {
     }
 
     moveRider() {
+        let increasingSpeed = false;
         if (!this.riderMovementPath.length) {
             return;
         }
+        increasingSpeed = this.prevRiderMoveLength <= this.riderMovementPath.length;
+        this.prevRiderMoveLength = this.riderMovementPath.length;
+
             const latLng = this.riderMovementPath.shift();
             this.riderLatLng = latLng;
-            // console.log('riderMovement', this.riderMovementPath);
-        if (this.riderMovementPath.length > 1) {
+            console.log('riderMovement', this.riderMovementPath, increasingSpeed);
+        if (increasingSpeed || this.riderMovementPath.length > 1) {
+            console.log('check passed...........');
             if (latLng)
                 this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng));
             if (this.riderMovementPath.length) {

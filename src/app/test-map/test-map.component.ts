@@ -32,7 +32,8 @@ export class TestMapComponent implements OnInit {
 
     riderSpeed = 15;
 
-    prevRiderMoveLength = 0;
+    iconInitialized = false;
+    firstRiderMove = true;
 
 
     constructor(public orderService: OrderService, private http: HttpClient) {
@@ -45,7 +46,9 @@ export class TestMapComponent implements OnInit {
         this.movementSubject.pipe(
             debounceTime(this.riderSpeed)
         ).subscribe((a?: any) => {
-            this.moveRider();
+            if (this.iconInitialized) {
+                this.moveRider();
+            }
         });
     }
 
@@ -171,20 +174,18 @@ export class TestMapComponent implements OnInit {
     }
 
     moveRider() {
-        let increasingSpeed = false;
         if (!this.riderMovementPath.length) {
             return;
         }
-        increasingSpeed = this.prevRiderMoveLength <= this.riderMovementPath.length;
-        this.prevRiderMoveLength = this.riderMovementPath.length;
-
             const latLng = this.riderMovementPath.shift();
             this.riderLatLng = latLng;
-            console.log('riderMovement', this.riderMovementPath, increasingSpeed);
-        if (increasingSpeed || this.riderMovementPath.length > 1) {
+            console.log('riderMovement', this.riderMovementPath);
+        if (this.firstRiderMove || (this.riderMovementPath.length !== 0)) {
             console.log('check passed...........');
-            if (latLng)
+            this.firstRiderMove = false;
+            if (latLng) {
                 this.riderPolyLine.getPath().push(new google.maps.LatLng(latLng));
+            }
             if (this.riderMovementPath.length) {
                 this.movementSubject.next('true');
             }
@@ -273,6 +274,7 @@ export class TestMapComponent implements OnInit {
             path: this.coordinates, geodesic: true, visible: true,
         });
         if (initial) {
+            this.iconInitialized = true;
             this.riderPolyLine = new google.maps.Polyline({
                 strokeColor: '#0078AC',
                 strokeOpacity: 0,
@@ -290,6 +292,7 @@ export class TestMapComponent implements OnInit {
                 this.map.fitBounds(bounds);
             };
             zoomToObject(this.pathPolyLine as any);
+            this.moveRider();
         }
 
     }

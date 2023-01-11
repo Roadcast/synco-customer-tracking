@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  appVersion: require('../../package.json').version + '-dev',
+  appVersion: require('../../package.json').version + '-test',
   production: false,
-  apiUrl: 'https://jfl-api-dev.roadcast.co.in/api/v1/',
+  apiUrl: 'https://synco-test-api.roadcast.co.in/api/v1/',
   hereApiKey: '3Xz_d2T_zyHKm1WhBNRAdtmToAQ_HhLmWtMstKeFo34',
 };
 

@@ -13,7 +13,6 @@ export class OrderService {
     order_status: any;
     orderPayment: any;
     riderPosition = new BehaviorSubject({lat: 0, lng: 0})
-    body_temp: any;
     currencyCode: any;
 
     constructor(private router: Router, private httpDirect: HttpClient, handler: HttpBackend) {
@@ -34,9 +33,6 @@ export class OrderService {
         const data = await response.json()
         this.order = data.data;
         this.rating = data.rating
-        this.order_status = data.order_status
-        this.orderPayment = data.order_payment[0]
-        this.body_temp = data.rider_avail
     }
 
     async companyData() {

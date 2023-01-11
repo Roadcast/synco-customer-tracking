@@ -42,6 +42,7 @@ export interface Order {
     pick_up_address_id: string;
     status_name: string;
     status_code: number;
+    code: number;
     distance: number;
     time_taken: number;
     customer: Customer;

@@ -78,17 +78,15 @@ export class CustomerTrackingPageComponent implements OnInit {
     await this.orderService.init().then();
     this.order = this.orderService.order;
     this.rating = this.orderService.rating;
-    this.order_status = this.orderService.order_status;
+    this.order_status = this.order.order_status;
     this.order_Payment = this.orderService.orderPayment;
     await this.orderService.companyData().then();
     this.currencyCode = this.orderService.currencyCode;
-    const bodytemp = this.orderService.body_temp;
-    this.body_temp = bodytemp.body_temp_vaccination_status?.EmployeeBodyTemp
     this.order_status.forEach((row: any) => {
       // @ts-ignore
-      this.orderStatusDist[row.status_code] = row.status_code;
+      this.orderStatusDist[row.status.code] = row.status.code;
       // @ts-ignore
-      this.orderStatusDate[row.status_code] = row.created_on;
+      this.orderStatusDate[row.status.code] = row.created_on;
     })
     this.pollingData();
     this.numberMasking()
@@ -101,12 +99,12 @@ export class CustomerTrackingPageComponent implements OnInit {
     this.sub = interval(4000).subscribe(()=>{
       this.orderService.init().then();
       this.order = this.orderService.order;
-      this.order_status = this.orderService.order_status;
+      this.order_status = this.order.order_status;
       this.order_status.forEach((row: any) => {
         // @ts-ignore
-        this.orderStatusDist[row.status_code] = row.status_code;
+        this.orderStatusDist[row.status.code] = row.status.code;
         // @ts-ignore
-        this.orderStatusDate[row.status_code] = row.created_on;
+        this.orderStatusDate[row.status.code] = row.created_on;
       });
       this.getTimeBtwTwoLatLng(this.order);
     });
@@ -115,10 +113,10 @@ export class CustomerTrackingPageComponent implements OnInit {
     }
   }
   getTimeBtwTwoLatLng(order: any){
-    const lat1 = order.rider_position.latitude;
-    const lng1 = order.rider_position.longitude;
-    const lat2 = order.delivery_location.latitude;
-    const lng2 = order.delivery_location.longitude;
+    const lat1 = order?.rider_position.latitude;
+    const lng1 = order?.rider_position.longitude;
+    const lat2 = order.merchant_order?.delivery_location.latitude;
+    const lng2 = order.merchant_order?.delivery_location.longitude;
     try {
       this.http.get('https://route.ls.hereapi.com/routing/7.2/calculateroute.json', {
           params: {
@@ -157,7 +155,7 @@ export class CustomerTrackingPageComponent implements OnInit {
       body: JSON.stringify({
         stars: this.rating3,
         feedback: this.feedbackorder,
-        customer_id:this.order.customer_id,
+        customer_id:this.order.merchant_order.customer_id,
         rider_id: this.order.rider_id,
       })
     }).then(async( res) => {
@@ -169,25 +167,25 @@ export class CustomerTrackingPageComponent implements OnInit {
     })
   }
   numberMasking(){
-    const date = this.order.created_on;
-    console.log('date ', moment(date).format('YYYY-MM-DD'));
-    const api_url = environment.apiUrl;
-    fetch(api_url + 'order/virtual_number', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        order_number: this.order.external_id,
-        order_date: moment(date).format('YYYY-MM-DD'),
-        location_code: "DPI66683",
-        employee_code: this.order.rider_id,
-      })
-    }).then(async( res) => {
-       const riderData  =  await res.json();
-       this.riderNumber = riderData.virtualNumber;
-      // console.log('vvvvvvvvvvvvvvvvvv', this.riderNumber)
-    });
+    // const date = this.order.created_on;
+    // console.log('date ', moment(date).format('YYYY-MM-DD'));
+    // const api_url = environment.apiUrl;
+    // fetch(api_url + 'order/virtual_number', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     order_number: this.order.external_id,
+    //     order_date: moment(date).format('YYYY-MM-DD'),
+    //     location_code: "DPI66683",
+    //     employee_code: this.order.rider_id,
+    //   })
+    // }).then(async( res) => {
+    //    const riderData  =  await res.json();
+    //    this.riderNumber = riderData.virtualNumber;
+    //   // console.log('vvvvvvvvvvvvvvvvvv', this.riderNumber)
+    // });
   }
 
   orderSummary() {

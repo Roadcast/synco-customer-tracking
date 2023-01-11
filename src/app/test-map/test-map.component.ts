@@ -57,8 +57,8 @@ export class TestMapComponent implements OnInit {
         this.pathPolyLine = new Polyline();
         this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
             center: {
-                lat: this.order.delivery_location.latitude,
-                lng: this.order.delivery_location.longitude,
+                lat: this.order.merchant_order.delivery_location.latitude,
+                lng: this.order.merchant_order.delivery_location.longitude,
             },
             zoom: 14,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -80,28 +80,28 @@ export class TestMapComponent implements OnInit {
             position: new google.maps.LatLng(this.pickupLatLng.lat, this.pickupLatLng.lng
             ),
             icon: {
-                url: 'assets/images/store.svg',
-                scaledSize: new google.maps.Size(48, 48), // size
+                url: 'assets/images/merchant.png',
+                scaledSize: new google.maps.Size(28, 28), // size
             },
             title: '',
         });
         pickupMarker.setMap(this.map);
         google.maps.event.addListener(pickupMarker, 'click', () => {
             const infowindow = new google.maps.InfoWindow({
-                content: "Domino's store"
+                content: "Pickup"
             });
             infowindow.open(this.map, pickupMarker);
         });
         this.dropLatLng = {
-            lat: this.order.delivery_location.latitude,
-            lng: this.order.delivery_location.longitude,
+            lat: this.order.merchant_order.delivery_location.latitude,
+            lng: this.order.merchant_order.delivery_location.longitude,
         };
         this.markers.push(this.dropLatLng);
         const dropMarker = new google.maps.Marker({
             position: new google.maps.LatLng(this.dropLatLng.lat, this.dropLatLng.lng),
             icon: {
-                url: 'assets/images/home.svg',
-                scaledSize: new google.maps.Size(48, 48), // size
+                url: 'assets/images/customer.png',
+                scaledSize: new google.maps.Size(28, 28), // size
             },
             title: ''
         });
@@ -254,10 +254,10 @@ export class TestMapComponent implements OnInit {
         if (order.rider_position && order.rider_position.latitude && order.rider_position.longitude) {
             origin = {latitude: order.rider_position.latitude, longitude: order.rider_position.longitude};
         }
-        if (order.delivery_location &&
-            order.delivery_location.latitude &&
-            order.delivery_location.longitude) {
-            destination = {latitude: order.delivery_location.latitude, longitude: order.delivery_location.longitude};
+        if (order.merchant_order.delivery_location &&
+            order.merchant_order.delivery_location.latitude &&
+            order.merchant_order.delivery_location.longitude) {
+            destination = {latitude: order.merchant_order.delivery_location.latitude, longitude: order.merchant_order.delivery_location.longitude};
         }
         if (!origin || !destination) {
             return;

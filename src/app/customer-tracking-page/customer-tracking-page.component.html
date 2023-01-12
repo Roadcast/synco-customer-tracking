@@ -29,8 +29,8 @@
               <div class="col-7">
                 <ol class="timeline">
                   <li [ngClass]="orderStatusDist['300'] === 300 ? 'active' : ''"><img src="assets/images/tick-w.png">Reach Pickup<span>at {{orderStatusDate["300"] | date: 'dd/MM/YYYY hh:mm a'}}</span></li>
-                  <li [ngClass]="orderStatusDist['400'] === 400 ? 'active' : ''"><img src="assets/images/tick-w.png">Start Bike<span>at {{orderStatusDate["400"] | date: 'dd/MM/YYYY hh:mm a'}}</span></li>
-                  <li [ngClass]="orderStatusDist['500'] === 500 ? 'active' : ''"><img src="assets/images/tick-w.png">Reached Customer Parking<span>at {{orderStatusDate["500"] | date: 'dd/MM/YYYY hh:mm a'}}</span></li>
+                  <li [ngClass]="orderStatusDist['400'] === 400 ? 'active' : ''"><img src="assets/images/tick-w.png">Dispatch<span>at {{orderStatusDate["400"] | date: 'dd/MM/YYYY hh:mm a'}}</span></li>
+                  <li [ngClass]="orderStatusDist['500'] === 500 ? 'active' : ''"><img src="assets/images/tick-w.png">Reached Customer<span>at {{orderStatusDate["500"] | date: 'dd/MM/YYYY hh:mm a'}}</span></li>
                   <li [ngClass]="orderStatusDist['600'] === 600 ? 'active' : ''"><img src="assets/images/tick-w.png">Delivered<span>at {{orderStatusDate["600"] | date: 'dd/MM/YYYY hh:mm a'}}</span></li>
                 </ol>
               </div>

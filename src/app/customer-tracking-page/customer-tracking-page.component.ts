@@ -112,28 +112,24 @@ export class CustomerTrackingPageComponent implements OnInit {
        this.sub.unsubscribe()
     }
   }
+
   getTimeBtwTwoLatLng(order: any){
-    const lat1 = order?.rider_position.latitude;
-    const lng1 = order?.rider_position.longitude;
+    const lat1 = order.rider_position.latitude;
+    const lng1 = order.rider_position.longitude;
     const lat2 = order.merchant_order?.delivery_location.latitude;
     const lng2 = order.merchant_order?.delivery_location.longitude;
-    try {
-      this.http.get('https://route.ls.hereapi.com/routing/7.2/calculateroute.json', {
-          params: {
-            apikey: environment.hereApiKey,
-            waypoint0: `geo!${lat1},${lng1}`,
-            waypoint1: `geo!${lat2},${lng2}`,
-            mode: 'fastest;car;'
-          }
-        }).subscribe(res =>{
-          this.resData =res
-          this.time = this.resData.response.route[0].summary.travelTime
-        })
-    } catch (e) {
-      console.log(e);
-    }
-    console.log(this.time)
-    this.updatedTime = Number(this.time/60);
+
+    var R = 6371; // Radius of the earth in kilometers
+    var dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+    var dLon = this.deg2rad(lng2 - lng1);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in KM
+    const time = d/25;
+    this.updatedTime = Number(time*60);
     this.subTitleTime = (this.updatedTime).toFixed(0) + ' min';
     this.firstLocationTime = this.order.drop_off_eta/60
     const firstPerValue = 100/ this.firstLocationTime;
